@@ -4,14 +4,9 @@
 
 ## Kursplan  
 
-Forelesnings- og seminarplanene inneholder informasjon om tidspunkt, forelesninger, seminarer, tema samt ressurser/oppgaver til hvert tema.  
-Arbeidskrav gir informasjon om frister, struktur og innleveringsplatfor.
-Eksamen inneholder informasjon om eksamen. 
+Undervisningsplanen viser alle forelesninger, seminarer og innleveringstidspunkter. 
 
-- [Forelesningsplan](forelesningsplan.html){:target="blank"}
-- [Seminarplan](seminarplan.html){:target="blank"}
-- [Innleveringsplan](innleveringer.html){:target="blank"}   
-
+[Undervisningsplan](undervisningsplan.html) **Under konstruksjon**
 
 [Timeplan](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="blank"} på timeplan.uit.no
 
