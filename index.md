@@ -13,7 +13,7 @@ Eksamen inneholder informasjon om eksamen.
 - [Innleveringsplan](innleveringer.html){:target="blank"}   
 
 
-[Timeplan](https://timeplan.uit.no/){:target="blank"} på timeplan.uit.no
+[Timeplan](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="blank"} på timeplan.uit.no
 
 
 ## Kursbeskrivelse 
