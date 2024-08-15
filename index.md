@@ -4,7 +4,6 @@
 
 Her finner du all informasjon du trenger for kurset, inkludert undervisningsplan, pensum og informasjon om innleveringer.
 
----
 
 ## Kursplan   
 
@@ -13,7 +12,6 @@ Her finner du en oversikt over alle forelesninger, seminarer og innleveringsfris
 - [Undervisningsplan](undervisningsplan.html)
 - [Timeplan for kurset](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="_blank"}
 
----
 
 ## Kursbeskrivelse 
 
@@ -25,14 +23,12 @@ Dette kurset baserer seg på forelesninger, seminarer, Datacamp og pensumbok for
 
 Vær oppmerksom på at strukturen på forelesningene, pensumlitteraturen og Datacamp ikke er 100% samordnet. Dette skyldes at Datacamp er strukturert i moduler som ikke nødvendigvis følger vår fremdriftsplan, og vi bruker bare deler av pensumlitteraturen. Jeg jobber med å skrive et lite oppsummerende kompendium, men kapitlene vil nok komme fortløpende gjennom semesteret.
 
----
 
 ## Faglærerinfo
 
 Ta kontakt med faglærer for spørsmål knyttet til undervisning, pensum og tidsfrister.
 - [Eirik Eriksen Heen](https://uit.no/ansatte/eirik.e.heen){:target="_blank"}
 
----
 
 ## Administrative spørsmål
 
@@ -42,7 +38,6 @@ Kontakt administrasjonen for spørsmål angående tilrettelegging til eksamen, u
 
 Her vil du få hjelp fra Handelshøgskolens administrasjon.
 
----
 
 ## Pensum  
 - [Modern Statistics with R](https://modernstatisticswithr.com/){:target="_blank"} - Online-versjon av boken.
@@ -52,7 +47,6 @@ Her vil du få hjelp fra Handelshøgskolens administrasjon.
 ### Støttelitteratur
 - Egenskrevet kompendium **kommer**
 
----
 
 ## Datacamp
 
@@ -64,13 +58,11 @@ Hvis denne registreringen ikke fungerer, kan dere bruke den alternative e-postad
 
 - [Datacamp alternativ registrering](https://www.datacamp.com/groups/shared_links/13c4eb6a28004f403041993796c03725fc4f59703208b5f5705223fde964d201)
 
----
 
 ## Kunngjøringer  
 
 Viktige beskjeder og kunngjøringer legges ut i [Canvas](https://uit.instructure.com/){:target="_blank"}.
 
----
 
 ## Innlevering og eksamen  
 
