@@ -9,7 +9,7 @@ Her finner du all informasjon du trenger for kurset, inkludert undervisningsplan
 
 Her finner du en oversikt over alle forelesninger, seminarer og innleveringsfrister. For å opprettholde oversikt legger jeg alt av forelesninger, seminarer og frister inn i én undervisningsplan.
 
-- [Undervisningsplan](undervisningsplan.html)
+- [Undervisningsplan](undervisningsplan.html) **kommer** 
 - [Timeplan for kurset](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="_blank"}
 
 
