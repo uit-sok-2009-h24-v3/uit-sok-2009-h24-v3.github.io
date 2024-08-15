@@ -1,57 +1,81 @@
 {% include navbar.html %}  {% include top-box.html %}
 
+## Velkommen til Økonomi, Statistikk og Programmering (SOK-2009)
 
+Her finner du all informasjon du trenger for kurset, inkludert undervisningsplan, pensum og informasjon om innleveringer.
 
-## Kursplan  
+---
 
-Undervisningsplanen viser alle forelesninger, seminarer og innleveringstidspunkter. 
-Small change
-[Undervisningsplan](undervisningsplan.html)
-[Timeplan](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="blank"} på timeplan.uit.no
+## Kursplan   
 
+Her finner du en oversikt over alle forelesninger, seminarer og innleveringsfrister. For å opprettholde oversikt legger jeg alt av forelesninger, seminarer og frister inn i én undervisningsplan.
+
+- [Undervisningsplan](undervisningsplan.html)
+- [Timeplan for kurset](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="_blank"}
+
+---
 
 ## Kursbeskrivelse 
 
+Kurset tas i tredje semester på bachelorprogrammet "Samfunnsøkonomi med datavitenskap" og gir 10 studiepoeng.
 
-Kurset tas nomralt i tredje semster, og teller 10 studiepoeng.
-Kurest består av online oppgaver via [Datacamp](datacamp.com), forelesninger og seminarer. Hver forelesning har et tema dette er knyttet opp til et kurs i datacamp. Det er lagt opp til at dere gjennomfører datacamp kurest før forelesning. Dette gjøres så dere blir litt kjent med koden og teorien før forelesningene. I forelesningene blir det mer tid brukt på teorien rundt temaet for uken, forståelse og tolking av resultatene.
-Seminarene blir basert på oppgavegjennomgang. 
+[Læreutbyttebeskrivelse](https://uit.no/utdanning/emner/emne?p_document_id=841876){:target="_blank"}
 
+Dette kurset baserer seg på forelesninger, seminarer, Datacamp og pensumbok for å formidle fagstoffet og ferdighetene dere skal lære i løpet av semesteret. Basert på tidligere erfaringer vil jeg be dere gjennomføre Datacamp etter forelesningene. Dette vil styrke deres forståelse av det vi har dekket i forelesningen og hjelpe dere med den nødvendige kodingen. I forelesningene vil jeg fokusere på teori, forståelse og tolkning av resultater, med litt gjennomgang av koding. Seminarene vil være basert på oppgaveløsning og tolkning av resultater. Datacamp sin rolle er å gi dere flere kodeoppgaver og noe teori knyttet til temaet.
 
+Vær oppmerksom på at strukturen på forelesningene, pensumlitteraturen og Datacamp ikke er 100% samordnet. Dette skyldes at Datacamp er strukturert i moduler som ikke nødvendigvis følger vår fremdriftsplan, og vi bruker bare deler av pensumlitteraturen. Jeg jobber med å skrive et lite oppsummerende kompendium, men kapitlene vil nok komme fortløpende gjennom semesteret.
 
-## Faglærerinfo  
-- [Eirik Eriksen Heen](https://uit.no/ansatte/eirik.e.heen){:target="blank"}
+---
 
+## Faglærerinfo
 
+Ta kontakt med faglærer for spørsmål knyttet til undervisning, pensum og tidsfrister.
+- [Eirik Eriksen Heen](https://uit.no/ansatte/eirik.e.heen){:target="_blank"}
+
+---
 
 ## Administrative spørsmål
 
-For henvendelser av administrative art send e-post til: <hhcampus@hjelp.uit.no>. Der får du hjelp av Handelshøgskolens administrasjon. De kan hjelpe dere med slike ting som tillrettelegelse under eksamen, 
+Kontakt administrasjonen for spørsmål angående tilrettelegging til eksamen, utsettelser av arbeidskrav, sykdom under eksamen, eller lignende. 
+- Henvendelser om studiet i Tromsø: [hhcampus@hjelp.uit.no](mailto:hhcampus@hjelp.uit.no)
+- Generelle henvendelser: [hhtpost@bfe.uit.no](mailto:hhtpost@bfe.uit.no)
 
+Her vil du få hjelp fra Handelshøgskolens administrasjon.
+
+---
 
 ## Pensum  
+- [Modern Statistics with R](https://modernstatisticswithr.com/){:target="_blank"} - Online-versjon av boken.
+- Moduler på [Datacamp](https://app.datacamp.com/){:target="_blank"}
+- [Leganto](https://bibsys-c.alma.exlibrisgroup.com/leganto/){:target="_blank"}
 
-[Leganto](https://bibsys-c.alma.exlibrisgroup.com/leganto/){:target="blank"}  
-Dette emne bruker online booken [Modern Statistics with R](https://modernstatisticswithr.com/) som pensum book. I tillegg er alle stegene i Datacamp også pensum.
+### Støttelitteratur
+- Egenskrevet kompendium **kommer**
+
+---
 
 ## Datacamp
 
-Får å få tilgang til Datacamp må deres registrere dere til kurset/rommet vårt i Datacamp. Dere gjør dette ved å følge linken under. Dere MÅ resisterer dere med universitetes mail i form av "abc123@uit.no". Hvis dere bruker en privat epost vil dere ikke få tilgang.  
-[Datacamp registrering](https://www.datacamp.com/groups/shared_links/0a68da51979076fe390a190866ca599f46ceec532c468c4dcfd53f879d06de5f)
+For å få tilgang til Datacamp må dere registrere dere til kurset via Datacamp. Dere må bruke universitetets e-postadresse i formatet "abc123@uit.no". Hvis dere bruker en privat e-postadresse, vil dere ikke få tilgang.
 
-Hvis denne registreringen ikke fungerer kan dere bruke alternative epost adressen i form av "abc123@post.uit.no". Ved å følge linken under
-[Datacamp alternativ registrering](https://www.datacamp.com/groups/shared_links/13c4eb6a28004f403041993796c03725fc4f59703208b5f5705223fde964d201)
+- [Datacamp registrering](https://www.datacamp.com/groups/shared_links/0a68da51979076fe390a190866ca599f46ceec532c468c4dcfd53f879d06de5f)
+
+Hvis denne registreringen ikke fungerer, kan dere bruke den alternative e-postadressen i formatet "abc123@post.uit.no" via følgende lenke:
+
+- [Datacamp alternativ registrering](https://www.datacamp.com/groups/shared_links/13c4eb6a28004f403041993796c03725fc4f59703208b5f5705223fde964d201)
+
+---
 
 ## Kunngjøringer  
 
-Kunngjøringer og beskjeder legges ut i [Canvas](https://uit.instructure.com/){:target="blank"}.
+Viktige beskjeder og kunngjøringer legges ut i [Canvas](https://uit.instructure.com/){:target="_blank"}.
 
-
+---
 
 ## Innlevering og eksamen  
 
-### Obligatorisk arbeiskrav
-Mer kommer
+### Obligatoriske arbeidskrav
+Mer informasjon kommer.
 
 ### Eksamen
-Mer kommer
+Mer informasjon kommer.
