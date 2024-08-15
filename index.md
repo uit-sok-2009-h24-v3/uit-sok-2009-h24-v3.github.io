@@ -6,7 +6,7 @@
 
 Undervisningsplanen viser alle forelesninger, seminarer og innleveringstidspunkter. 
 
-[Undervisningsplan](undervisningsplan.html) **Under konstruksjon**
+[Undervisningsplan](undervisningsplan.md) **Under konstruksjon**
 
 [Timeplan](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-2009-1){:target="blank"} på timeplan.uit.no
 
