@@ -41,7 +41,7 @@ Her vil du få hjelp fra Handelshøgskolens administrasjon.
 
 ## Pensum  
 - [Modern Statistics with R](https://modernstatisticswithr.com/){:target="_blank"} - Online-versjon av boken.
-- Moduler på [Datacamp](https://app.datacamp.com/){:target="_blank"}
+- Moduler på [Datacamp](https://app.datacamp.com/groups/sok-2009-okonomi-statistikk-og-programering/assignments/284115){:target="_blank"}
 - [Leganto](https://bibsys-c.alma.exlibrisgroup.com/leganto/){:target="_blank"}
 
 ### Støttelitteratur
@@ -57,6 +57,8 @@ For å få tilgang til Datacamp må dere registrere dere til kurset via Datacamp
 Hvis denne registreringen ikke fungerer, kan dere bruke den alternative e-postadressen i formatet "abc123@post.uit.no" via følgende lenke:
 
 - [Datacamp alternativ registrering](https://www.datacamp.com/groups/shared_links/13c4eb6a28004f403041993796c03725fc4f59703208b5f5705223fde964d201)
+
+Les mer om modulene på siden om [datacamp](datacamp.html)
 
 
 ## Kunngjøringer  
