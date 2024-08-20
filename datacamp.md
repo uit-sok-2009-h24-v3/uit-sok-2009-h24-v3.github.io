@@ -2,11 +2,14 @@
 
 # Introduksjon til Statisitikk
 Kurset vårt starter med modulene "Introduction to Statistics in R" og "Exploratory Data Analysis in R" fra DataCamp, fordi de legger grunnlaget for hele vår statistiske forståelse og tilnærming til dataanalyse. Statistikk handler om å samle inn, analysere og trekke konklusjoner fra data, noe som er avgjørende for økonomiske beslutninger. Gjennom disse modulene vil du lære å beregne sentralmål som gjennomsnitt, utforske sammenhenger mellom variabler gjennom scatterplots og korrelasjon, samt forstå sannsynlighet – selve ryggraden i statistisk resonnement. Videre vil du også få innsikt i hvordan du kan avdekke strukturen i et datasett gjennom grafiske og numeriske metoder, noe som er essensielt for å identifisere mønstre, uvanlige observasjoner og relasjoner i dataene. Disse ferdighetene vil danne grunnlaget for mer avanserte analyser senere i kurset.
+
 [Introduction to Statistics in R](https://app.datacamp.com/learn/courses/introduction-to-statistics-in-r)
+
 [Exploratory Data Analysis in R](https://app.datacamp.com/learn/courses/exploratory-data-analysis-in-r)
 
 # Grunnleggende Sampling og Introduksjon til Usikkerhet
 Etter å ha fått en praktisk forståelse av statistikk og dataanalyse, fortsetter vi med en modul som fokuserer på sampling. Sampling er en hjørnestein i inferensiell statistikk og hypotesetesting, og det er avgjørende å forstå hvordan og hvorfor vi trekker ut stikkprøver fra større populasjoner. I denne modulen vil vi utforske ulike typer samplingmetoder, som enkel tilfeldig sampling, stratifisert sampling og klyngesampling. Målet er å gi studentene en intuitiv forståelse av hvordan vi estimerer populasjonsstatistikker og kvantifiserer usikkerheten i disse estimatene ved hjelp av samplingfordelinger og bootstrap-metoder. Gjennom praktiske eksempler med virkelige datasett vil studentene lære å designe bedre undersøkelser og eksperimenter, og få et solid grunnlag for videre studier av sannsynlighetsfordelinger.
+
 [Sampling in R](https://app.datacamp.com/learn/courses/sampling-in-r)
 
 # Grunnleggende Sannsynlighetsregning
