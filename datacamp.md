@@ -1,5 +1,10 @@
 # Datacamp Oversikt
 
+Alle modulene på datacamp er obligatorisk og har en logisk oppbyggning for å forstå pensum. Datacamp skal hjelpe med både kodingen og teorien. 
+
+Obligatoriske innleveringer i datacamp [her](https://app.datacamp.com/groups/sok-2009-okonomi-statistikk-og-programering/assignments).
+
+
 ## Introduksjon til Statisitikk
 Kurset vårt starter med modulene "Introduction to Statistics in R" og "Exploratory Data Analysis in R" fra DataCamp, fordi de legger grunnlaget for hele vår statistiske forståelse og tilnærming til dataanalyse. Statistikk handler om å samle inn, analysere og trekke konklusjoner fra data, noe som er avgjørende for økonomiske beslutninger. Gjennom disse modulene vil du lære å beregne sentralmål som gjennomsnitt, utforske sammenhenger mellom variabler gjennom scatterplots og korrelasjon, samt forstå sannsynlighet – selve ryggraden i statistisk resonnement. Videre vil du også få innsikt i hvordan du kan avdekke strukturen i et datasett gjennom grafiske og numeriske metoder, noe som er essensielt for å identifisere mønstre, uvanlige observasjoner og relasjoner i dataene. Disse ferdighetene vil danne grunnlaget for mer avanserte analyser senere i kurset.
 
