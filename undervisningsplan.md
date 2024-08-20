@@ -6,30 +6,19 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke | Tid            | Sted            |Undervisningsform | Tema               | Ressurser <img width=200> |
 |----|----------------|-----------------|--------------------|--------------------|--------------------|
 | Uke 34 | 21.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger |  |  |
-
 | Uke 35 | 28.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Deskriptiv statistikk |  |
-
 | Uke 36 | 03.09  12:15-14:00  | 02.217, Innovatøren | Forelesninger |  |  |
-
 | Uke 37 | 11.09  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
 | Uke 37 | 12.09  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
-
 | Uke 38 | 17.09  12:15-14:00  | 02.119, DT-LAB | Forelesninger |  |  |
 | Uke 38 | 19.09  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
-
 | Uke 39 | 25.09  10:15-12:00  | 02.216, Økonomen | Forelesninger |  |  |
-
 | Uke 40 | 02.10  10:15-12:00  | 02.216, Økonomen | Forelesninger |  |  |
-
 | Uke 41 | 09.10  10:15-12:00  | 02.216, Økonomen | Forelesninger |  |  |
 | Uke 41 | 11.10  10:15-12:00  | 02.119, DT-LAB | Seminar |  |  |
-
 | Uke 42 | 15.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger |  |  |
 | Uke 42 | 17.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
-
 | Uke 43 | 22.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger |  |  |
 | Uke 43 | 24.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
-
 | Uke 44 | 30.10  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
-
 | Uke 45 | 06.11  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
