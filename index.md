@@ -41,7 +41,7 @@ Her vil du få hjelp fra Handelshøgskolens administrasjon.
 
 ## Pensum  
 - [Modern Statistics with R](https://modernstatisticswithr.com/){:target="_blank"} - Online-versjon av boken.
-- Moduler på [Datacamp](https://app.datacamp.com/groups/sok-2009-okonomi-statistikk-og-programering/assignments/284115){:target="_blank"}
+- Moduler på [Datacamp](https://app.datacamp.com/groups/sok-2009-okonomi-statistikk-og-programering/assignments){:target="_blank"}
 - [Leganto](https://bibsys-c.alma.exlibrisgroup.com/leganto/){:target="_blank"}
 
 ### Støttelitteratur
