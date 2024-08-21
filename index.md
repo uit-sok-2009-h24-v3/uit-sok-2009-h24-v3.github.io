@@ -69,7 +69,15 @@ Viktige beskjeder og kunngjøringer legges ut i [Canvas](https://uit.instructure
 ## Innlevering og eksamen  
 
 ### Obligatoriske arbeidskrav
-Mer informasjon kommer.
+Emnet har to arbeidskrav, en gruppe presentasjon og et individuelt arbeidskrav. Begge må være godkjent for å kunne avlegge eksamen.
+
+- Datacamp: Alle modulene er obligatorisk og må gjøres ferdig innen 08.11 klokken 14:00.
+- Muntelig presantasjon av prosjekt oppgave. Tidspunkt avklares senere.
+
 
 ### Eksamen
-Mer informasjon kommer.
+I dette emnet blir det 3 mappe innleveringer:
+
+- Mappe oppgave 1: Grunnlengene statistikk (25%)
+- Mappe oppgave 2: Regresjon (25%)
+- Mappe oppgave 3: Prosjekt oppgave (50%)
