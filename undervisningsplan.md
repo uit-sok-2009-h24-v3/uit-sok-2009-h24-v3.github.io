@@ -22,4 +22,4 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 43 | 24.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 44 | 30.10  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
 | Uke 45 | 06.11  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
-|  | 04.12 14:00 |  *Mappe 3 innlevering* |
+|  | 04.12 14:00 |  | | *Mappe 3 innlevering* |
