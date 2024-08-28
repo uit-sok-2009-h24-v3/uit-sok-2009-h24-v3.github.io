@@ -6,7 +6,7 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke | Tid            | Sted            |Undervisningsform | Tema               | Ressurser <img width=200> |
 |----|----------------|-----------------|--------------------|--------------------|--------------------|
 | Uke 34 | 21.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Introduksjon til statistikk | [Forelesning](Forelesning-1.pdf) |
-| Uke 35 | 28.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Deskriptiv statistikk |  |
+| Uke 35 | 28.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Deskriptiv statistikk | [Forelesning](Forelesning 2 sok2009 h24.html) [Kode](Forelesning 2 sok2009 h24.qmd)  |
 | Uke 36 | 03.09  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Grunnleggende Sampling og Introduksjon til Usikkerhet |  |
 | Uke 37 | 11.09  10:15-12:00  | 02.119, DT-LAB | Forelesninger | Grunnleggende Sannsynlighetsregning |  |
 | Uke 37 | 12.09  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
