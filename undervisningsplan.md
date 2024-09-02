@@ -1,11 +1,13 @@
 
-{% include navbar_open.html %}{% include top-box.html %}# Umdervisningsplan
+{% include navbar_open.html %}{% include top-box.html %}
+
+# Undervisningsplan
 
 Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det timeplan til UiT som stemmer. Vennligst send meg en bedskjed om dere ser dette så jeg kan rette opp så fort som mulig.
 
 | Uke | Tid            | Sted            |Undervisningsform | Tema               | Ressurser <img width=200> |
 |----|----------------|-----------------|--------------------|--------------------|--------------------|
-| Uke 34 | 21.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Introduksjon til statistikk |   |
+| Uke 34 | 21.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Introduksjon til statistikk | [R-kode](https://raw.githubusercontent.com/uit-sok-2009-h24-v3/uit-sok-2009-h24-v3.github.io/main/forelesning/Forelesning_2_sok2009_h24.qmd)   |
 | Uke 35 | 28.08  10:15-12:00  | 02.217, Innovatøren | Forelesninger | Deskriptiv statistikk |  |
 | Uke 36 | 03.09  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Visulaisering av datav |  |
 |  |  | | Forelesninger | Grunnleggende Sampling og Introduksjon til Usikkerhet |  |
