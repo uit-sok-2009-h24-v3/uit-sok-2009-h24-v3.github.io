@@ -3,7 +3,9 @@ title: "Forelesning 1: Introduksjon til statistikk"
 subtitle: "Sok-2009 h24"
 author: "Eirik Eriksen Heen & ChatGPT"
 date: "`r format(Sys.Date(), '%d. %b %Y')`"
-format: pdf
+format: 
+  html:
+    code-overflow: wrap # Pakker kode som er for lang for linjen
 editor: visual
 execute:
   echo: true
