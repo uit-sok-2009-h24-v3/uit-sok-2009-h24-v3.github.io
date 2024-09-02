@@ -118,7 +118,7 @@ Her ser vi at deter 10 000 observasjoner i NHANES datasettet.
 
 I et datasett er en rad en observasjon. Når ser på formler så er det gjerne kun en variabler vi ser på av gangen. For å identifisere og referere til en bestemt observasjon bruker vi notasjonen ${x}_{i}$. Her representerer i indeksen som angir plasseringen av den spesifikke observasjonen innen datasettets sekvens.
 
-$$\text{En observasjon:  } {x}_{i} $$La oss see på de 10 $(n=10)$ første observasjonene av hvor mange time søvn, personene i NHANES-datasette har.
+$$\text{En observasjon:} {x}_{i} $$La oss see på de 10 $(n=10)$ første observasjonene av hvor mange time søvn, personene i NHANES-datasette har.
 
 ```{r}
 # Kaller opp datasettet NHANES
