@@ -113,12 +113,61 @@ Her ser vi at deter 10 000 observasjoner i NHANES datasettet.
 \newpage
 
 
-
 ## Observasjon
 
 I et datasett er en rad en observasjon. Når ser på formler så er det gjerne kun en variabler vi ser på av gangen. For å identifisere og referere til en bestemt observasjon bruker vi notasjonen ${x}_{i}$. Her representerer i indeksen som angir plasseringen av den spesifikke observasjonen innen datasettets sekvens.
 
-$$\text{En observasjon:}{x}_{i}$$
+$$\text{En observasjon:}{x}_{i} $$La oss see på de 10 $(n=10)$ første observasjonene av hvor mange time søvn, personene i NHANES-datasette har.
 
-La oss see på de 10 $(n=10)$ første observasjonene av hvor mange time søvn, personene i NHANES-datasette har.
- punktene.
+```{r}
+# Kaller opp datasettet NHANES
+NHANES %>% 
+  # Grupperer på den variablen vi er interesert i
+  select(SleepHrsNight) %>% 
+  # Fjerne alle observasjoner som har NA eller ikke observasjoner
+  na.omit() %>%
+  # Skriver ut antall timer søvn for de 10 første observasjoene.
+  head(10) %>%
+  # Denne funksjonen gjor tabellen litt penere
+  gt()
+
+```
+
+Fra dette kan vi skrive korrekt:
+
+-   ${x}_{1}=4$
+
+-   ${x}_{2}=4$
+
+-   ${x}_{5}=8$
+
+-   ${x}_{8}=7$
+
+\newpage
+
+### Summe tegnet
+
+Mange statistiske formler baserer seg på summetegnet. Derfor skal vi raskt gå igjennom hvordan vi tolker og bruker denne formelen.
+
+Når du ser en formel som inkluderer ( $\Sigma$ ), betyr det at du skal legge sammen en sekvens av tall.
+
+Eksempel: $${\sum}_{i=1}^{5} {x}_{i} $$
+
+-   Start punktet er representert under. Her $i=1$
+-   Slutt punkter er represntert over. Her $f$
+-   Hva som summeres kommer etter. Her ${x}_{i}$
+-   Eller sagt med vanlige ord, vi skal legge sammen de fem første observasjonen.
+
+Observasjoene skrives: ${x}_{1}=4$ ${x}_{2}=4$, ${x}_{3}=4$, ${x}_{4}=8$ og ${x}_{5}=8$. Hvis vi skal skrive dette med sumetegnskriver vi:
+
+$$
+\sum_{i=1}^{5} {x}_{i}= {x}_{1}+{x}_{2}+{x}_{3}+{x}_{4}+{x}_{5} = 4+4+4+8+8=28
+$$
+
+Nå er vi faktisk bare et seg unna å regne ut gjennomsnittet som vi vet om fra videregående. Vi må bare dele på antall observasjoner eller her $5$.
+
+$$
+{28}/{5} = 5.6
+$$
+
+Eller gjennomsnittlig søv av de 5 første personene er 5.6 timer.
