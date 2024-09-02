@@ -1,5 +1,4 @@
-
-{% include navbar.html %}  {% include top-box.html %}
+{% include navbar.html %}{% include top-box.html %}
 
 # Undervisningsplan
 
