@@ -201,7 +201,7 @@ Vi utforske tre viktige sentrale tendens målinger:
 
 -   **Formel**:
 
-$$\overline{x} =\frac{{x}_{1}+{x}_{2}+...+{x}_{n}}{n}= \frac{\sum_{i=1}^{n} {x}_{i}}{n}= \frac{1}{n}\sum_{i=1}^{n} {x}_{i}$$
+$$\overline{x} =\frac{ {x}_{1}+{x}_{2}+...+{x}_{n} }{n}= \frac{\sum_{i=1}^{n} {x}_{i} }{n}= \frac{1}{n}\sum_{i=1}^{n} {x}_{i}$$
 
 -   $\sum_{i=1}^{n} {x}_{i}$ er summen av alle verdiene i datasettet.
 
@@ -628,7 +628,7 @@ Varians er litt vanskelig å tolke for seg selv. Fordi dataen er på kvadratisk 
 
 -   **Formel**:
 
-$$ \text{Standardavvik} = \sqrt{\text{Varians}} $$ $$ \sigma= \sqrt{ \frac{ \sum({x}_{i}-\overline{x})^2}{n-1}} = \sqrt{ \frac{1}{n-1}\sum({x}_{i}-\overline{x})^2 } $$
+$$ \text{Standardavvik} = \sqrt{\text{Varians} } $$ $$ \sigma= \sqrt{ \frac{ \sum({x}_{i}-\overline{x})^2}{n-1} } = \sqrt{ \frac{1}{n-1}\sum({x}_{i}-\overline{x})^2 } $$
 
 -   **Eksempel**: Fra eksempelet over kan vi ta kvadratroten av variansen for å finne standardavviket.
 
@@ -799,7 +799,7 @@ Vi skal nå måle samvariasjonen mellom to to variabler. En viktig del av dette 
 Formelen skrives
 
 $$
-r =\frac{\sum{(x_i-\overline{x})(y_i-\overline{y}) }}{\sqrt{ \sum{(x_i-\overline{x})^2}} \cdot \sqrt{ \sum{(y_i-\overline{y})^2}} }
+r =\frac{\sum{(x_i-\overline{x})(y_i-\overline{y}) } }{\sqrt{ \sum{(x_i-\overline{x})^2} } \cdot \sqrt{ \sum{(y_i-\overline{y})^2} } }
 $$
 
 I R bruker vi kommandoen *cor()* for å finne korrelasjons koeffesienten.
@@ -933,7 +933,7 @@ $$\text{Frekvens:  } {f}_{3}=59 $$
 
 Relativ frekvens gir en prosentuell representasjon av frekvensen til en bestemt verdi i forhold til det totale antallet observasjoner i et datasett.
 
-$$\text{Relativ frekvens:  } \frac{{f}_{i}}{n} $$
+$$\text{Relativ frekvens:  } \frac{ {f}_{i} }{n} $$
 
 Så neste kollone deler vi på antall observasjoner.
 
@@ -990,10 +990,10 @@ NHANES %>%
 
 #### Kumulativ Relativ Frekvens
 
-Kumulativ relativ frekvens representerer summen av relative frekvenser opp til en bestemt verdi. Denne målingen gir innsikt i den samlede andelen av et datasett som er representert av verdier mindre enn eller lik en angitt verdi. Den kumulative relative frekvensen skrives som $\frac{{F}_{n}}{n}$.
+Kumulativ relativ frekvens representerer summen av relative frekvenser opp til en bestemt verdi. Denne målingen gir innsikt i den samlede andelen av et datasett som er representert av verdier mindre enn eller lik en angitt verdi. Den kumulative relative frekvensen skrives som $\frac{ {F}_{n} }{n}$.
 
 $$
-\text{Kumulativ relativ frekvens:  }  \frac{{F}_{i}}{n}
+\text{Kumulativ relativ frekvens:  }  \frac{ {F}_{i} }{n}
 $$
 
 ```{r}
