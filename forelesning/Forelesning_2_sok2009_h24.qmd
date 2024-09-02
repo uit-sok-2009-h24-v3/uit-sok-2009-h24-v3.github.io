@@ -99,7 +99,7 @@ Når det kommer til deskriptiv statistikk er det et par grunnleggende mål vi tr
 
 Antall Elementer refererer til antall observasjoner i et datasett eller utvalg. Dette er ofte representert ved symbolet $n$.
 
-Foreksemel: Fordatasettet NHANES, har vi: ${n} = \text{10 000}$.
+Foreksemel: Fordatasettet NHANES, har vi: ${n}=\text{10 000}$.
 
 Kode for å finne antall rader/observasjoner i et datasett
 
@@ -112,13 +112,13 @@ Her ser vi at deter 10 000 observasjoner i NHANES datasettet.
 
 \newpage
 
-\
+
 
 ## Observasjon
 
 I et datasett er en rad en observasjon. Når ser på formler så er det gjerne kun en variabler vi ser på av gangen. For å identifisere og referere til en bestemt observasjon bruker vi notasjonen ${x}_{i}$. Her representerer i indeksen som angir plasseringen av den spesifikke observasjonen innen datasettets sekvens.
 
-$$\text{En observasjon:} {x}_{i} $$La oss see på de 10 $(n=10)$ første observasjonene av hvor mange time søvn, personene i NHANES-datasette har.
+$$\text{En observasjon:}{x}_{i} $$La oss see på de 10 $(n=10)$ første observasjonene av hvor mange time søvn, personene i NHANES-datasette har.
 
 ```{r}
 # Kaller opp datasettet NHANES
@@ -143,6 +143,1194 @@ Fra dette kan vi skrive korrekt:
 -   ${x}_{5}=8$
 
 -   ${x}_{8}=7$
+
+\newpage
+
+### Summe tegnet
+
+Mange statistiske formler baserer seg på summetegnet. Derfor skal vi raskt gå igjennom hvordan vi tolker og bruker denne formelen.
+
+Når du ser en formel som inkluderer ( $\Sigma$ ), betyr det at du skal legge sammen en sekvens av tall.
+
+Eksempel: $${\sum}_{i=1}^{5} {x}_{i} $$
+
+-   Start punktet er representert under. Her $i=1$
+-   Slutt punkter er represntert over. Her $f$
+-   Hva som summeres kommer etter. Her ${x}_{i}$
+-   Eller sagt med vanlige ord, vi skal legge sammen de fem første observasjonen.
+
+Observasjoene skrives: ${x}_{1}=4$ ${x}_{2}=4$, ${x}_{3}=4$, ${x}_{4}=8$ og ${x}_{5}=8$. Hvis vi skal skrive dette med sumetegnskriver vi:
+
+$$
+\sum_{i=1}^{5} {x}_{i}= {x}_{1}+{x}_{2}+{x}_{3}+{x}_{4}+{x}_{5} = 4+4+4+8+8=28
+$$
+
+Nå er vi faktisk bare et seg unna å regne ut gjennomsnittet som vi vet om fra videregående. Vi må bare dele på antall observasjoner eller her $5$.
+
+$$
+{28}/{5} = 5.6
+$$
+
+Eller gjennomsnittlig søv av de 5 første personene er 5.6 timer.
+
+\newpage
+
+# Sentrale mål
+
+Sentral tendens refererer til de statistiske målingene som gir oss en idé om hvor de fleste dataverdiene ligger i et datasett. Disse målingene hjelper oss med å identifisere det "sentrale" eller gjennomsnittlige punktet rundt hvilke dataene er gruppert.
+
+Vi utforske tre viktige sentrale tendens målinger:
+
+-   Gjennomsnitt
+
+-   Median
+
+-   Modus
+
+## Gjennomsnitt (mean)
+
+-   **Definisjon**: Gjennomsnitt (eller aritmetisk middel) er et sentralmål som representerer den "typiske" verdien i et datasett.
+
+-   **Matematisk notasjon**:
+
+    -   Gjennomsnittet for populasjonen: $\mu$
+
+    -   Gjennomsnittet til utvalget: $\overline{x}$
+
+-   **Forklaring med ord**: Gjennomsnitt = summen av alle verdiene i datasettet / antall observasjoner
+
+-   **Formel**:
+
+$$
+\overline{x}=\frac{{x}_{1}+{x}_{2}+...+{x}_{n}}{n}=\frac{\sum_{i=1}^{n}{x}_{i}}{n}= \frac{1}{n}\sum_{i=1}^{n}{x}_{i}
+$$
+
+-   $\sum_{i=1}^{n} {x}_{i}$ er summen av alle verdiene i datasettet.
+
+-   $n$ er antall observasjoner (datasettets størrelse).
+
+-   **Eksempel**: Datasett: 4, 8, 6, 5 Gjennomsnitt: $\frac{4+8+6+5}{4} = 5.75$
+
+-   **Bruk**:
+
+    -   Gir et raskt overblikk over datasettets "sentrum", men kan påvirkes av ekstremverdier (outliers).
+
+    -   Burkes hovedsakelig med forholdstall, men kan også brukes for intervallnivå.
+
+La oss finne gjennomsnittlig høyde på alle personene i NHANES datasettet. Hvis vi ikke fjerner NA, får vi ikke ut noe faktiske tall. For å finne gjennomsnittet bruker vi funksjonen *mean()*.
+
+```{r}
+# Kaller opp datasettet NHANES
+gjennomsnits_høyde <- NHANES %>%
+  # Bruker summarise for å redusere alle observasjonene til en
+  # Runder også av slik at det kun blir to deimal tall
+  summarise(gjennomsnits_høyde = 
+              # Runder av nummert slik at det blir kun to desimaltall
+              round(
+                # Reggner ut gjennomsnittet, men fjerner alle NA's
+                mean(Height,na.rm=TRUE)
+                ,2)
+            
+            ) %>%
+  # her har jeg lagt til pull. Denne koden gjør av vi kan trekke ut en verdi vi spørrom
+  # Dette er veldig praktisk hvis vi skal bruke tallet til noe senere. Da kan vi lagre den som en variabel
+  pull(gjennomsnits_høyde)
+
+# skrive ut gjennomsnittshøyden.
+print(gjennomsnits_høyde)
+
+```
+
+\newpage
+
+## Median
+
+-   **Definisjon**: Median er et sentralmål som representerer den midterste verdien i et sortert datasett. Det er verdien som deler datasettet i to like store deler.
+
+-   **Matematisik notasjon**: $\tilde{x}$
+
+-   **Forklaring i ord**: Median = den midterste verdien når dataene er sortert i stigende rekkefølge
+
+    -   Hvis antall observasjoner er oddetall, er medianen den midterste verdien.
+
+    -   Hvis antall observasjoner er partall, er medianen gjennomsnittet av de to midterste verdiene.
+
+-   **Formel**:
+
+$$  
+    \text{Median for oddetall:} \tilde{x}={x}_{(n+1)/2} 
+$$
+
+$$  
+\text{Median for partall:} \tilde{x}=\frac{{x}_{n/2}+{x}_{n/2+1}}{2} 
+$$
+
+-   **Eksempel**:
+
+    -   **Oddetall**: Datasett: 3, 5, 7 Median = 5 (midterste verdi)
+
+    -   **Partall**: Datasett: 2, 4, 6, 8 Median = $\frac{4 + 6}{2} =5$
+
+-   **Bruk**:
+
+    -   Median er spesielt nyttig når datasettet inneholder ekstremverdier (outliers), da det ikke påvirkes i samme grad som gjennomsnittet.
+
+    -   Brukes for forholdstall, intervallnivå og ordinand nivå.
+
+La oss finne median høyde på alle personene i NHANES datasettet. Hvis vi ikke fjerner NA, får vi ikke ut noe faktiske tall. For å finne median verdiene bruker vi funksjonen *median()*.
+
+```{r}
+# Kaller opp datasettet NHANES
+median_høyde <- NHANES %>%
+  # Bruker summarise for å redusere alle observasjonene til en
+  summarise(median_høyde = median(Height,na.rm=TRUE)) %>%
+  # her har jeg lagt til pull. Denne koden gjør av vi kan trekke ut en verdi vi spørrom
+  # Dette er veldig praktisk hvis vi skal bruke tallet til noe senere. Da kan vi lagre den som en variabel
+  pull(median_høyde)
+
+# skrive ut gjennomsnittshøyden.
+print(median_høyde)
+
+```
+
+\newpage
+
+### Gjennomsnitt og median
+
+Vi plotter høyden til personene i datasettet NHANES i et histogram og tegner inn gjennomsnittet i rødt og medianen i blått?
+
+```{r}
+
+# Kaller objektet NHANES
+NHANES %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=Height)) +
+  # legger til bars
+  geom_histogram(bins=20) +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling av vekt i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Høyde") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens") +
+  # Lager en linje for gjennomsnitts høyde
+  geom_vline(
+    aes(xintercept = mean(Height, na.rm = TRUE)),
+    color = "red", linetype = "dashed", size =1  ) +
+  # Lager en linje for median høyde
+  geom_vline(aes(xintercept = median(Height, na.rm = TRUE)), 
+             color = "green", linetype = "dotted", size = 1)
+
+
+
+# Kaller objektet NHANES
+NHANES %>%
+  summarise(mean(Height, na.rm = TRUE), median(Height,na.rm = TRUE))
+```
+
+```{r}
+
+# Kaller objektet NHANES
+NHANES %>%
+  filter(Age >= 18) %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=Height)) +
+  # legger til bars
+  geom_histogram(bins=20) +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling av vekt i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Høyde") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens") +
+  # Lager en linje for gjennomsnitts høyde
+  geom_vline(
+    aes(xintercept = mean(Height, na.rm = TRUE)),
+    color = "red", linetype = "dashed", size =1  ) +
+  # Lager en linje for median høyde
+  geom_vline(aes(xintercept = median(Height, na.rm = TRUE)), 
+             color = "green", linetype = "dotted", size = 1)
+
+
+
+# Kaller objektet NHANES
+NHANES %>%
+  filter(Age >= 18) %>%
+  summarise(mean(Height, na.rm = TRUE), median(Height,na.rm = TRUE))
+```
+
+Hva representerer best høyden til disser personene den røde (gjennomsnittet) eller den blå (medianen)?
+
+\newpage
+
+### Hvorfor se på både gjennomsnitt og median?
+
+-   **Ulike perspektiver på "sentrum"**:
+
+    -   **Gjennomsnittet** gir et mål på det aritmetiske sentrum i datasettet, hvor alle verdier tas med.
+
+    -   **Medianen** viser den midterste verdien i et sortert datasett, som er mindre påvirket av ekstreme verdier.
+
+-   **Robusthet mot ekstremverdier**:
+
+    -   **Gjennomsnitt** kan bli kraftig påvirket av uteliggere eller ekstreme verdier.
+
+    -   **Median** er robust og forblir uendret selv om ekstreme verdier finnes i datasettet.
+
+-   **Eksempel**:
+
+    -   Høyde i eksemplet over
+
+        -   Gjennomsnitt: 161
+
+        -   Median: 165
+
+        -   Medianen gir et bedre bilde av "sentrum" i dette datasettet enn gjennomsnittet, som påvirkes av uteliggeren. Her barn som er 130 cm eller lavere.
+
+-   **Bruk begge for et mer nyansert bilde**:
+
+    -   Gjennomsnittet viser det aritmetiske gjennomsnittet, men medianen kan gi et bedre bilde av den typiske verdien i datasettet når det finnes uteliggere.
+
+    -   Kombinasjonen av begge kan gi bedre innsikt i dataenes struktur og distribusjon.
+
+#### Eksempel
+
+Vi ser på en bar hvor den gjennomsnittlige inntekten blant gjestene er \$35,000. Så kommer det inn en veldig rik person, og hva skjer da?
+
+![](images/Rik_annkomst.png)
+
+Hvis vi beregner gjennomsnittet på nytt, ser vi at den gjennomsnittlige inntekten i baren har økt fra \$35,000 til \$2,028,000. Selv om dette tallet er matematisk korrekt, gir det et misvisende bilde av den økonomiske situasjonen til de fleste i baren. Medianinntekten derimot, forblir uendret. Dette eksempelet viser tydelig at gjennomsnittet kan bli sterkt påvirket av skjevheter og ekstremverdier, mens medianen gir et mer robust mål som ikke påvirkes like mye av slike ekstreme tilfeller. \newpage
+
+## Modus (Typetall)
+
+-   **Definisjon**: Modus er den verdien som forekommer oftest i et datasett. Det er et mål på det vanligste eller mest typiske tallet.
+
+-   **Forklaring i ord**: Modus = verdien som gjentas flest ganger i datasettet
+
+-   **Eksempel**: Datasett: 4, 5, 6, 4, 7, 4
+
+    -   Modus = 4 (forekommer 3 ganger)
+
+    Datasett med flere moduser: 2, 2, 3, 3, 4
+
+    -   Modus = 2 og 3 (begge forekommer 2 ganger)
+
+-   **Bruk**:
+
+    -   Modus er spesielt nyttig for kategoriske data eller når du vil finne den mest hyppige verdien i et datasett.
+
+    -   Det kan også identifisere flere topper (multimodalitet) i distribusjonen.
+
+R har ingen innebygd funksjon for å finne modus direkte. Men vi kan enkelt finne frekvensen til observasjonene i et datasett. Koden nedenfor viser hvordan vi kan identifisere modus for en kategorisk variabel ved å bruke frekvensfordelingen.
+
+Typetall bruker for data som er på nominalskala eller ordinalskala. R har ingen innebygged funksjon for typetall.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # velger kun etnisitet, vi ønsker å fjære NA fra denne variablen. Hvis vi gjennomfører "na.omit()" for hele datasette er det ingen observasjoner igjen. Alle observasjonen har misnt en NA i en variabel.
+  select(Race3) %>%
+  # fjerner alle NA i datasettet ( som nå er kun etnisistet)
+  na.omit() %>%
+  # grupper etter etnisistet så vi kan telle dem opp enkeltvis
+  group_by(Race3) %>%
+  # summerer opp dataen til en frekvens variablen 
+  summarise(frekvens = n()) %>%
+  # arrangsjerer datasette etter høyeste til laveste frekvens. 
+  arrange(desc(frekvens) ) %>%
+  # Velger ut øversete rad, altså høysete frekvens som også kalles modus
+  #head(1) %>%
+  # Gjør dataen litt penere. 
+  gt()
+```
+
+\newpage
+
+# Spredningsmål
+
+Se på dette bilde. Gjennomsnittshøyden til Gruppe A og Gruppe B er 177 cm. Vil du si at disse to gruppene er like? Medianen til begge gruppene er også 177 cm!
+
+```{r}
+# Lager en vektor med høydene til A
+A <- c(173,176,177,178,181)
+# Lager en vektor med høydene til B
+B <- c(150,165,177,189,204)
+# Finner gjennomsnitt til A og B
+mean(A)
+mean(B)
+# Finner median til A og B
+median(A)
+median(B)
+```
+
+Vi ser at det er mer spredning i Gruppe B enn i Gruppe A og dette må vi ha noen måter å måle.
+
+-   **Definisjon**:\
+    Spredningsmål viser hvor mye dataene varierer eller er spredt rundt gjennomsnittet eller andre sentrale verdier i datasettet.
+
+-   **Hvorfor er spredningsmål viktige?**
+
+    -   De gir innsikt i om dataene er samlet tett rundt gjennomsnittet eller spredt ut over et stort område.
+
+    -   Viktig for å forstå variasjonen og konsistensen i datasettet.
+
+\newpage
+
+## Område / Range (Variasjonsbredde)
+
+-   **Definisjon**: Range, eller variasjonsbredde, er forskjellen mellom den største og den minste verdien i et datasett. Det gir et mål på den totale spredningen i dataene.
+
+-   **Formel**:
+
+\$\$
+
+\text{Område(Range)}=\text{Maksimal verdi}-\text{Minimal verdi}
+
+\$\$
+
+-   **Eksempel**: Gruppe A: 173, 176, 177, 178, 181
+
+    -   Største verdi = 181
+
+    -   Minste verdi = 173
+
+    -   Range = 181−173=8
+
+-   **Bruk**:
+
+    -   Range gir et raskt inntrykk av spennet i dataene, altså hvor langt det er mellom den laveste og høyeste verdien.
+
+    -   Det er enkelt å beregne, men er svært følsomt for ekstremverdier (uteliggere).
+
+-   **Fordeler og ulemper**:
+
+    -   **Fordel**: Enkelt å forstå og beregne.
+
+    -   **Ulempe**: Range tar kun hensyn til de to mest ekstreme verdiene i datasettet, og gir derfor ingen informasjon om spredningen av de andre verdiene.
+
+**Eksempel**
+
+Vi finner området til Gruppe A og Gruppe B over.
+
+![](images/Område.png)
+
+```{r}
+# Finner området til A
+max(A)-min(A)
+# Finner området til B
+max(B)-min(B)
+```
+
+Eller:
+
+Funksjonen "range" gir oss høyeste og laveste verdi. Hvis vi tar differense av denne vil vi også finne områet.
+
+```{r}
+# Finner området til A
+diff(
+  range(A)
+)
+# Finner området til B
+diff(
+  range(B)
+)
+```
+
+Her har vi at I gruppe A er det 8 cm mellom høyste og laveste. Dette betyr at det ikke er stor forskjell i denne gruppen. Mens i gruppen B er det 54 cm forskjell, som er ganske mye. Så vi vet at det er ganske mye spredning.
+
+Hvis vi ser på datsettet NHANES så kan kan vi ser på hvor stor forskjelle det er mellom høyeste og laveste, altså range til høyden.
+
+```{r}
+# kaller opp datasette 
+NHANES %>%
+  # Finner området med å ta maks minus min. 
+  summarise(
+    område = diff(
+      range(Height,na.rm = TRUE)
+      ) 
+    )
+```
+
+Her får vi at høydeforskjellen mellom høyest og lavest person er 116.8 cm! Det er ganske mye…
+
+\newpage
+
+## Varians
+
+-   **Definisjon**: Varians måler den gjennomsnittlige kvadrerte avstanden fra gjennomsnittet i datasettet. Den gir oss en idé om hvor spredt dataene er.
+
+-   **Matematisk notasjon**:
+
+    -   Gjennomsnittet for populasjonen: $\sigma^2$
+
+    -   Gjennomsnittet til utvalget: $s^2$
+
+-   **Formel**:
+
+$$
+\sigma^2=\frac{\sum({x}_{i}-\overline{x})^2}{n-1} = \frac{1}{n-1}\sum({x}_{i}-\overline{x})^2
+$$
+
+-   $n$ = antall observasjoner
+
+-   ${x}_{i}$ = hver enkel observasjon
+
+-   $\overline{x}$ = gjennomsnittet av dataene
+
+-   **Bruk**: Varians gir oss et mål på spredningen i dataene, men fordi den er i kvadrerte enheter, kan den være vanskelig å tolke direkte.
+
+**Eksempel**
+
+Hva er variansen til de to gruppene vi så på over? La oss se på gruppe B.
+
+![](images/varians.png)
+
+Vi kan regne ut variansen til gruppe B mauelt, men bruke koden *var()* på begge gruppene. Livet er for kort til å regne ut varinanse manuelt...
+
+```{r}
+# Henter dataen for B
+B
+# trekker fra gjennomsnittet til B
+B-mean(B)
+# kvadrerer resultatene
+(B-mean(B))^2
+# summerer resultatene
+sum((B-mean(B))^2)
+# deler på observasjoner minus 1
+sum((B-mean(B))^2)/(length(B)-1)
+
+```
+
+Vi har funnet ut at det kvadratiske avviklet fra gjennomsnittet er 436.5. Vi kan nå bruke R sin innbygget funksjon for å finne variansen.
+
+```{r}
+# Bruker R kode var()
+var(A)
+var(B)
+```
+
+Vi kommer samme verdi med å bruke *var()* som å bruke formelen. Igjen ser vi at verdien for B er høyere enn for A. Dette er fordi variasjonen i gruppe A er høyere enn i gruppe B.
+
+Hvis vi ønsker å finne variansen til høyden av personene i NHANES datasette bruker vi følgende kode.
+
+```{r}
+# kaller opp datasette  
+NHANES %>%   
+  # Finner området med å ta maks minus min.    
+  summarise(Varians = var(Height, na.rm = TRUE ))
+```
+
+Varians er litt vanskelig å tolke for seg selv. Fordi dataen er på kvadratisk nivå. Den gjennomsnittlige avstandend fra gjennomsnittet er 407 kvadrat cm... Derfor er det vanligere å raportere standardavvik.
+
+\newpage
+
+## Standardavvik
+
+-   **Definisjon**: Standardavvik er kvadratroten av variansen og gir et mer tolkbart mål på spredningen i dataene, målt i samme enhet som de opprinnelige dataene.
+
+-   **Matematisk notasjon**:
+
+    -   Gjennomsnittet for populasjonen: $\sigma$
+
+    -   Gjennomsnittet til utvalget: $s$
+
+-   **Formel**:
+
+$$ \text{Standardavvik} = \sqrt{\text{Varians}} $$ $$ 
+\sigma=\sqrt{\frac{\sum({x}_{i}-\overline{x})^2}{n-1}}=\sqrt{\frac{1}{n-1}\sum({x}_{i}-\overline{x})^2} 
+$$
+
+-   **Eksempel**: Fra eksempelet over kan vi ta kvadratroten av variansen for å finne standardavviket.
+
+```{r}
+sqrt(407)
+```
+
+-   **Bruk**: Standardavvik er et mye brukt mål for spredning fordi det er lettere å tolke enn variansen. Det gir en direkte indikasjon på hvor mye dataene typisk avviker fra gjennomsnittet.
+
+Vi kaller ofte standardavviket for det gjennomsnittlige avviket fra gjennomsnittet. Dette er ikke helt korrekt siden vi deler på n-1 isteden for n.
+
+```{r}
+# Bruker R kode sd()
+sd(A)
+sd(B)
+```
+
+Her ser vi at på gjennomsnitt så er observasjonene i gruppe A 2.9 cm unna gjennomsnittet mens i gruppe B er de 20.893.
+
+```{r}
+# kaller opp datasette  
+NHANES %>%   
+  # Finner området med å ta maks minus min.    
+  summarise(Standardavvik = sd(Height, na.rm = TRUE ))
+```
+
+\newpage
+
+## Kvartiler
+
+-   **Definisjon**:\
+    Kvantiler er verdier som deler datasettet inn i like store deler. Kvartiler deler for eksempel datasettet inn i fire deler.
+
+    -   Grei måte å tenke på det. Først finner vi medianen, atlså midten. Så tar deler vi datasettet i to deler og finner medianen til øverst og nederst del.
+
+-   **Forklaring**:
+
+    -   **25%-kvantilen (Q1)**: Deler av de nederste 25 % av dataene.
+
+    -   **50%-kvantilen (Median/Q2)**: Deler datasettet i to like store deler.
+
+    -   **75%-kvantilen (Q3)**: Deler av de øverste 25 % av dataene.
+
+-   **Eksempel**:\
+    I et datasett med verdiene 1 til 25, vil kvartilene gi oss et bilde av hvordan dataene fordeler seg rundt sentrale punkter. Medianen vil dele datasettet i to like store deler, mens første og tredje kvartil vil vise de nedre og øvre 25 % av dataene.
+
+-   **Bruk**:\
+    Kvantiler gir oss et nyttig verktøy for å forstå dataenes fordeling og identifisere skjevhet, spesielt i asymmetriske eller ikke-normale fordelinger.
+
+### Eksempel
+
+Koden \*quantaile()\* gir oss alle de tre kvantiele, inkludert min og max. Denne koden passer ikke veldig godt med tidyvers av seg selv. Men vi kan modefisere den litt.
+
+```{r}
+# Finner kvantiele til høyden for datasettet HNANES
+quantile(NHANES$Height, na.rm = TRUE)
+
+```
+
+\newpage
+
+### Interkvartilområde
+
+**Interkvartilområde (IQR)** er et mål på spredningen i et datasett, og det representerer avstanden mellom første kvartil (Q1) og tredje kvartil (Q3). Det vil si at IQR dekker de midterste 50 % av dataene, og det er et nyttig verktøy for å forstå hvordan dataene er fordelt rundt medianen, spesielt når det er snakk om skjevheter eller uteliggere.
+
+**Beregning**:
+
+-   **Interkvartilområde (IQR)**:
+
+$$ \text{IQR}=Q3-Q1 $$
+
+-   **Q1 (25%-kvartilen)**: Verdien som 25 % av dataene er mindre enn eller lik.
+
+-   **Q3 (75%-kvartilen)**: Verdien som 75 % av dataene er mindre enn eller lik.
+
+**Bruk**:
+
+-   IQR gir et mer robust bilde av spredningen i dataene enn range, siden det ignorerer ekstremverdier (uteliggere).
+
+-   Det brukes ofte for å identifisere uteliggere, der data som ligger mer enn 1,5 ganger IQR over Q3 eller under Q1 regnes som uteliggere.
+
+IQR er spesielt nyttig når man arbeider med skjevfordelte datasett, siden det gir innsikt i spredningen rundt medianen.
+
+#### Eksempel IQR
+
+La oss gå tilbake til vår enkle eksempel. Det er enklest å ta en gruppe av gangen.
+
+```{r}
+# Kvantilene i gruppe A
+quantile(A)
+
+# Finner interkvartile området
+IQR(A)
+
+```
+
+![](images/Kvartiler.png)
+
+\newpage
+
+## Summering av dataen
+
+Vi kan summer opp all dataen som vi har sett på. Coden "summary()" gir mye av denne informasjonen. Men ikke alt.
+
+```{r}
+# Finner kvantiele til høyden for datasettet HNANES
+summary(NHANES$Height, na.rm = TRUE)
+
+```
+
+Men vi kan gjøre bedre.
+
+```{r}
+NHANES %>%
+  summarize(
+    n = n(),
+    min = quantile(Height, na.rm = TRUE)[1], 
+    Q1 = quantile(Height, na.rm = TRUE)[2],
+    Q2_median = quantile(Height, na.rm = TRUE)[3],
+    Q3 = quantile(Height, na.rm = TRUE)[4],
+    max = quantile(Height, na.rm = TRUE)[5],
+    mean = mean(Height, na.rm = TRUE),
+    IQR = quantile(Height, na.rm = TRUE)[4] - 
+      quantile(Height, na.rm = TRUE)[2],
+    sd = sd(Height, na.rm = TRUE)
+            ) %>%
+  round(digits = 2)
+
+```
+
+Hva skjer hvis vi fjerner alle under 18 år gammel?
+
+```{r}
+NHANES %>%
+  filter(Age >= 18) %>%
+  summarize(
+    n = n(),
+    min = quantile(Height, na.rm = TRUE)[1], 
+    Q1 = quantile(Height, na.rm = TRUE)[2],
+    Q2_median = quantile(Height, na.rm = TRUE)[3],
+    Q3 = quantile(Height, na.rm = TRUE)[4],
+    max = quantile(Height, na.rm = TRUE)[5],
+    mean = mean(Height, na.rm = TRUE),
+    IQR = quantile(Height, na.rm = TRUE)[4] - 
+      quantile(Height, na.rm = TRUE)[2],
+    sd = sd(Height, na.rm = TRUE)
+            ) %>%
+  round(digits = 2)
+
+```
+
+\newpage
+
+# Korrelasjon Pearson r
+
+Vi skal nå måle samvariasjonen mellom to to variabler. En viktig del av dette emnet er nettopp å måle hvordan en variabel påvirker en annen. Vi skriver pearson r verdien som $r$.
+
+-   Nøkkeltall som angir dataens tilpasning til en lineær sammenheng
+-   Målet $r$ ligger mellom -1 og 1
+    -   Der $r=1$ alle punktene er på en rett linje med positivt stigningstall
+    -   Der $r=-1$ alle punktene er på en rett linje med negativ stigningstall
+    -   Der $r>1$ punktene danner et mønster med positiv stigningstall
+    -   Der $r<1$ punktene danner et mønster med negativ stigningstall
+    -   Der $r=0$ Ingen gard av lineær sammenheng
+
+![](images/Picture1.png)
+
+Formelen skrives
+
+$$
+r =\frac{\sum{(x_i-\overline{x})(y_i-\overline{y})}}{\sqrt{ \sum{(x_i-\overline{x})^2}} \cdot \sqrt{ \sum{(y_i-\overline{y})^2}}}
+$$
+
+I R bruker vi kommandoen *cor()* for å finne korrelasjons koeffesienten.
+
+```{r}
+
+cor(NHANES$Height,NHANES$Weight, use = "pairwise.complete.obs")
+```
+
+Verdien er postie og relativ stor, så det er god grunn til å tro at det finnes en sammenheng mellom høyde og vekt.
+
+```{r}
+# heter datasettet NHANES
+NHANES %>%
+  # Plotter dataen av høyde og vekt
+  ggplot(aes(x=Height, y=Weight))+
+  # Legger inn punkter
+  geom_point() +
+  # Legger til en linje som 
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+\newpage
+
+# Visualisering data med tabeller og figurer
+
+Vi har sett på typer data, sentral mål og sprednings mål. Når vi ønsker å visualisere data må forstå hva det er vi måler for å kunne presentere dataene på best måte.
+
+**Visualisering av data med en variabel** Tabellen viser hvordan vi presanterer forskjellige datatyper.
+
+| Variabler     | Figur og tabeller                        | Sentral mål                   |
+|------------------|-------------------------------|-----------------------|
+| Nomialnivå    | Stolpediagram, pie chart, frekvenstabell | Modus                         |
+| Ordinalnivå   | Stolpediagram, frekvenstabell            | Modus, median                 |
+| Intervallnivå | Stolpediagram, histogram, frekvenstabell | Modus, medain, (gjennomsnitt) |
+| Forholdstall  | Frekvens diagram, boxplot, histogram     | Median, gjennomsnitt          |
+
+**Visualisering av data med to variabel** Tabellen viser hvordan vi presanterer forskjellige datatyper. Her er nominalnivå, ordinalnivå og internallnivå alt lagt til kategorisk og forholdstalle er lagt til nummerisk.
+
+| Variabler                | Figur                                              |
+|-------------------------|----------------------------------------------|
+| Kategorisk og kategorisk | Stolpediagram med forskjellige farger, krysstabell |
+| Kategorisk og nummerisk  | Boxplot                                            |
+| Nummerisk og nummerisk   | Scatter plot                                       |
+
+\newpage
+
+## Tabeller
+
+De viktigste tabellen.
+
+1.  **Frekvenstabeller**: Gir de en oversikt over hvor ofte bestemte verdier opptrer i et datasett.
+
+2.  **Krysstabeller (eller kontingentstabeller)**: Disse tabellene viser frekvensen av kombinasjoner mellom to kategoriske variabler. De gir innsikt i hvordan to variabler kan være relatert til hverandre.
+
+3.  **Deskriptiv statistikk-tabell**: Dette er en oppsummeringstabell som gir viktige beregninger som gjennomsnitt, median, standardavvik, og andre relevante statistikker for en dataserie.
+
+4.  **Korrelasjonstabeller**: De viser hvordan to eller flere variabler beveger seg i forhold til hverandre, noe som gir innsikt i mulige relasjoner mellom dem. Denne kategorien kommer vi tilbake til senere i boken.
+
+\newpage
+
+### Frekvenstabell
+
+Typiske kolonner i en frekvenstabell inkluderer:
+
+1.  **Verdi (eller intervall)**: Dette representerer den spesifikke verdien (eller et intervall av verdier) som er observert i datasettet.
+
+2.  **Frekvens**: Dette viser antall ganger den spesifikke verdien (eller intervallet) opptrer i datasettet.
+
+3.  **Kumulativ frekvens**: Dette er en løpende total som legger til frekvensen av hver verdi (eller intervallet) med alle tidligere verdier (eller intervaller).
+
+4.  **Relativ frekvens**: Dette gir en prosentandel eller en brøkdel som representerer hvor ofte verdien (eller intervallet) opptrer i forhold til det totale antall observasjoner.
+
+5.  **Kumulativ relativ frekvens**: Dette kombinerer de to foregående kolonnene ved å vise den kumulative frekvensen som en brøkdel eller prosentandel av det totale antall observasjoner.
+
+#### Verdi
+
+Første collonen i en frekvenstabell oppgir de spesifikke verdiene vi teller. Dette kan være rene kategorier (Nominal nivå) eller at det kan organiseres i en rekkefølge (Ordinal nivå eller intervall nivå).
+
+#### Frekvens
+
+Denne andre collonene viser frekvensen, eller antall ganger en kategori, verdi eller intervall framkommer i et datasett.
+
+or å symbolisere frekvensen bruker vi notasjonen ${f}_{i}$, hvor $i$ angir hvilken verdi eller kategori vi refererer til.
+
+$$\text{Frekvens:} {f}_{i} $$
+
+Vi starter med en nominal variabel som ikke kan rangsjeres på en naturlig måte.
+
+```{r}
+# Kaller opp datasettet NHANES
+NHANES %>% 
+  # Grupperer på den variablen vi er interesert i
+  select(Race1) %>% 
+  # Fjerne alle observasjoner som har NA eller ikke observasjoner
+  na.omit() %>%
+  # grupper etter antall timer
+  group_by(Race1) %>%
+  # Teller opp antallet i hver gruppe
+  summarise(frekvens = n()) %>%
+  gt()
+
+```
+
+Så hvis vi skal skrive dette korrekt statistiks, så det 610 som ansess som Hispanic.
+
+$$\text{Frekvens:} {f}_{Hispanic}=610 $$
+
+La oss se på frekvensen i antall timer søvn i datasettet NHANES, dette er et forholdstall, men det er kun i hele timer.
+
+```{r}
+# Kaller opp datasettet NHANES
+NHANES %>% 
+  # Grupperer på den variablen vi er interesert i
+  select(SleepHrsNight) %>% 
+  # Fjerne alle observasjoner som har NA eller ikke observasjoner
+  na.omit() %>%
+  # grupper etter antall timer
+  group_by(SleepHrsNight) %>%
+  # Teller opp antallet i hver gruppe
+  summarise(frekvens = n()) %>%
+  gt()
+
+```
+
+Hvis vi skal skrive korrekt med notasjon hvor mange som sover 3 timer, det er her 59 personer.
+
+$$\text{Frekvens:} {f}_{3}=59 $$
+
+#### Relativ Frekvens
+
+Relativ frekvens gir en prosentuell representasjon av frekvensen til en bestemt verdi i forhold til det totale antallet observasjoner i et datasett.
+
+$$\text{Relativ frekvens:} \frac{{f}_{i}}{n} $$
+
+Så neste kollone deler vi på antall observasjoner.
+
+```{r}
+# Kaller opp datasettet NHANES
+NHANES %>% 
+  # Grupperer på den variablen vi er interesert i
+  select(SleepHrsNight) %>% 
+  # Fjerne alle observasjoner som har NA eller ikke observasjoner
+  na.omit() %>%
+  # grupper etter antall timer
+  group_by(SleepHrsNight) %>%
+  # Teller opp antallet i hver gruppe
+  summarise(frekvens = n()) %>%
+  # lager en ny variabel som heter relative frekvens
+  # round her runder av tallet til to desimaler
+  mutate(relative_frekvens = 
+           round( frekvens / sum( frekvens), 3 )  
+         ) %>%
+  # Denne funksjonen gjør tabellen litt penere (vi trenger ikke bruke denne koden)
+  gt()
+```
+
+#### Kumulativ Frekvens
+
+Kumulativ frekvens viser det samlede antallet observasjoner opp til og inkludert en bestemt verdi eller kategori.
+
+Kumulativ frekvens noteres som ${F}_{i}$, hvor $i$refererer til den spesifikke verdien eller kategorien vi betrakter. Det er verdt å merke seg at mens frekvens noteres med en liten bokstav $f$, bruker kumulativ frekvens en stor bokstav $F$.
+
+$$
+\text{Kumulativ frekvens:}{F}_{i}
+$$
+
+```{r}
+# Kaller opp datasettet NHANES
+NHANES %>% 
+  # Velger den variabelen vi er interessert i
+  select(SleepHrsNight) %>% 
+  # Fjerner observasjoner som mangler data
+  na.omit() %>%
+  # Grupperer data basert på antall timer søvn
+  group_by(SleepHrsNight) %>%
+  # Teller opp antallet i hver gruppe
+  summarise(frekvens = n()) %>%
+  # Legger til en kolonne for relativ frekvens, rundet av til to desimaler
+  mutate(relative_frekvens = round(frekvens / sum(frekvens), 3)) %>%
+  # Beregner den kumulative frekvensen ved hjelp av cumsum-funksjonen
+  mutate(kumulative_frekvens = cumsum(frekvens)) %>%
+  # Presenterer tabellen på en oversiktlig måte
+  gt()
+
+
+```
+
+#### Kumulativ Relativ Frekvens
+
+Kumulativ relativ frekvens representerer summen av relative frekvenser opp til en bestemt verdi. Denne målingen gir innsikt i den samlede andelen av et datasett som er representert av verdier mindre enn eller lik en angitt verdi. Den kumulative relative frekvensen skrives som $\frac{{F}_{n}}{n}$.
+
+$$
+\text{Kumulativ relativ frekvens:}\frac{{F}_{i}}{n}
+$$
+
+```{r}
+# Kaller opp datasettet NHANES
+NHANES %>% 
+  # Grupperer på den variablen vi er interesert i
+  select(SleepHrsNight) %>% 
+  # Fjerne alle observasjoner som har NA eller ikke observasjoner
+  na.omit() %>%
+  # grupper etter antall timer
+  group_by(SleepHrsNight) %>%
+  # Teller opp antallet i hver gruppe
+  summarise(frekvens = n()) %>%
+  # lager en ny variabel som heter relative frekvens
+  # round her runder av tallet til to desimaler
+  mutate(relative_frekvens = round( frekvens / sum( frekvens), 2 )  ) %>%
+  # Her bruker vi coden cumsum for å regne ut den kumulative frekvensen
+  mutate(kumulative_frekvens = cumsum(frekvens) ) %>%
+  # En siste variable som regner ut kumulative relative frekevns
+  mutate(kumulativ_relative_frekvens = round( kumulative_frekvens / sum( frekvens), 2 ) ) %>%
+  # Denne funksjonen gjør tabellen litt penere (vi trenger ikke bruke denne koden)
+  gt()
+
+```
+
+\newpage
+
+### Krysstabell
+
+En krysstabell, også kjent som kontingenstabell eller krysstabulering, er en tabell brukt for å vise forholdet mellom to (eller flere) kategoriske variabler. Med kun en variabel så blir det som en frekvenstabell.
+
+```{r}
+# Lager et nytt datasett som inneholder kun den dataen jeg ønsker
+NHANES_temp <- NHANES %>%
+  # Kun de som er 20 år og eldre
+  filter(Age >= 20) %>%
+  # selekterer de variablene jeg ønsker å se på
+  # Dette er strengktatt ikke nødvendig, men gjør objektene litt mindre
+  select(HealthGen, Race3)
+  
+min_tabell <- table(NHANES_temp$HealthGen , NHANES_temp$Race3)
+
+min_tabell
+
+```
+
+##### Marginale frekvenser
+
+I eksemplet over representerer "Total"-raden og -kolonnen marginale frekvenser. Dette gir oss totalsummene for hver rad og kolonne, noe som kan være nyttig for å raskt vurdere hvilke kategorier som er det er flest i. Koden **addmargins()** gjør dett for oss.
+
+```{r}
+addmargins(min_tabell)
+
+```
+
+```{r}
+round(addmargins(
+  prop.table(min_tabell)
+), 3)
+```
+
+\newpage
+
+# Figurer
+
+I verdenen av statistikk og dataanalyse er visualisering en nøkkelkomponent for å formidle informasjon på en forståelig og engasjerende måte. Mens tabeller og beskrivende statistikker kan gi nøkkelverdier og innsikt, gir figurer en mer umiddelbar forståelse av datastrukturen, mønstrene og relasjonene mellom variabler. De kan fange oppmerksomheten, gi klarhet og tilby dypere innsikt på en måte som ord og tall ofte ikke kan.
+
+**Rask oppsummering av figurer og deres anvendelser:**
+
+1.  **Stolpediagram (bar chart):** Viser frekvens eller prosentandeler av kategoriske data. Kan være loddrett (søyle) eller vannrett (stolpe).
+
+2.  **Histogram:** Presenterer frekvensfordelingen av et kontinuerlig datasett. Nyttig for å vise dataenes sentrale tendens, spredning og form.
+
+3.  **Punktdiagram (scatterplot):** Viser relasjonen mellom to kontinuerlige variabler. Nyttig for å se korrelasjoner, trender eller outliers.
+
+4.  **Boksplott (boxplot):** Gir en grafisk fremstilling av dataenes fordeling gjennom fem hovedkomponenter: minimum, første kvartil, median, tredje kvartil og maksimum.
+
+5.  **Linjediagram:** Viser hvordan en variabel endrer seg over tid eller gjennom sekvensielle stadier. Ideell for tidsseriedata.
+
+Valget av figuren avhenger stort sett av datatypen og det spesifikke formålet med visualiseringen. Mens noen figurer er bedre egnet for visse typer data, kan valg av feil type figur føre til misforståelser eller manglende informasjon. Det er derfor avgjørende å velge riktig figur for riktig datatilfelle.
+
+\newpage
+
+## Stolpediagram (bar chart)
+
+Et stolpediagram (også kjent som søylediagram eller bar chart) er en type diagram som bruker rektangulære stolper (eller søyler) med lengder som er proporsjonale med verdiene de representerer. Sø
+
+Den høyeste aksen blir typetallet til dataen. Altså den gruppen som framkommer flest ganger. Vi bruker som oftes stolpediagram når vi presanterer data som er på nominell nivå.
+
+I datasettet NHANES er sivilstatus på nominalnivå, dette kan vi presanterer via et stolpediagram. For å lage et stoplediagram, bruker vi først koden **ggplot()** for å lage et plot vi bruker så **aes()** for å definere hvilken variabler gjør hva. Nå skal vi kun teller antall på *x* aksen så vi setter x like sivilstatus. Så legger vi til hvilken type plot vi ønsker med **geom_bar()** som indikerer at vi ønsker et stoplediagram.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # velger kun sivil status, vi ønsker å fjære NA fra denne variablen. Hvis vi gjennomfører "na.omit()" for hele datasette er det ingen observasjoner igjen. Alle observasjonen har misnt en NA i en variabel.
+  select(MaritalStatus) %>%
+  # fjerner alle NA i datasettet ( som nå er kun sivilstatus)
+  na.omit() %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=MaritalStatus)) +
+  # legger til bars
+  geom_bar() +
+  # Lager en tittle til plottet
+  ggtitle("Antall persjoner i forsjellige sivilstatus grupper i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Sivil status") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens")
+
+```
+
+Her ser vi at det er mye flere som er *gift* enn resten. Her ser vi at stolpene er organisert alfabetisk.
+
+I et stolpediagram kan også brukes hvis vi ser på to nominal variabler. Her kan vi legge til farge på stolpene for å skille mellom den neste nominale variabelen.
+
+Av nominale i NHANES har vi flere nominale variable som, kjønn, etnisitet, sivilstatus og helse krakrter (med flere). Tror vi det kan være et sammenheng mellom sivil status og helse? La oss plotte disse sammen å se om det kan vær en sammenheng.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # velger kun sivil status, vi ønsker å fjære NA fra denne variablen. Hvis vi gjennomfører "na.omit()" for hele datasette er det ingen observasjoner igjen. Alle observasjonen har misnt en NA i en variabel.
+  select(MaritalStatus,HealthGen) %>%
+  # fjerner alle NA i datasettet ( som nå er kun sivilstatus)
+  na.omit() %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=MaritalStatus, fill=HealthGen)) +
+  # legger til bars
+  geom_bar() +
+  # Lager en tittle til plottet
+  ggtitle("Antall persjoner i forsjellige sivilstatus grupper i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Sivil status") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens")
+
+```
+
+Her ser vi at alle stolpene står opp hverandre. Dette kan være en god måte å presanterer dataen på. Men Det kan være litt vanskelig å sammenlikne. Vi kan gjøre litt forskjellig for å løse dette. La oss sette stolpene vedsiden av hverandre. Dette gjør vi med å legge inn **position = "fill"** inn i funksjonen **geom_bar()**. Dette gjør det letter å se
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # velger kun sivil status, vi ønsker å fjære NA fra denne variablen. Hvis vi gjennomfører "na.omit()" for hele datasette er det ingen observasjoner igjen. Alle observasjonen har misnt en NA i en variabel.
+  select(MaritalStatus,HealthGen) %>%
+  # fjerner alle NA i datasettet ( som nå er kun sivilstatus)
+  na.omit() %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=MaritalStatus, fill=HealthGen)) +
+  # legger til bars
+  geom_bar(position = "dodge") +
+  # Lager en tittle til plottet
+  ggtitle("Antall persjoner i forsjellige sivilstatus grupper i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Sivil status") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens")
+```
+
+Her får vi en god visualiseirng av forskjellen mellom sivilstatus og i hvor god helse de er. Men det kan fremeles være vanskelig å sammenlikne. I steden for å sette søylene ved siden av hverandre for å vise frekvensen, kan en søyle vise den relative frekvense i hver gruppe. Eller alle søylene summers opp til 1 og viser proposjonen i hver gruppe. Dette kan vi gjøre ved å bruke **position = "fill"** i koden **geom_bar()**
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # velger kun sivil status, vi ønsker å fjære NA fra denne variablen. Hvis vi gjennomfører "na.omit()" for hele datasette er det ingen observasjoner igjen. Alle observasjonen har misnt en NA i en variabel.
+  select(MaritalStatus,HealthGen) %>%
+  # fjerner alle NA i datasettet ( som nå er kun sivilstatus)
+  na.omit() %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=MaritalStatus, fill=HealthGen)) +
+  # legger til bars
+  geom_bar(position = "fill") +
+  # Lager en tittle til plottet
+  ggtitle("Antall persjoner i forsjellige sivilstatus grupper i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Sivil status") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens")
+```
+
+Når vi presanterer dataen slik kan vi se at gruppen *Separated* og *Widowed* er størst andel av personer som er i gruppen *Fair* og *Poor*. Dette kan være fordi de som tilhører denne gruppen er eldre enn resten. De som virker til å være i best helse av alle er gruppen *Married* alle barene viker til å starter lavere enn resten.
+
+\newpage
+
+## Histogram
+
+Et histogram viser frekvensfordelingen for kvantitative data over et kontinuerlig intervall. I motsetning til et søylediagram, som representerer kategoriske data, gir histogrammer innsikt i distribusjonen av kontinuerlige data.
+
+Histogrammet består av rektangler der bredden indikerer dataintervall og høyden representerer frekvensen. Dataene deles inn i klasser, og hver søyle representerer antall observasjoner i den klassen.
+
+Med et histogram får vi en god innsikt i distribusjonen av dataen.
+
+I datasettet NHANES er vekt på forholdstallnivå, dette kan vi presanterer via et histogram. For å lage et histogram, bruker vi først koden **ggplot()** for å lage et plot vi bruker så **aes()** for å definere hvilken variabler gjør hva. Nå skal vi kun teller antall på *x* aksen så vi setter x like vekt. Så legger vi til hvilken type plot vi ønsker med **geom_histogram()** som indikerer at vi ønsker et histogram. Antall søyler i et histogram angis av komandoen **bins=n**, hvor **n** er antall søyler. Denne kommandoen settes inn i kommandoen **geom_histogram**. Under har jeg spesifisert 20 søyler. Hver søyle er like bred, så bredden på en søyle er området av dataen delt på antall søyler.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # Vi fjerner alle som er under 20  år
+  filter(Age>=20) %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x=Weight)) +
+  # legger til bars
+  geom_histogram(bins=20) +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling av vekt i NHANES datasettet") +
+  # Legger til navn på x-aksen
+  xlab("Vekt") +
+  # Legger til navn på y-aksen
+  ylab("Frekvens")
+
+
+```
+
+Histogrammer er bra til å finne outliers, her ser vi at det er noen får som veier over 200 kg. Vi ser at det er få observasjoner som ligger langt unna resten.
+
+\newpage
+
+
+
+## Punktdiagram (Scatterplot)
+
+Et punktdiagram, også kjent som scatterplot, er en type datavisualisering som bruker koordinataksene for å vise verdier av to kvantitative variabler (altsa forholdstall)for et datasett. Hvert punkt på diagrammet representerer en observasjon. Den horisontale aksen (x-aksen) representerer en variabel, og den vertikale aksen (y-aksen) representerer den andre variabelen.
+
+Vi kan ogsa legge til flere kategoriske variabler til plottet, ved a legge til forskjellige farger, storelser eller type punker.
+
+**Formål med Punktdiagram** Hovedformålet med et punktdiagram er å visualisere forholdet mellom to kvantitative variabler. Dette forholdet kan være:
+
+1.  **Positivt Lineært**: Når en variabel øker, gjør den andre variabelen det også.
+2.  **Negativt Lineært**: Når en variabel øker, minker den andre variabelen.
+3.  **Ikke-lineært**: Det er et systematisk, men ikke lineært forhold mellom variablene.
+4.  **Ingen Sammenheng**: Ingen tydelig trend eller mønster er synlig mellom variablene.
+
+**Bruk av Punktdiagram** Punktdiagram er spesielt nyttige for:
+
+-   **Utforskning av forholdet mellom to kvantitative variabler**: Hvis du vil se om det er en sammenheng mellom variablene, er punktdiagrammet et ideelt verktøy.
+-   **Modellresidualer**: Å sjekke forutsetningene for en statistisk modell ved å plotte residualene (forskjellen mellom observert og forventet verdi) kan gi innsikt i modellens egnethet.
+-   **Gruppering**: Ved å fargelegge punkter basert på en tredje kategorisk variabel kan man se mønstre innen kategorier.
+
+**Eksempel på Punktdiagram** Tenk deg at du har data om elevers testresultater i matte og naturfag. Et punktdiagram kan vise om det er en sammenheng mellom prestasjonene i de to fagene. Hvis punktene på diagrammet danner en stigende linje fra venstre nederste hjørne til høyre øvre hjørne, antyder det at det er en positiv korrelasjon mellom prestasjonene i de to fagene. Dette betyr at studenter som presterer godt i matte, også har en tendens til å prestere godt i naturfag, og omvendt.
+
+**Konklusjon** Punktdiagram er kraftige verktøy for å visualisere og utforske forholdet mellom to kvantitative variabler. De er enkle å lage og tolke, og er et essensielt verktøy i statistisk analyse for å forstå datatrender, identifisere outliers, og potensielt oppdage nye innsikter fra dataene.
+
+La oss se om det er noen sammenheng mellom hoyde og vekt i datasettet NHANES
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x = Weight, y=Height)) +
+  # legger til bars
+  geom_point() +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling mellom hoyde og vekt") +
+  # Legger til navn på x-aksen
+  xlab("Vekt") +
+  # Legger til navn på y-aksen
+  ylab("Hoyde")
+
+```
+
+Et problem med dette datasettet er at de er litt mange observasjoner. Og vi ser at vekten gar helt ned til rundt 15 kg. La oss begrense dataen til de som er over 20 ar.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+    # Kun de som er 20 år og eldre
+  filter(Age >= 20) %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x = Weight, y=Height)) +
+  # legger til bars
+  geom_point() +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling mellom hoyde og vekt") +
+  # Legger til navn på x-aksen
+  xlab("Vekt") +
+  # Legger til navn på y-aksen
+  ylab("Hoyde")
+
+```
+
+Vi ser mye variasjon i datasettetl. Men det ser ut til at det er en trend i at hoyere personer veier mer. Kan vi na legge til flere ting? Vi kan se om det er noe sammenheng mellom hoyde, vekt og helse karakteren de har fatt. Da legger vi til helse karakter i farge.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+    # Kun de som er 20 år og eldre
+  filter(Age >= 20) %>%
+  # henter ut 1 000 tilfeldig personer
+  sample_n(1000) %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x = Weight, y=Height, color=HealthGen)) +
+  # legger til bars
+  geom_point() +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling mellom hoyde og vekt") +
+  # Legger til navn på x-aksen
+  xlab("Vekt") +
+  # Legger til navn på y-aksen
+  ylab("Hoyde")
+
+```
+
+Det er vanskelig a si fra dette plottet om det er noe sammenheng.
+
+\newpage
+
+## Boxplot
+
+Boxplot bruker vi når si sammenliknter en kategorisk variabel og en nummerisk variabel.
+
+```{r}
+# Kaller objektet NHANES
+NHANES %>%
+    # Kun de som er 20 år og eldre
+  filter(Age >= 20) %>%
+  # Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker
+  ggplot(aes(x = HealthGen, y=BMI)) +
+  # legger til bars
+  geom_boxplot() +
+  # Lager en tittle til plottet
+  ggtitle("Fordeling mellom BMI og Helse") +
+  # Legger til navn på x-aksen
+  xlab("Helse karakter") +
+  # Legger til navn på y-aksen
+  ylab("BMI")
+```
+
+Det kan ser ut som det er en trend i dataen at de med lavere BMI har fatt bedre helse karakter, men vi ser at de ter mye overlapp mellom gruppene. Dette kan vere fordi god helse bestar av mange ting enn BMI.
 
 \newpage
 
