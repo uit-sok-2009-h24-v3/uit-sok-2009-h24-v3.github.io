@@ -1,0 +1,666 @@
+---
+title: "Forelesning 4: Sampling og punktestimater"
+subtitle: "Sok-2009 h24"
+author: "Eirik Eriksen Heen & ChatGPT"
+date: "`r format(Sys.Date(), '%d. %b %Y')`"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+  freeze: auto
+  code-overflow: wrap # Pakker kode som er for lang for linjen
+---
+
+```{r start, include = FALSE}
+##### Start up #####
+rm(list = ls()) # Empties all data
+
+options(scipen=10) # writes 10 scipens before scientific script
+options(digits=10) # writes up to 10 digits
+
+
+# loading packages
+library(tidyverse)
+library(NHANES)
+library(gt)
+library(moderndive)
+
+# Kode for a kunne bruke norske bokstaver
+Sys.setlocale(locale="no_NO")
+
+NHANES <- NHANES
+```
+
+# Sampling og Punktestimater
+
+### Introduksjon
+
+I dette kapittelet skal vi utforske et av de mest fundamentale konseptene innen statistikk: **sampling** (eller utvalg, på norsk). Sampling er en teknikk som lar oss trekke konklusjoner om en hel populasjon ved å analysere en mindre delmengde av dataene. Men hvorfor er dette viktig? La oss begynne med et praktisk eksempel.
+
+### Motivasjon: Estimering av Frankrikes Befolkning
+
+Forestill deg at vi vil finne ut hvor mange mennesker som bor i Frankrike. Den tradisjonelle metoden ville være å gjennomføre en folketelling, hvor man kontakter hver eneste husholdning for å få nøyaktige tall. Dette er imidlertid en svært kostbar og tidkrevende prosess, spesielt i et land med millioner av innbyggere. Derfor gjennomfører de fleste land folketellinger bare hvert femte eller tiende år.
+
+### En Historisk Løsning: Sampling
+
+I 1786 oppdaget den franske matematikeren Pierre-Simon Laplace at det var mulig å estimere befolkningen på en langt mer effektiv måte. I stedet for å spørre alle husholdninger, valgte han å spørre et lite utvalg husholdninger og brukte statistikk til å anslå antall personer i hele befolkningen. Denne metoden, som innebærer å arbeide med en delmengde av hele populasjonen, kalles sampling.
+
+### Populasjon vs. Utvalg
+
+For å forstå sampling fullt ut, er det viktig å skille mellom to begreper: populasjon og utvalg. **Populasjonen** er den komplette mengden av data du er interessert i. I eksemplet vårt er dette den totale befolkningen i Frankrike, men i statistikk kan populasjon referere til alle mulige typer data, ikke bare mennesker. Utfordringen er ofte at vi ikke har tilgang til data for hele populasjonen, og vi må derfor arbeide med et **utvalg**, som er en mindre delmengde av dataene.
+
+### Hvorfor Bruker vi Sampling?
+
+Sampling er ikke bare en praktisk tilnærming – det er en nødvendighet i mange situasjoner. Her er noen grunner til at sampling er så viktig:
+
+1.  **Ressursbesparende**: Det er ofte tids- og kostnadskrevende å samle inn data fra en hel populasjon. Ved å bruke sampling kan vi oppnå betydelige besparelser av tid, penger og arbeidskraft.
+
+2.  **Håndterbarhet**: Store datamengder kan være vanskelig å analysere. Et representativt utvalg gir oss en mindre, mer håndterlig datamengde som er lettere å arbeide med uten å miste essensiell informasjon.
+
+3.  **Raskere resultater**: I situasjoner der beslutninger må tas raskt, gjør sampling det mulig å utføre analyser og trekke konklusjoner på kort tid.
+
+4.  **Nøyaktighet og generaliserbarhet**: Med riktig designet sampling kan vi trekke pålitelige konklusjoner om populasjonen basert på utvalget. Gjennom statistiske teknikker kan vi også estimere usikkerheten knyttet til disse konklusjonene.
+
+5.  **Begrensninger ved total undersøkelse**: I noen tilfeller er det umulig å undersøke hele populasjonen. For eksempel, når vi tester holdbarheten til produkter, kan vi ikke teste alle produktene, da dette ville innebære å ødelegge dem.
+
+### Typer av Samplingmetoder
+
+Det finnes flere metoder for å trekke ut et representativt utvalg fra en populasjon. De vanligste metodene inkluderer:
+
+1.  **Enkel tilfeldig sampling**:
+
+    -   Hver enhet i populasjonen har like stor sjanse til å bli valgt. Dette er den mest grunnleggende formen for sampling og brukes ofte som et grunnlag for mer komplekse metoder.
+
+2.  **Systematisk sampling**:
+
+    -   Hver n-te enhet fra en ordnet populasjon blir valgt. For eksempel kan vi velge hver 10. kunde fra en kundeliste for undersøkelsen.
+
+3.  **Stratifisert sampling**:
+
+    -   Populasjonen deles inn i homogene undergrupper eller "strata" basert på en viss egenskap (som alder, kjønn, inntekt), og et tilfeldig utvalg trekkes fra hver stratum. Dette sikrer at alle undergrupper er representert i utvalget.
+
+4.  **Klynge sampling**:
+
+    -   Populasjonen er delt inn i grupper eller "klynger", og deretter velges hele klynger tilfeldig. Dette brukes ofte når populasjonen er geografisk spredt.
+
+5.  **Multistadielt sampling**:
+
+    -   En kombinasjon av forskjellige samplingmetoder, der utvalget trekkes i flere stadier. For eksempel, kan man først velge klynger, og deretter utføre enkel tilfeldig sampling innen hver valgt klynge.
+
+### Videre Utforskning: Punktestimater
+
+Når vi jobber med et utvalg fra populasjonen, utfører vi beregninger som gir oss **punktestimater** (slik som gjennomsnittet eller median) – enkle estimater som gir oss en indikasjon på hva vi kan forvente i hele populasjonen. For eksempel, dersom vi vil anslå gjennomsnittlig inntekt i en befolkning, kan vi bruke gjennomsnittsinntekten fra vårt utvalg som et punktestimat for hele populasjonen. Punktestimater er essensielle fordi de gir oss et konkret tall å arbeide med, selv om de alltid kommer med en viss usikkerhet som vi må ta hensyn til.
+
+### Fordeler og Ulemper med Sampling
+
+**Fordeler:**
+
+-   Kostnadseffektivitet og tidsbesparelse.
+
+-   Tillater undersøkelser av store populasjoner med begrensede ressurser.
+
+-   Enkelt å administrere og analysere.
+
+**Ulemper:**
+
+-   Potensiell risiko for skjevhet hvis utvalget ikke er representativt for populasjonen.
+
+-   Samplingfeil kan oppstå, som fører til unøyaktige konklusjoner.
+
+-   Krever nøye planlegging og statistisk ekspertise for å sikre at utvalget er representativt.
+
+### Samplingsfeil og Bias
+
+Selv om sampling er en kraftig metode, er det viktig å være oppmerksom på potensielle feil og bias som kan oppstå. **Samplingsfeil** refererer til differansen mellom parameteren til utvalget og parameteren til populasjonen. Dette kan være et resultat av variabiliteten i utvalgene som trekkes. **Bias** oppstår når utvalget ikke er representativt for populasjonen, noe som kan føre til skjevheter i resultatene. Eksempler på bias inkluderer seleksjonsbias, der enkelte grupper i populasjonen har større sannsynlighet for å bli inkludert i utvalget, og responsbias, der svarene fra respondentene kan påvirkes av måten spørsmålene er stilt på.
+
+### Konklusjon
+
+Sampling er et fundamentalt verktøy i statistisk analyse som muliggjør effektive og pålitelige konklusjoner om en populasjon basert på et mindre utvalg. Gjennom riktig valg av samplingmetode og nøye oppmerksomhet på potensielle feil og bias, kan vi sikre at resultatene våre er både nøyaktige og generaliserbare til den bredere populasjonen. I det neste kapittelet vil vi utforske hvordan vi kan bruke statistisk inferens til å trekke konklusjoner om populasjonen basert på data fra våre utvalg.
+
+# Tilfeldige Tall og Pseudo-Tilfeldige Tall
+
+#### Introduksjon
+
+Når vi arbeider med statistiske analyser og simuleringer, spiller tilfeldige tall en sentral rolle. Enten vi trekker et tilfeldig utvalg fra en populasjon, simulerer utfall av eksperimenter, eller estimerer sannsynligheter gjennom Monte Carlo-simuleringer, er bruken av tilfeldige tall en nødvendig komponent. Men hva mener vi egentlig med "tilfeldige tall", og hvordan genererer vi dem i et dataprogram som R?
+
+#### Tilfeldige Tall vs. Pseudo-Tilfeldige Tall
+
+I teorien er et tilfeldig tall et tall generert på en måte som gjør det fullstendig uforutsigbart. I praksis, når vi bruker en datamaskin, jobber vi ikke med "ekte" tilfeldige tall, men med **pseudo-tilfeldige tall**. Disse tallene er produsert av en algoritme, og selv om de ser tilfeldige ut, er de faktisk deterministiske – noe som betyr at de er basert på en startverdi, kalt en **seed**.
+
+-   **Tilfeldige tall**: Genereres på en måte som er uforutsigbar og uten noen mønster.
+
+-   **Pseudo-tilfeldige tall**: Genereres av en algoritme som gir tall som ser tilfeldige ut, men som er fullt reproduserbare hvis man kjenner startverdien (seed).
+
+#### Hvorfor Bruker vi Pseudo-Tilfeldige Tall?
+
+Det er flere grunner til at vi ofte bruker pseudo-tilfeldige tall i statistikk og programmering:
+
+1.  **Reproduserbarhet**: Fordi pseudo-tilfeldige tall er deterministiske, kan vi gjenskape nøyaktig de samme "tilfeldige" sekvensene hvis vi starter med samme seed. Dette er avgjørende når vi vil at andre skal kunne reprodusere våre resultater, eller når vi ønsker å kjøre den samme analysen flere ganger for å bekrefte resultatene.
+
+2.  **Kontroll**: I vitenskapelige eksperimenter og simuleringer kan det være nyttig å kunne kontrollere og gjenskape visse "tilfeldige" utfall, for å undersøke hvordan variasjoner påvirker resultatene.
+
+3.  **Effektivitet**: Å bruke en algoritme for å generere pseudo-tilfeldige tall er mye raskere og enklere enn å forsøke å få tilgang til ekte tilfeldige prosesser, som fysiske fenomen eller spesialisert maskinvare.
+
+#### Hvordan Genererer vi Pseudo-Tilfeldige Tall i R?
+
+R, som et statistisk programmeringsspråk, har innebygde funksjoner for å generere pseudo-tilfeldige tall. En av de viktigste funksjonene du vil møte er `set.seed()`. Denne funksjonen setter startverdien for generatoren av pseudo-tilfeldige tall, slik at du kan få konsistente resultater.
+
+La oss se på et eksempel:
+
+```{r}
+# Setter en seed
+set.seed(42)
+
+# vi kaster en 6'er terning 10 gang
+sample(1:6, 10, replace = TRUE)
+```
+
+Hvis du kjører koden over, vil du alltid få de samme 10 tallene. Det er fordi `set.seed(42)` sikrer at den pseudo-tilfeldige tallgeneratoren starter fra samme utgangspunkt hver gang. Dette er nyttig for å sikre at dine resultater er reproduserbare.
+
+La oss prøve dette på nytt, først setter vi en ny seed så setter vi seeden tilbake til 42.
+
+```{r}
+# Setter en seed som IKKE er 42
+set.seed(13)
+
+# vi kaster en 6'er terning 10 gang
+sample(1:6, 10, replace = TRUE)
+
+# Setter seeden tilbake til 42
+set.seed(42)
+
+# vi kaster en 6'er terning 10 gang
+sample(1:6, 10, replace = TRUE)
+```
+
+Som du ser så når vi gjøre koden på nytt får andre linje nøyaktig samme tall som første gang. Altså 1, 5, 1, osv.
+
+Til slutt så trenger ikke disse tilfeldig tallene komme fra samme kode, det er kun rekkefølgen som er avgjørende.
+
+```{r}
+set.seed(42)
+sample(1:6,1)
+sample(1:6,1)
+sample(1:6,1)
+sample(1:6,1)
+sample(1:6,1)
+
+```
+
+Vi får de samme første fem tallene.
+
+#### Hvorfor Sette en Seed?
+
+La oss si at du utfører en simulering for å estimere gjennomsnittet av en populasjon ved hjelp av mange tilfeldige utvalg. For å gjøre dette kjører du kanskje simuleringen flere ganger. Hvis du ikke setter en seed, vil hver kjøring gi deg forskjellige tall. Dette kan være ønskelig hvis du vil teste forskjellige scenarier, men det kan også gjøre det vanskelig å sammenligne resultater eller dele arbeidet ditt med andre.
+
+Ved å sette en seed, kan du sikre at hver kjøring starter fra samme punkt, noe som gjør det enklere å sammenligne simuleringene eller få hjelp fra andre:
+
+```{r}
+# Eksempel på bruk av seed i en simulering vi regner ut 1 000 gjennomsnitt av å kaste 10 terninger. 
+
+# Setter en statring seed
+set.seed(123)
+
+# replicate() gjør følgene ting x antall gang
+sim_means <- replicate(1000,
+                       # Tar gjennomsnittet
+                       mean(
+                         # ruller 10 6'er terninger 
+                         sample(1:6, 10, replace = TRUE)
+                         )
+                       )
+# Lager et histogram av de 1 000 gjennomsnittene av å kaste 10 6'er ternigner 
+hist(sim_means, main = "Histogram av simulerte gjennomsnitt", xlab = "Gjennomsnitt")
+
+```
+
+I koden over har vi satt en seed med `set.seed(123)`, og deretter simulert 1000 gjennomsnitt ved hjelp av `replicate()`-funksjonen. Hvis du eller noen andre kjører denne koden på nytt, vil de få samme histogram hver gang, noe som gjør resultatene konsistente og pålitelige.
+
+#### Oppsummering
+
+I dette delkapittelet har vi utforsket forskjellen mellom tilfeldige og pseudo-tilfeldige tall, og sett hvordan vi kan bruke funksjonen `set.seed()` i R for å kontrollere den pseudo-tilfeldige prosessen. Å sette en seed er spesielt nyttig når vi simulerer mange utfall og ønsker reproduserbare resultater. Når du arbeider med simuleringer eller statistiske analyser, er det viktig å forstå hvordan disse mekanismene fungerer for å sikre nøyaktighet og pålitelighet i resultatene dine.
+
+# Tilfeldig Sampling og Loven om Store Tall
+
+## Introduksjon til Tilfeldig Sampling
+
+Tilfeldig sampling er en grunnleggende teknikk i statistikk som brukes for å sikre at et utvalg fra en populasjon er representativt. Ved å velge individer eller enheter tilfeldig, minimerer vi risikoen for bias og gjør det mulig å generalisere funnene fra utvalget til hele populasjonen. Tilfeldig er ofte best fordi vi ikke VET noe om hvordan variablene våre er fordelt.
+
+## Hva er Tilfeldig Sampling?
+
+Tilfeldig sampling innebærer å velge medlemmer fra en større populasjon på en måte hvor hvert medlem har samme sannsynlighet for å bli valgt. Dette sikrer at hvert utvalg er et rettferdig representativ av hele populasjonen, noe som er kritisk for all statistisk inferens.
+
+## Loven om Store Tall
+
+En av de viktigste grunnene til at vi bruker tilfeldig sampling er loven om store tall. Denne loven er en fundamental prinsipp i sannsynlighetsteori som sier at når antallet forsøk øker, vil det aritmetiske gjennomsnittet av resultatene fra de tilfeldige hendelsene konvergere til den forventede verdien. I praksis betyr dette at jo flere observasjoner vi samler, desto nærmere kommer vi den faktiske verdien vi prøver å estimere.
+
+## Loven i Praksis
+
+For å demonstrere loven om store tall i praksis, kan vi se på å kaste en terning. Hvis vi kaster en rettferdig terning mange nok ganger, forventer vi at vi burde nærme oss et gjennomsnitt på 3.5. Vi setter en seed slik at vi får likt resultat. Vi kaster treningen 2000 gang. Så regner vi ut gjennomsnittet etter hvert kast.
+
+```{r}
+set.seed(123)
+
+#Lager en datafram
+terning <- data.frame(
+  #Nummerere kasten fra 1 til 2000
+  kast = 1:2000, 
+  # kaster 2000 terninger
+  terning = sample(1:6, 2000, replace = TRUE))
+
+terning <- terning %>%
+  # Summerer opp terning kastene
+  mutate(terning_sum = cumsum(terning)) %>%
+  # deler på antall kast for å få gjennomsnittet
+  mutate(gjennomsnitt = terning_sum / kast)
+  
+# Plotter resultatet
+ggplot(terning, aes(x = kast, y = gjennomsnitt )) +
+  geom_line() +
+  geom_hline(
+    aes(yintercept = 3.5),
+    color = "red", linetype = "dashed", size =1  )
+
+```
+
+Vi ser at gjennomsnittet tilnærmer seg det vi forventer av å kaste mange terninger.
+
+### Effekten av Flere Observasjoner
+
+Når vi anvender tilfeldig sampling fra en populasjon for å estimere en parameter, som for eksempel gjennomsnitt, median eller proporsjon, vil tilførselen av flere observasjoner typisk resultere i et mer presist estimat. Dette er direkte knyttet til loven om store tall, som sier at estimatets nøyaktighet forbedres med størrelsen på utvalget.
+
+## Prøvefordeling
+
+La oss utføre en simulering i R for å illustrere hvordan økningen i antall observasjoner påvirker estimatet av et populasjons gjennomsnitt. La oss tenke at vi skal finne ut høyden på personene i datasettet NHANES. I dette eksemplet skal vi tenke på hele datasettet som populasjonen, enkleste er å tenke på at dette datasettet inneholder alle personene i en lite amerikansk by. La oss finne det sanne gjennomsnittet som vi kan må med gjennom eksempelet. Vi finner også standardavviket.
+
+```{r}
+# Kaller opp datasettet NHANES
+høyde <- NHANES %>%
+    # Henter kun høyden
+  select(Height) %>%
+  # Fjerner alle NA
+  na.omit() %>%
+  # Bruker summarise for å redusere alle observasjonene til en
+  # Runder også av slik at det kun blir to deimal tall
+  summarise(gjennomsnits_høyde = 
+              # Runder av nummert slik at det blir kun to desimaltall
+              round(
+                # Reggner ut gjennomsnittet, men fjerner alle NA's
+                mean(Height,na.rm=TRUE)
+                ,3),
+            # finner standaravvik
+            sd_høyde = sd(Height,na.rm=TRUE)
+            
+            )
+gjennomsnits_høyde <- høyde %>%
+  # her har jeg lagt til pull. Denne koden gjør av vi kan trekke ut en verdi vi spørrom
+  # Dette er veldig praktisk hvis vi skal bruke tallet til noe senere. Da kan vi lagre den som en variabel
+  pull(gjennomsnits_høyde)
+# skrive ut gjennomsnittshøyden.
+print(gjennomsnits_høyde)
+
+sd_høyde <- høyde %>%
+  # her har jeg lagt til pull. Denne koden gjør av vi kan trekke ut en verdi vi spørrom
+  # Dette er veldig praktisk hvis vi skal bruke tallet til noe senere. Da kan vi lagre den som en variabel
+  pull(sd_høyde)
+# skrive ut gjennomsnittshøyden.
+print(sd_høyde)
+```
+
+Gjennomsnittshøyden i byen er 161.878, og standaravvik på 20.187.
+
+#### Oppgave
+Før vi starter å simulerer gjennomsnittshøydene. Lag et histogram og/eller density plott av høydene. Hvilken form har dette diagramet? Hvordan tror du et et plot av gjennomsnittene kommer til å se ut?
+
+```{r}
+
+
+
+```
+
+
+
+Vi jobber for byrådet og blir bedt om å finne ut hvor høy personene i byen er. Men det koster penger å ta målinger så vi kan ikke måle alle. Kan vi finne ut høyden hvis vi måler 10 personer? Hva med 100 eller 500 personer?
+
+Når vi samler inn data, får vi som ofte bare et forsøk, og et datasett er bare en mulig innsamling. Men med simulering kan vi fåreta mange innsamlinger og sammenlikne dem. Hva kunne vi ha funnet?
+
+La oss starte med å ta gjennomsnittet høyden av 10 personer. Vi gjør dette 1000 gang. Vi lager nå en prøvefordeling av de forskjellige gjennomsnittene vi KAN få gitt at vi henter kun en gang.
+
+```{r}
+# Setter en seed
+set.seed(42)
+
+# Henter datasettet NHANES
+NHANES %>%
+  # Henter kun høyden
+  select(Height) %>%
+  # Fjerner alle NA
+  na.omit() %>%
+  # henter ut 50 tilfeldige personer
+  slice_sample(n=10) %>%
+  # regner ut gjennomsnits høyden
+  summarise(mean_height = mean(Height)) 
+
+# gjør det sammen men 1000 ganger, og skriver det inn i en dataframe
+høyder10 = data.frame( simulerte_høyder =
+                       replicate(n = 1000,
+                                 # Henter datasettet NHANES
+                                 NHANES %>%
+                                  # Henter kun høyden
+                                   select(Height) %>%
+                                   # Fjerner alle NA
+                                   na.omit() %>%
+                                   # henter ut 50 tilfeldige personer
+                                   slice_sample(n=10) %>%
+                                   # regner ut gjennomsnits høyden
+                                   summarise(mean_height = mean(Height)) %>%
+                                   # henter ut kun høyden 
+                                   pull(mean_height)
+                                 )
+)
+
+# Plotter nå gjennomsnittene av disse 10 personene
+ggplot(høyder10, aes(x=simulerte_høyder))+
+  geom_histogram() +
+  scale_x_continuous(limits = c(135,180)) +
+  geom_vline(xintercept = gjennomsnits_høyde, colour = "red") +
+  xlab("Gjennomsnits høyder") +
+  ggtitle("Gjennonsnitts høyder av 10 personer. Gjennomført 1000 ganger")
+
+# regner ut gjennomsnitt og standaraviik
+høyder10 %>%
+  summarise(mean(simulerte_høyder),sd(simulerte_høyder))
+
+```
+
+Vi ser at gjennomsnittene vi kunne ha fått er fordelt om det sanne gjennomsnittet i rødt. Men vi kan bomme med ganske mye å finne at gjennomsnittet er 20-30 cm for mye eller lite. Vi ser at gjennomsittet er veldig nært det sanne gjennomsnittet, men standardavviket har gått fra 20.187.til 6.485. VI skal komme tilbake til endringen i standardaviiket
+
+Hva skjer om vi nå får ta gjennomsnittet av 100 personer isteden for 50.
+
+```{r}
+# Samler inn gjennomsnittet av 100 personer 1000 ganger, og skriver det inn i en dataframe
+høyder100 = data.frame( simulerte_høyder =
+                       replicate(n = 1000,
+                                 # Henter datasettet NHANES
+                                 NHANES %>%
+                                  # Henter kun høyden
+                                   select(Height) %>%
+                                   # Fjerner alle NA
+                                   na.omit() %>%
+                                   # henter ut 50 tilfeldige personer
+                                   slice_sample(n=100) %>%
+                                   # regner ut gjennomsnits høyden
+                                   summarise(mean_height = mean(Height)) %>%
+                                   # henter ut kun høyden 
+                                   pull(mean_height)
+                                 )
+)
+
+# Plotter nå gjennomsnittene av disse 50 personene
+ggplot(høyder100, aes(x=simulerte_høyder))+
+  geom_histogram(bins = 50) +
+  scale_x_continuous(limits = c(135,180)) +
+  geom_vline(xintercept = gjennomsnits_høyde, colour = "red") +
+  xlab("Gjennomsnits høyder") +
+  ggtitle("Gjennonsnitts høyder av 100 personer. Gjennomført 1000 ganger")
+
+# regner ut gjennomsnitt og standaraviik
+høyder100 %>%
+  summarise(mean(simulerte_høyder),sd(simulerte_høyder))
+
+```
+
+Når vi samler inn flere observasjoner per sample ser vi at vi får en mer nøyaktig målig enn tidligere. Store talls lov gjør at når vi samler i mer og mer data, kommer vi nærmere det sanne gjennomsnittet. Gjennomsnittet er som forventet 161.9 mens standardavviket til fordelingen er 1.945.
+
+La oss nå gjør dette for 500 personer.
+
+```{r}
+# Samler inn gjennomsnittet av 500 personer 1000 ganger, og skriver det inn i en dataframe
+høyder500 = data.frame( simulerte_høyder =
+                       replicate(n = 1000,
+                                 # Henter datasettet NHANES
+                                 NHANES %>%
+                                  # Henter kun høyden
+                                   select(Height) %>%
+                                   # Fjerner alle NA
+                                   na.omit() %>%
+                                   # henter ut 50 tilfeldige personer
+                                   slice_sample(n=500) %>%
+                                   # regner ut gjennomsnits høyden
+                                   summarise(mean_height = mean(Height)) %>%
+                                   # henter ut kun høyden 
+                                   pull(mean_height)
+                                 )
+)
+
+# Plotter nå gjennomsnittene av disse 50 personene
+ggplot(høyder500, aes(x=simulerte_høyder))+
+  geom_histogram(bins = 50) +
+  scale_x_continuous(limits = c(135,180)) +
+  geom_vline(xintercept = gjennomsnits_høyde, colour = "red") +
+  xlab("Gjennomsnits høyder") +
+  ggtitle("Gjennonsnitts høyder av 500 personer. Gjennomført 1000 ganger")
+
+# regner ut gjennomsnitt og standaraviik
+høyder500 %>%
+  summarise(mean(simulerte_høyder),sd(simulerte_høyder))
+```
+
+Når vi har 500 personer vi tar gjennomsnittet av ser vi at vi har enda mindre spredning. Det er viktig å huske at en hver av disse 1000 utfallene er like sannsynlig at vi trekker, men sjansene for at vi trekker noen nært det sanne gjennomsnittet er veldig høyt. Nå er standaravviket bare 0.852.
+
+## Standardfeil
+
+Hvis vi sammenlikner datasttet og simuleringene kan vi se noe sammenheng?
+
+Vi ser at gjennomsnittet er veldig nært uavhengig av antallet vi sampler. Dermed når vi har et tilfeldig utvalg antar vi at gjennomsnittet er forventingsrett, men større utvalg fører til mindre standarvvik til utvalget. Standarvviket til utvalget kalles også standardfeil.
+
+Standardfeilen til en fordeling er:
+
+$$
+\text{standard feil}=\frac{standardevation(x)}{\sqrt{n}}
+$$
+
+Dette bruker vi når vi er interesert i hvor "korrekt" vi tror målingen av gjennomsnitter er. Eller hvor mye vi tror det kan bevege seg fra en siden til andre.
+
+| Antall                | Utvalgs gjennonomsnitt | Utvalgs standaravvik  | Standard feil          |
+|------------------|------------------|------------------|------------------|
+| Til hele populasjonen | 161.878                | 20.187 (standaravvik) | 0                      |
+| 10                    | 161.956                | 6.485                 | 20.187/sqrt(10)=6.384  |
+| 100                   | 161.937                | 1.945                 | 20.187/sqrt(100)=2.019 |
+| 500                   | 161.886                | 0.852                 | 20.187/sqrt(500)=0.903 |
+
+Vi kan se at standardfeilen og standaravviket til utvalget ikke er nøyakti det sammen. Dette er fordi vi har simulert datasettene og ikke får et nøyaktig tall.
+
+## Sentralgrenseteoremet
+
+I eksempelet over kan vi se at når utvalgene blir større og større så blir mer og mer formet som en normal fordeling. Denne ser ut som en klokke formet fordeling, som under.
+
+```{r}
+#Create a sequence of 100 equally spaced numbers between -4 and 4
+x <- seq(-4, 4, length=100)
+
+#create a vector of values that shows the height of the probability distribution
+#for each value in x
+y <- dnorm(x)
+
+#plot x and y as a scatterplot with connected lines (type = "l") and add
+#an x-axis with custom labels
+plot(x,y, type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+axis(1, at = -3:3, labels = c("-3s", "-2s", "-1s", "mean", "1s", "2s", "3s"))
+```
+
+### Definisjon av Sentralgrenseteoremet
+
+Sentralgrenseteoremet sier at når et tilstrekkelig stort antall uavhengige og identisk distribuerte tilfeldige variabler blir summert, vil deres normaliserte sum konvergere mot en normalfordeling, uavhengig av den opprinnelige fordelingen til de individuelle variablene. Dette betyr at for en stor nok utvalgsstørrelse vil utvalgsmiddelet til nesten enhver fordeling være omtrent normalfordelt.
+
+#### Viktigheten av CLT
+
+Hvorfor er dette teoremet så viktig? For det første muliggjør CLT bruk av normalfordelingsmetoder for statistisk inferens — inkludert konfidensintervaller og hypotesetester — selv når populasjonen ikke er normalfordelt, så lenge utvalgsstørrelsen er stor nok. Dette er svært nyttig i praksis siden mange reelle datasett ikke følger en normalfordeling.
+
+## Oppsummering: Betydningen av Prøvefordelingen
+
+#### Prøvefordelingens Rolle
+
+I løpet av dette kapittelet har vi utforsket hvordan prøvefordelingen, eller sampling distribution, fungerer som et grunnleggende konsept i statistikken for å forstå effektene av tilfeldig sampling. Prøvefordelingen av et estimat, som et utvalgsmiddel, gir oss en visuell og kvantitativ måte å analysere variabiliteten av estimatet på når vi gjentar eksperimentet under identiske forhold.
+
+#### Betydningen av Flere Observasjoner
+
+Som vi har sett, bekrefter loven om store tall og sentralgrenseteoremet at jo flere tilfeldige observasjoner vi trekker fra populasjonen, desto nærmere vil vårt utvalgsmiddel ligge til populasjonens faktiske middel. Dette øker nøyaktigheten og påliteligheten av våre statistiske estimater og tester, ettersom standardfeilen i utvalgsmiddelet avtar når utvalgsstørrelsen øker.
+
+#### Vurdering av Usikkerhet
+
+Det er imidlertid viktig å anerkjenne at selv med store utvalg og nøye design, inneholder all statistisk inferens en grad av usikkerhet. Sjansen for å tilfeldigvis trekke et utvalg som ikke er representativt for populasjonen reduseres med større utvalg, men risikoen er aldri helt eliminert. Dette understreker viktigheten av å bruke passende statistiske metoder for å vurdere og rapportere usikkerheten i våre estimater.
+
+#### Praktiske Implikasjoner
+
+For praktiserende statistikere og forskere er forståelsen av prøvefordelingen avgjørende for å:
+
+-   Designe eksperimenter og studier som effektivt balanserer ressurser og ønsket nøyaktighet.
+
+-   Beregne og tolke konfidensintervaller som gir innsikt i hvor nøyaktige våre estimater er.
+
+-   Utføre hypotesetester med en klar forståelse av type I og type II feil, som begge er kritisk avhengig av prøvefordelingens form og spredning.
+
+#### Konklusjon
+
+Til slutt tilbyr prøvefordelingen en kraftig ramme for statistisk resonnement. Den hjelper oss ikke bare med å forstå hva våre data sier om verden, men også hvor sikre vi kan være på disse konklusjonene. Ved å utnytte kunnskapen om prøvefordelingen kan vi ta velinformerte beslutninger som er støttet av solid matematisk teori og praktisk anvendelse.
+
+
+#### Oppgaver
+
+I datasettet *house_prices* fra pakken *moderndive* har vi dataen på mange hus og deres priser. Bruk dette datasettet igjennom disse oppgavene. 
+
+##### Oppgave 1
+
+Få oversikt over hvilken variabler som finnes i datasettet. 
+
+```{r}
+view(house_prices)
+```
+
+Hvilken type variagler er *price*, *bedrooms*, *waterfront*, *zipcode*?
+
+##### Oppgave 2
+
+Plott fordeling av hus som har og ikke har tilgang til havet. Datasettet har 21 613 observasjoner. Hvordan blir fordeling av prøvefordelingen til tilgang til havet, hvis vi kan samle inn data på kun 300 hus? Repliker dette 2000 ganger å plott i et histogram. 
+
+```{r}
+
+```
+
+Hvordan ser denne fordelingen ut?
+
+##### oppgave 3
+
+I datasettet, finn gjennomsnitts pris på husen og standardfeilen. 
+
+
+# Bootstraping
+
+I tidligere deler av dette kapittelet har vi fokusert på å trekke små utvalg fra en stor populasjon uten tilbakelegging, noe som betyr at hver observasjon kun blir valgt én gang. Vi har også operert under antagelsen om at vi kjenner hele populasjonen. Imidlertid er dette sjelden tilfellet i praktisk statistisk analyse. Vi har utforsket hvordan man kan lage fordelinger ved å trekke gjentatte ganger fra en kjent populasjon, men hva om vi bare har et enkelt utvalg og ingen direkte kunnskap om den underliggende populasjonen? Her kommer bootstrapping inn som en kraftfull teknikk.
+
+#### Definisjon av Bootstrapping
+
+Bootstrapping er en resampling-teknikk som brukes til å estimere egenskaper ved en estimator (som varians og bias) ved å anvende stor grad av sampling fra et enkelt datatasett, med tilbakelegging. Dette står i kontrast til tradisjonell sampling og kan beskrives som nesten det motsatte:
+
+-   **Sampling**: Prosessen hvor man går fra populasjon til et utvalg.
+
+-   **Bootstrapping**: Prosessen hvor man bygger en teoretisk populasjon fra et utvalg for å generere mange simulerte prøver.
+
+#### Hvordan Fungerer Bootstrapping?
+
+Når vi bootstrapper, tar vi gjentatte utvalg med tilbakelegging fra det opprinnelige datasettet. Dette betyr at hver gang vi velger en observasjon, legger vi den tilbake før neste trekning. På denne måten kan samme observasjon velges flere ganger i ett resample. Denne metoden lar oss:
+
+1.  **Estimere Standardfeil og Konfidensintervaller**: Ved å skape mange bootstrap-prøver og beregne ønsket statistikk (for eksempel gjennomsnitt eller median) for hver prøve, kan vi skape en empirisk fordeling av estimatoren. Dette gir oss innsikt i variabiliteten og tillater oss å beregne ting som standardfeil og konfidensintervaller.
+
+2.  **Vurdere Robustheten av Statistiske Estimater**: Ved å se hvordan estimatene varierer fra prøve til prøve, kan vi få en bedre forståelse av hvor robuste våre estimater er til tilfeldige variasjoner i dataene.
+
+### Bootstrapper et gjennomsnitt
+
+Hvis vi nå har samlet inn 200 forskjellige personer, hvor nært er vi det sanne gjennomsnittet?
+
+```{r}
+set.seed(200)
+
+høyder200 =
+  NHANES %>%
+  # Henter kun høyden
+  select(Height) %>%
+  # Fjerner alle NA
+  na.omit() %>%
+  # henter ut 200 tilfeldige personer
+  slice_sample(n=200)
+
+høyder200 %>%
+  summarise(mean(Height))
+```
+
+Som vi ser så bommet vi litt? Men hvis vi nå skulle bootstrappe denne fordelinge, er den sanne høyden nært nok? La oss tegne opp fordeling og begrense hvor 95% av fordelingen ligger. Altså sier at innfor for den vannelige variasjonen til fordelingen så mener vi at gjennomsnittet ligger mellom to punker.
+
+```{r}
+set.seed(200)
+
+data_høyde <- data.frame( gjennomsnits_høyde = replicate(n=5000,
+                                 høyder200 %>%
+                                   # heter hele datastettet med tilbakeleg 
+                                   slice_sample(prop=1, replace =TRUE) %>%
+                                   # vi regner ut gjennomsnittet av utvalget
+                                   summarise(gjennomsnits_høyde =mean(Height) )%>%
+                                   # trekker ut gjennomsnittet
+                                   pull(gjennomsnits_høyde)
+                                 )
+)
+
+ggplot(data_høyde, aes(x=gjennomsnits_høyde))+
+  geom_histogram() +
+  geom_vline(xintercept = quantile(data_høyde$gjennomsnits_høyde,0.025))+
+  geom_vline(xintercept = quantile(data_høyde$gjennomsnits_høyde,0.975))+
+  geom_vline(xintercept = 161.878, colour = "red")
+
+```
+
+Her ser vi at det sanne gjennomsnittet ligger akkurat innenfor 95% av fordelingen. Så vi hadde et litt skjervt utvalg, men ikke så veldig skjervt at gjennomsnitt ligger innenfor en trolig begrensing av denne fordelingen.
+
+Hvis vi nå trekker ut den øvre å nedre grensen får vi det 95% konfidensitnervallet til gjennomsnittet. Eller hvor vi er ganske sikker på at gjennomsnittet ligger.
+
+```{r}
+# nedre grense
+quantile(data_høyde$gjennomsnits_høyde,0.025)
+# øvre grense
+quantile(data_høyde$gjennomsnits_høyde,0.975)
+```
+
+#### Konfidens intervall ved brukk av standardfeil
+
+Dette kommer litt før vi starter med fordelinger, men 96% av en fordeling ligger mellom to standardfeil ned og to standarfeil opp.
+
+
+```{r}
+høyder200 %>%
+  summarise(nedre_grense = mean(Height)-2*sd(Height)/sqrt(n()),
+            øvre_grense = mean(Height)+2*sd(Height)/sqrt(n())
+            )
+
+
+```
+
+Her ser vi at når vi trekker fra to standarfeil får vi nesten samme tallet som vi fikk av å simmulere, når vi legger til to standarfeil får igjen nesten samme tall som vi fikk ved å simulere. 
+
+#### Konklusjon
+
+Bootstrapping tilbyr en fleksibel og kraftig tilnærming til statistisk inferens, spesielt når vi mangler tilgang til hele populasjonen eller når populasjonen er ukjent. Ved å utnytte datadrevne simuleringer kan bootstrapping gi verdifull innsikt i egenskapene til statistiske estimatorer, selv med begrenset eller ufullstendig data.
+
+
+##### Oppgaver
+
+Bruk datasettet *house_prices* og finn følgene. 
+
+Konfidens intervallet til hus prisene ved å Bootstrappe og via pluss/minus to standarfeil.
+
+```{r}
+view(house_prices)
+glimpse(house_prices)
+```
