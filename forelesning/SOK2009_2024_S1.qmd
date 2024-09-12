@@ -1,0 +1,171 @@
+---
+title: "Seminar 1"
+subtitle: "SOK2009_2024_S1"
+author: "Eirik Eriksen Heen & ChatGPT"
+date: "`r format(Sys.Date(), '%d. %b %Y')`"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+  freeze: auto
+  code-overflow: wrap # Pakker kode som er for lang for linjen
+---
+
+```{r start, include = FALSE}
+##### Start up #####
+rm(list = ls()) # Empties all data
+
+options(scipen=10) # writes 10 scipens before scientific script
+options(digits=10) # writes up to 10 digits
+
+
+# loading packages
+library(tidyverse)
+library(gt)
+library(moderndive)
+
+# Kode for a kunne bruke norske bokstaver
+Sys.setlocale(locale="no_NO")
+
+```
+
+I dette seminaret skal vi hovedsakelig gå igjennom datasettet *house_prices* fra pakken *moderndive*. Dette datasettet ser på hus priser i King County. Dette er et område i Washington state. Dokumentasjon på pakken finner dere her: https://cran.r-project.org/web/packages/moderndive/index.html
+
+```{r}
+# Load the dataset
+data("house_prices", package = "moderndive")
+head(house_prices)
+```
+
+# Oppgave 1
+
+### Oppgave 1.1
+
+Spørsmål: Gå til dokumentasjonen for pakken moderndive og finn ut når datasettet house_prices ble samlet inn.
+
+### Oppgave 1.2
+
+Vi deler ofte data inn i kategoriske og numeriske variabler, eller videre inn i nominelle, ordinal, intervall, og forholdstall. Måten vi håndterer data på avhenger av målenivået for hver variabel.
+
+Spørsmål: Hvilket målenivå har følgende variabler i datasettet `house_prices`?
+
+-   `id`
+
+-   `date`
+
+-   `price`
+
+-   `waterfront`
+
+-   `view`
+
+-   `condition`
+
+-   `grade`
+
+-   `zipcode`
+
+### Oppgave 1.3
+
+Siden vi ofte er interessert i huspriser, skal vi lage en oversikt over husprisene med følgende oppgaver:
+
+-   **Oppgave 1.3a:** Lag et histogram og et density-plott av husprisene.
+
+-   **Oppgave 1.3b:** Lag en deskriptiv statistikk av husprisene.
+
+-   **Oppgave 1.3c:** Sammenlign gjennomsnitt og median av husprisene. Hva kan dette fortelle deg om fordelingen av prisene?
+
+### Oppgave 1.4
+
+Er det forskjell i huspriser basert på kvaliteten på boligen?
+
+-   **Oppgave 1.4a:** Lag et plott som viser sammenhengen mellom pris og kvalitet (condition).
+
+-   **Oppgave 1.4b:** Lag en deskriptiv statistikk som viser sammenhengen mellom pris og kvalitet.
+
+-   **Oppgave 1.4c:** Hva virker sammenhengen mellom pris og kvalitet å være?
+
+-   **Oppgave 1.4d:** Lag en frekvenstabell over hvor mange boliger som er i hver kvalitets kategori.
+
+### Oppgave 1.5
+
+Er det forskjell i huspriser basert på størrelsen på boligen? Hvordan ønsker du å vise denne sammenhengen?
+
+### Oppgave 1.6
+
+Virker det å være noen sammenheng mellom pris og byggeår? Lag en visualisering som viser denne sammenhengen.
+
+### Oppgave 1.7
+
+Hvilken av de ovennevnte faktorene ser ut til å ha størst påvirkning på husprisen? Diskuter hvilke faktorer som kan påvirke huspriser mest basert på analysene dine.
+
+# Oppgave 2
+
+### Oppgave 2.1
+
+Vi skal utforske hvordan gjennomsnittet av husprisene `price` kan variere når vi trekker tilfeldige utvalg fra datasettet. Dette gir oss en mulighet til å forstå variabiliteten i gjennomsnittet.
+
+-   **Oppgave 2.1a:** Lag en simulering der du trekker 1000 tilfeldige utvalg fra datasettet, hvor hvert utvalg består av 30 huspriser. For hvert utvalg, beregn gjennomsnittet av husprisene. Visualiser fordelingen av disse gjennomsnittene med et histogram.
+
+-   **Oppgave 2.1b:** Beregn den totale gjennomsnittlige husprisen og sammenlign dette med gjennomsnittene fra de 1000 simuleringene. Hvordan stemmer de overens?
+
+### Oppgave 2.2
+
+Neste trinn er å undersøke hvordan standardavviket til gjennomsnittet endres med størrelsen på utvalget.
+
+-   **Oppgave 2.2a:** Lag en simulering der du trekker 1000 tilfeldige utvalg av forskjellige størrelser (f.eks. 10, 30, 50, 100 huspriser). For hvert utvalg, beregn standardavviket til gjennomsnittet. Visualiser hvordan standardavviket varierer med utvalgsstørrelsen.
+
+-   **Oppgave 2.2b:** Diskuter hvordan standardavviket til gjennomsnittet endres når utvalgsstørrelsen øker. Hva er den teoretiske forklaringen på dette fenomenet?
+
+### **Oppgave 2.3**
+
+Vi skal nå se på konfidensintervallene for gjennomsnittet av husprisene. Et konfidensintervall gir et intervall rundt vårt estimerte gjennomsnitt der vi forventer at det sanne gjennomsnittet ligger med en viss sannsynlighet. For eksempel, et 95% konfidensintervall betyr at hvis vi gjentar eksperimentet mange ganger, vil 95% av konfidensintervallene inneholde det sanne gjennomsnittet.
+
+-   **Oppgave 2.3a:** Lag en simulering der du beregner 95% konfidensintervall for gjennomsnittet av husprisene i hvert av 1000 tilfeldige utvalg med størrelse 30. Visualiser fordelingen av konfidensintervallene.
+
+-   **Oppgave 2.3b:** Undersøk hvor mange av konfidensintervallene som faktisk inneholder det sanne gjennomsnittet av hele datasettet. Er resultatene i tråd med forventningene for et 95% konfidensintervall? Diskuter hvorfor eller hvorfor ikke.
+
+### Oppgave 2.4
+
+Til slutt skal vi undersøke om det er noen forskjell i resultatene mellom ulike variabler.
+
+-   **Oppgave 2.4a:** Gjenta oppgavene 2.1 og 2.2, men denne gangen bruk variablene `price` og `grade` (kvalitet). Hvordan påvirker forskjeller mellom disse variablene distribusjonen av gjennomsnitt og standardavvik?
+
+-   **Oppgave 2.4b:** Diskuter hvordan forskjellige variabler påvirker variabiliteten i simuleringene. Er det noen variabler som fører til større eller mindre variasjon i gjennomsnittet?
+
+# Oppgave 3
+
+### Oppgave 3.1
+
+Vi ønsker å utforske hvordan flere variabler kan visualiseres samtidig for å få en bedre forståelse av datasettet.
+
+-   **Oppgave 3.1a:** Lag et scatterplot som viser sammenhengen mellom `price` (huspris) og `sqft_living` (størrelse på boligen). Bruk farger for å representere `grade` (kvalitet på boligen). Hvordan påvirker fargen visualiseringen av forholdet mellom pris og størrelse?
+
+-   **Oppgave 3.1b:** Lag en scatterplot-matrix (parplot) som viser sammenhengen mellom `price`, `sqft_living`, `bedrooms`, og `bathrooms`. Hvordan kan scatterplot-matrix hjelpe deg med å forstå forholdet mellom disse variablene?
+
+### Oppgave 3.2
+
+La oss utforske hvordan vi kan bruke farger og størrelser for å visualisere data mer effektivt.
+
+-   **Oppgave 3.2a:** Lag et bubble plot (boblediagram) som viser sammenhengen mellom `price` og `sqft_living`, der størrelsen på boblene representerer antall `bedrooms`. Hvordan bidrar boblestørrelse til visualiseringen av dataene?
+
+-   **Oppgave 3.2b:** Lag en 3D scatterplot der du viser sammenhengen mellom `price`, `sqft_living`, og `grade`. Bruk farger for å representere `condition` (tilstand på boligen). Hvordan gir 3D visualiseringen en bedre forståelse av forholdet mellom disse variablene?
+
+### Oppgave 3.3
+
+Bruk av visualiseringsteknikker som heatmaps og facet plots kan gi ytterligere innsikt i dataene.
+
+-   **Oppgave 3.3a:** Lag et heatmap som viser forholdet mellom `price` og `grade`, med `condition` (tilstand) som en tredje variabel. Hvordan kan heatmap hjelpe deg med å identifisere mønstre eller trender i dataene?
+
+-   **Oppgave 3.3b:** Bruk `facet_wrap` eller `facet_grid` fra `ggplot2` for å lage separate plott for hver kategori av `condition`. Visualiser forholdet mellom `price` og `sqft_living` i disse forskjellige tilstandene. Hvordan bidrar faceting til å forstå hvordan forholdet mellom pris og størrelse varierer med tilstanden på boligen?
+
+### Oppgave 3.4
+
+La oss bruke tidsdata for å se hvordan variabler utvikler seg over tid.
+
+-   **Oppgave 3.4a:** Lag en linjediagram som viser utviklingen av gjennomsnittlig huspris over tid, basert på `date`. Bruk farger for å representere forskjellige `zipcode`-områder. Hvordan gir tidsdimensjonen ytterligere innsikt i husprisene?
+
+-   **Oppgave 3.4b:** Lag et heatmap som viser gjennomsnittlig `price` for hver måned og år, der fargen representerer `grade`. Hvordan hjelper heatmap deg med å identifisere sesongmessige eller tidsavhengige trender i husprisene?
