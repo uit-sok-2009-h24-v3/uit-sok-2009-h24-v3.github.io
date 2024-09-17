@@ -22,6 +22,7 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 41 | 11.10  10:15-12:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 42 | 15.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Vidregående interfrerens |  |
 | Uke 42 | 17.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
+| Uke 42 | 18.10  14:00 | | | **Mappe 2 utlecert** | 
 | Uke 43 | 22.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Modelering |  |
 | Uke 43 | 24.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 43 | 25.10  14:00 | | | **Mappe 2 frist** | 
