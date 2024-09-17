@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eirik Eriksen Heen &amp; ChatGPT">
+<meta name="dcterms.date" content="2024-09-17">
+
+<title>Forelesning 5: Sannsynlighet</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="SOK2009_2024_F5_Sannsynlighet_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SOK2009_2024_F5_Sannsynlighet_files/libs/quarto-html/quarto.js"></script>
+<script src="SOK2009_2024_F5_Sannsynlighet_files/libs/quarto-html/popper.min.js"></script>
+<script src="SOK2009_2024_F5_Sannsynlighet_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SOK2009_2024_F5_Sannsynlighet_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SOK2009_2024_F5_Sannsynlighet_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SOK2009_2024_F5_Sannsynlighet_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SOK2009_2024_F5_Sannsynlighet_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SOK2009_2024_F5_Sannsynlighet_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SOK2009_2024_F5_Sannsynlighet_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Forelesning 5: Sannsynlighet</h1>
+<p class="subtitle lead">Sok-2009 h24</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Eirik Eriksen Heen &amp; ChatGPT </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 17, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>I dette kapitlet skal vi dykke dypere inn i sannsynlighetsregning, et fundamentalt aspekt av statistikk som hjelper oss å forstå, analysere og kvantifisere usikkerhet i ulike fenomener. Sannsynlighetsteori er ikke bare teoretisk viktig, den har praktisk anvendelse i alt fra finans og økonomi til ingeniørfag og vitenskapelige undersøkelser. Vi vil utforske både teoretiske konsepter og praktiske simuleringer, noe som vil gi en solid forståelse av hvordan og hvorfor vi anvender sannsynlighetsmodeller og formler.</p>
+<section id="stokastiske-forsøk" class="level1">
+<h1>Stokastiske Forsøk</h1>
+<p>Et stokastisk forsøk er et eksperiment der utfallet ikke kan forutsies med sikkerhet på forhånd, selv om alle mulige utfall er kjent. Denne typen forsøk er grunnleggende i sannsynlighetsteori og danner grunnlaget for statistisk inferens og beslutningsteori.</p>
+<section id="egenskaper-ved-stokastiske-forsøk" class="level2">
+<h2 class="anchored" data-anchor-id="egenskaper-ved-stokastiske-forsøk">Egenskaper ved Stokastiske Forsøk</h2>
+<p>De viktigste egenskapene til stokastiske forsøk inkluderer:</p>
+<ul>
+<li><p><strong>Usikkerhet</strong>: Utfallet av forsøket er usikkert og kan ikke bestemmes på forhånd.</p></li>
+<li><p><strong>Mengde av Utfall</strong>: Alle mulige utfall av forsøket er kjent før eksperimentet utføres.</p></li>
+<li><p><strong>Repetisjon</strong>: Forsøket kan gjentas under identiske forhold, og utfallene kan være forskjellige ved hver gjentakelse.</p></li>
+</ul>
+<p>Å kaste en terning eller en mynt er et godt eksempel. Vi vet før vi kaster en mynt at (gitt at terningen er rettferdig) at er 50/50 å få en mynt eller kron.</p>
+</section>
+<section id="eksempler-på-stokastiske-forsøk" class="level2">
+<h2 class="anchored" data-anchor-id="eksempler-på-stokastiske-forsøk">Eksempler på Stokastiske Forsøk</h2>
+<p>For å illustrere konseptet, her er noen klassiske eksempler på stokastiske forsøk:</p>
+<ol type="1">
+<li><p><strong>Terningkast</strong>:</p>
+<ul>
+<li><p><strong>Forsøk</strong>: Kaste en seksidig terning.</p></li>
+<li><p><strong>Mulige Utfall</strong>: Tallene 1, 2, 3, 4, 5, og 6.</p></li>
+<li><p><strong>Usikkerhet</strong>: Hvilket tall som vises er usikkert til terningen har landet.</p></li>
+</ul></li>
+<li><p><strong>Korttrekking</strong>:</p>
+<ul>
+<li><p><strong>Forsøk</strong>: Trekke et kort fra en standard kortstokk på 52 kort.</p></li>
+<li><p><strong>Mulige Utfall</strong>: Ethvert av de 52 kortene.</p></li>
+<li><p><strong>Usikkerhet</strong>: Hvilket kort som trekkes er ikke kjent før kortet vises.</p></li>
+</ul></li>
+<li><p><strong>Myntkast</strong>:</p>
+<ul>
+<li><p><strong>Forsøk</strong>: Kaste en mynt.</p></li>
+<li><p><strong>Mulige Utfall</strong>: Kron eller mynt.</p></li>
+<li><p><strong>Usikkerhet</strong>: Om mynten viser kron eller mynt er ikke kjent før den har landet.</p></li>
+</ul></li>
+<li><p>Måling av Ventetid for en Handelsordre</p>
+<ul>
+<li><p><strong>Forsøk:</strong> Mål tiden det tar fra en handelsordre blir plassert til den blir utført i aksjemarkedet.</p></li>
+<li><p><strong>Usikkerhet:</strong> Selv om handelsordren er plassert umiddelbart, er det mange faktorer som påvirker nøyaktig når ordren blir utført. Disse inkluderer ordretype, markedslikviditet, volatilitet, og handelsvolum fra andre markedsaktører.</p></li>
+<li><p><strong>Utfall:</strong> Tiden det tar for at en ordre blir utført er et kontinuerlig tall, og kan variere betydelig avhengig av markedets tilstand. For eksempel, kan en ordre bli utført i alt fra noen få millisekunder til flere minutter.</p></li>
+</ul></li>
+</ol>
+<p>Legg merke til at tre førset har enkle tellelige utfall, mens det siste har ikke dette.</p>
+<p>Et stokasist forsølk denoteres ofte med <em>X</em></p>
+</section>
+<section id="kontinuerlig-og-diskret" class="level2">
+<h2 class="anchored" data-anchor-id="kontinuerlig-og-diskret">Kontinuerlig og diskret</h2>
+<p>I sannsynlighetsteori skilles det mellom diskrete og kontinuerlige stokastiske forsøk, som hver har unike egenskaper og krever forskjellige matematiske tilnærminger. <strong>Diskrete forsøk</strong> resulterer i utfall som kan telles og er ofte representert ved hele tall, som antall ganger en terning viser seks. Disse utfallene kan håndteres med punktsannsynligheter hvor sannsynligheten for ethvert spesifikt utfall kan beregnes direkte.</p>
+<p><strong>Kontinuerlige forsøk</strong>, derimot, produserer utfall som er del av et kontinuum, som tiden det tar for en kjemisk reaksjon å fullføre eller prisen på en aksje på et gitt tidspunkt. I disse tilfellene blir punktsannsynligheten for ethvert spesifikt utfall null, fordi det er uendelig mange mulige utfall. Derfor bruker man sannsynlighetstetthetsfunksjoner (PDF) for å beskrive sannsynlighetsfordelingene i kontinuerlige forsøk. Dette skillet er viktig fordi det påvirker hvordan sannsynligheter beregnes og tolkes i forskjellige situasjoner, og det understreker behovet for ulike analytiske teknikker tilpasset naturen av dataene man jobber med.</p>
+</section>
+<section id="betydningen-av-stokastiske-forsøk" class="level2">
+<h2 class="anchored" data-anchor-id="betydningen-av-stokastiske-forsøk">Betydningen av Stokastiske Forsøk</h2>
+<p>Stokastiske forsøk er sentrale i mange felter innen vitenskap og ingeniørfag hvor beslutninger må tas under usikkerhet. De gir et rammeverk for å analysere sannsynlighet og for å utvikle matematiske modeller som kan forutsi sannsynligheten for forskjellige utfall basert på eksisterende data.</p>
+<p>Gjennom å forstå og modellere stokastiske forsøk, kan forskere og beslutningstakere bedre navigere i usikkerhet og gjøre mer informerte valg, noe som er essensielt i alt fra finans og økonomi til vitenskapelig forskning og teknologisk utvikling.</p>
+<p>Her kan vi også bruke set.seed() som tidligere, og da får vi samme uavhengi av hvem som kjører koden.</p>
+</section>
+<section id="grunnleggende-konsepter" class="level2">
+<h2 class="anchored" data-anchor-id="grunnleggende-konsepter">Grunnleggende Konsepter</h2>
+<p>Sannsynlighetsregning begynner med noen grunnleggende konsepter:</p>
+<ol type="1">
+<li><p><strong>Sannsynlighetsrom</strong>: Et sannsynlighetsrom er den samlede mengden av alle mulige utfall for et eksperiment. For eksempel, ved kast av en terning, er sannsynlighetsrommet {1, 2, 3, 4, 5, 6}.</p>
+<ol type="1">
+<li><p>Vi skriver sansynlighetsrom som <em>S</em></p>
+<ol type="1">
+<li><p>Sannsynlighetsrommet for en terining: <span class="math inline">\(S={1,2,3,4,5,6}\)</span>.</p></li>
+<li><p>Sannsynlighetsrommet for et kort fra en kort stokk: <span class="math inline">\(S={K2, K3, K4,..., H12, H13, H14}\)</span>.</p></li>
+<li><p>Sannsynlighetsrommet for en MYNT: <span class="math inline">\(S={Kron, Mynt}\)</span>.</p></li>
+</ol></li>
+</ol></li>
+<li><p><strong>Hendelser</strong>: En hendelse er en hvilken som helst delmengde av sannsynlighetsrommet. For eksempel, å få et partall ved kast av terning er en hendelse som kan skrives som {2, 4, 6}.</p>
+<ol type="1">
+<li><p>Vi skriver ofte hendelsesrom som <em>A</em> eller <em>B</em> men vi kan bruker andre</p>
+<ol type="1">
+<li><p>For en terning å få:</p>
+<ol type="1">
+<li><p>Et par tall <span class="math inline">\(A={2,4,6}\)</span>.</p></li>
+<li><p>Et oddetall <span class="math inline">\(B={1,3,5}\)</span>.</p></li>
+<li><p>Med et ut som å få 3’er på en terning <span class="math inline">\(C={3}\)</span>.</p></li>
+</ol></li>
+<li><p>For en mynt</p>
+<ol type="1">
+<li>Få en mynt <span class="math inline">\(A={Mynt}\)</span>.</li>
+</ol></li>
+</ol></li>
+</ol></li>
+<li><p><strong>Sannsynlighet</strong>: Sannsynligheten for en hendelse <span class="math inline">\(A\)</span> er et mål på hvor sannsynlig det er at <span class="math inline">\(A\)</span> skjer, og beregnes som:</p></li>
+</ol>
+<p><span class="math display">\[P(A) = \frac{\text{Antall gunstige utfall}}{\text{Totalt antall utfall}}=\frac{\text{g}}{\text{m}}\]</span></p>
+<p>For eksempel, sannsynligheten for å få en 3-er ved kast av en terning er: <span class="math display">\[P(3)= \frac{1}{6}=0.166666.\]</span></p>
+<p>Hvor er dette korrekt? Vell det er kun ett uftall som gir oss en 3’eer mens vi kan får 6 forskjellige utfall på en terning.</p>
+<p>En viktig sannsynlighets regeler er at sannsynligheten av alle utfall er 1, eller 100%</p>
+<p><span class="math inline">\(P(S)=1\)</span></p>
+<p>Hva er sannsynligheten for å få en en’er på en terning. Det er 6 totale ufall og kun et gunstig vi er interesert i.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1666666667</code></pre>
+</div>
+</div>
+</section>
+<section id="statistik-notasjon" class="level2">
+<h2 class="anchored" data-anchor-id="statistik-notasjon">Statistik notasjon</h2>
+<p>Når vi skal gjøre dette mer gjenerelt og i trå med statistik notasjon skriver vi ofte følgene.</p>
+<p><em>X</em> er en stokasisk prossess av en 6’er terning.</p>
+<p>Hva er sannsynligheten av å få 3 på terningen?</p>
+<p><span class="math inline">\(P(X=3)=\frac{1}{6}=0.166666.\)</span></p>
+<p>Hva står her P er sannsynligheten for at X tar verdien 3. Hva med at vi får 3 eller mindre på terningen?</p>
+<p><span class="math inline">\(P(X≤3)=\frac{3}{6}=0.5.\)</span></p>
+<p>Vi kaller <span class="math inline">\(P(X=3)\)</span> en punkt sannsynlighet siden den kalkuerer et punkt. Mens <span class="math inline">\(P(X≤3)\)</span> kalles en kumulativ sannsynlighet.</p>
+<section id="punkt-sannsynlighet" class="level3">
+<h3 class="anchored" data-anchor-id="punkt-sannsynlighet">Punkt Sannsynlighet</h3>
+<p>Punktsannsynlighet refererer til sannsynligheten for at en stokastisk variabel <span class="math inline">\(X\)</span> antar en spesifikk verdi. I en diskret sannsynlighetsfordeling, hvor utfallene er klart definerte og tellelige, kan hver utfall tildeles en spesifikk sannsynlighet. For eksempel, i en terningkast, er punktsannsynligheten for å få en femmer <span class="math inline">\(P(X=5)= \frac{1}{6}\)</span>. I kontinuerlige fordelinger er punktsannsynligheten for enhver spesifikk verdi teknisk sett null, siden det er uendelig mange mulige utfall.</p>
+<p>Hva er sannsynligheten av å kaste en ikke rettferdig mynt. La oss si at det er kun 0.3 sjanser for suksess (altså mynt). Hvis vi kaster 10 mynter, hva er sannsynligheten å få 4 mynter? <span class="math inline">\(P(X=4)\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antall forsøk og sannsynlighet for suksess</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Mulige utfall</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>x_values <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>n</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Sannsynligheter for hvert utfall</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>probabilities <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(x_values, <span class="at">size=</span>n, <span class="at">prob=</span>p)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotte sannsynlighetsfordelingen</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x_values, probabilities, <span class="at">type=</span><span class="st">"h"</span>, <span class="at">lwd=</span><span class="dv">10</span>, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">main=</span><span class="st">"Probability Mass Function of a Binomial Distribution"</span>, <span class="at">xlab=</span><span class="st">"Number of Successes"</span>, <span class="at">ylab=</span><span class="st">"Probability"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Farge den fjerde kolonnen rød (index 4 fordi R indexer starter med 1)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x_values[<span class="dv">5</span>], probabilities[<span class="dv">5</span>], <span class="at">type=</span><span class="st">"h"</span>, <span class="at">lwd=</span><span class="dv">10</span>, <span class="at">col=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For tenk deg at jeg ser på høyden av den norske befolkningen hva er sannsynligheten at jeg finner en person som er nøyakting 153.9345 cm høy? <span class="math inline">\(P(X=153.9345)=0\)</span>. Den sannsynligheten er null. Men å finne noen mellom 153 til 154 er mulig.</p>
+</section>
+<section id="kumulativ-sannsynlighet" class="level3">
+<h3 class="anchored" data-anchor-id="kumulativ-sannsynlighet">Kumulativ Sannsynlighet</h3>
+<p>Kumulativ sannsynlighet, derimot, er sannsynligheten for at en stokastisk variabel <span class="math inline">\(X\)</span> vil ha en verdi mindre enn eller lik en gitt verdi. Denne sannsynligheten uttrykkes gjennom kumulative fordelingsfunksjoner (CDF), som gir sannsynligheten <span class="math inline">\(P(X≤x)\)</span> for enhver verdi <span class="math inline">\(x\)</span>. For en diskret variabel, summes sannsynlighetene for alle utfall opp til og inkludert xxx. For kontinuerlige variabler, beregnes den kumulative sannsynligheten som arealet under sannsynlighetstetthetsfunksjonen (PDF) fra det laveste punktet i fordelingen opp til <span class="math inline">\(x\)</span>.</p>
+<p>Hva er sannsynligheten av å kaste en ikke rettferdig mynt. La oss si at det er kun 0.3 sjanser for suksess (altså mynt). Hvis vi kaster 10 mynter, hva er sannsynligheten å få 4 mynter eller mindre? <span class="math inline">\(P(X≤4)\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antall forsøk og sannsynlighet for suksess</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Mulige utfall</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>x_values <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span>n</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Sannsynligheter for hvert utfall</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>probabilities <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(x_values, <span class="at">size=</span>n, <span class="at">prob=</span>p)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Opprette en fargevektor hvor de første fem kolonnene (0 til 4) er røde, resten blå</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"blue"</span>, <span class="fu">length</span>(x_values))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>colors[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="st">"red"</span>  <span class="co"># Farge indekser 1 til 5 røde (0 til 4 i vanlig 0-basert indeksering)</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotte sannsynlighetsfordelingen</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x_values, probabilities, <span class="at">type=</span><span class="st">"h"</span>, <span class="at">lwd=</span><span class="dv">10</span>, <span class="at">col=</span>colors, <span class="at">main=</span><span class="st">"Probability Mass Function of a Binomial Distribution"</span>, <span class="at">xlab=</span><span class="st">"Number of Successes"</span>, <span class="at">ylab=</span><span class="st">"Probability"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="betydningen-av-disse-konseptene" class="level4">
+<h4 class="anchored" data-anchor-id="betydningen-av-disse-konseptene">Betydningen av Disse Konseptene</h4>
+<p>Forståelsen av punkt og kumulativ sannsynlighet har direkte praktisk betydning:</p>
+<ul>
+<li><p><strong>Diskret Analyse:</strong> I praktiske situasjoner hvor utfallene er diskrete og avgrensede, som terningkast eller kortspill, er det ofte nødvendig å kjenne både punkt- og kumulative sannsynligheter for å lage strategier eller forutsigelser.</p>
+<ul>
+<li>I økonomi er det ofte binomisk eller ordinal nivå som er diskret.</li>
+</ul></li>
+<li><p><strong>Kontinuerlig Analyse:</strong> I situasjoner med kontinuerlige målinger, som tid, lengde, eller temperatur, er kumulative sannsynligheter viktige for å forstå sannsynlighetsfordelingen og for å beregne sannsynligheter for intervaller av utfall.</p>
+<ul>
+<li>I økonomi er dette en vanlig type kategori.</li>
+</ul></li>
+</ul>
+<p>Å skille mellom disse typer sannsynligheter bidrar til mer presis statistisk analyse og bedre beslutningstaking, ved at man klarer å forstå og beregne sannsynligheter for komplekse fenomener i en rekke ulike fagfelt.</p>
+</section>
+</section>
+</section>
+<section id="oppgave" class="level2">
+<h2 class="anchored" data-anchor-id="oppgave">Oppgave:</h2>
+<p>Hva er sannsynligheten på en 6’er ternign for å får:</p>
+<ul>
+<li><p>Et partall</p>
+<ul>
+<li><p>A = {2,4,6}</p></li>
+<li><p>P(X=A)=?</p></li>
+</ul></li>
+<li><p>strørre enn 4</p>
+<ul>
+<li>P(X&gt;4)=?</li>
+</ul></li>
+<li><p>sannsynligheten av 1 eller 2 på terningen</p>
+<ul>
+<li>P(X=&lt;2)=</li>
+</ul></li>
+</ul>
+</section>
+<section id="simmulering-av-utfall" class="level2">
+<h2 class="anchored" data-anchor-id="simmulering-av-utfall">Simmulering av utfall</h2>
+<p>La oss raskt ta for oss simmulering av utfall. Hvis vi nå ber r om å rulle 10 000 gang en terning hva er sannsynligheten for å få en 3’er?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># setter en seed</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># antall kast</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># replikerer 10 000 ganger en terning</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>terning <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">kast =</span> <span class="fu">replicate</span>(n,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># trekker fra en menge med 1 til 6</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">1</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                     )</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># tester så hvor mange som er lik 3</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>terning <span class="sc">%&gt;%</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Antall_3ere =</span> <span class="fu">sum</span>(kast <span class="sc">==</span><span class="dv">3</span>), <span class="at">Gjennomsnitt_3er =</span> <span class="fu">mean</span>(kast <span class="sc">==</span><span class="dv">3</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 2
+  Antall_3ere Gjennomsnitt_3er
+        &lt;int&gt;            &lt;dbl&gt;
+1        1667            0.167</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(terning , <span class="fu">aes</span>(<span class="at">x=</span>kast)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Så deler vi på antall kast:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(terning <span class="sc">==</span> <span class="dv">3</span>)<span class="sc">/</span>n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1667</code></pre>
+</div>
+</div>
+<p>Og vi finner nesten nøyaktig den korrekt sannsyneligheten… det er nesten litt for nært.</p>
+<p>Her er det kun fantasien som setter genser. Hva med hvis vi kaster to terninger og registeret kun høyeste verdi. Hva er sannynligheten da for å få 3?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># setter en seed</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># antall kast</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># replikerer 10 000 ganger en terning</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>terning <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">kast =</span> <span class="fu">replicate</span>(n,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                                   <span class="co"># renger maksen av to kast</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">max</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                                      <span class="co"># trekker fra en menge med 1 til 6</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>                                    <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">2</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                                   )</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                     )</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># tester så hvor mange som er lik 3</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>terning <span class="sc">%&gt;%</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Antall_3ere =</span> <span class="fu">sum</span>(kast <span class="sc">==</span><span class="dv">3</span>), <span class="at">Gjennomsnitt_3er =</span> <span class="fu">mean</span>(kast <span class="sc">==</span><span class="dv">3</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 2
+  Antall_3ere Gjennomsnitt_3er
+        &lt;int&gt;            &lt;dbl&gt;
+1        1430            0.143</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(terning , <span class="fu">aes</span>(<span class="at">x=</span>kast)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Oppgave:</strong></p>
+<p>Simmuler sannsynligen, rull 10’000 og finn ut hva er sannsynligheten på en 6’er ternign for å får:</p>
+<ul>
+<li><p>Et partall</p></li>
+<li><p>strørre enn 4</p></li>
+<li><p>sannsynligheten av 1 eller 5 på terningen</p></li>
+</ul>
+<p>Simmuler sannsynligen, rull 10’000 og finn ut hva er sannsynligheten på to 6’er ternign for å får:</p>
+<ul>
+<li><p>Summen av de to tærningene er 10?</p></li>
+<li><p>Summen er mindre eller lik 6</p></li>
+<li><p>Tegn også fordelingen, altså resultat av summen av disse terningene.</p></li>
+</ul>
+</section>
+<section id="forventningsverdi" class="level2">
+<h2 class="anchored" data-anchor-id="forventningsverdi">Forventningsverdi</h2>
+<p>Forventningsverdi, ofte referert til som den forventede verdien eller det matematiske håpet, er et sentralt begrep i sannsynlighetsteori og statistikk. Det representerer det gjennomsnittlige utfallet man kan forvente hvis et eksperiment med tilfeldige utfall gjentas mange ganger. Forventningsverdien er et vektet gjennomsnitt av alle mulige utfall, hvor vektingen reflekterer sannsynligheten for hvert utfall.</p>
+<section id="formel" class="level3">
+<h3 class="anchored" data-anchor-id="formel">Formel</h3>
+<p>Forventningsverdien til en diskret stokastisk variabel (X) med mulige verdier (x_1, x_2, …, x_n) og sannsynligheter (p_1, p_2, …, p_n) er gitt ved formelen: $E(X) = x_1 p_1 + x_2 p_2 + … + x_n p_n $</p>
+</section>
+<section id="eksempler-på-beregning" class="level3">
+<h3 class="anchored" data-anchor-id="eksempler-på-beregning">Eksempler på Beregning</h3>
+<ol type="1">
+<li><strong>Diskret Eksempel - Terningkast</strong>:
+<ul>
+<li>Anta at (X) er resultatet av et terningkast. Hver side av terningen har lik sannsynlighet ( <span class="math inline">\(\frac{1}{6}\)</span> ).</li>
+<li>Forventningsverdien av (X) blir da: $E(X) = 1 + 2 + 3 + 4 + 5 + 6 = 3.5 $</li>
+</ul></li>
+<li><strong>Kontinuerlig Eksempel - Normalfordeling</strong>:
+<ul>
+<li>Anta at (X) er en normalfordelt variabel med gjennomsnitt ( ) og standardavvik ( ).</li>
+<li>For en normalfordelt variabel er forventningsverdien ( E(X) = ).</li>
+</ul></li>
+</ol>
+</section>
+<section id="anvendelser" class="level3">
+<h3 class="anchored" data-anchor-id="anvendelser">Anvendelser</h3>
+<p>Forventningsverdi er en fundamental idé i mange felt som økonomi, ingeniørvitenskap, forsikring, og mer. Det hjelper beslutningstakere med å evaluere risiko, formulere strategier og gjøre kostnadsvurderinger basert på sannsynlige utfall.</p>
+</section>
+<section id="simmulering" class="level3">
+<h3 class="anchored" data-anchor-id="simmulering">Simmulering</h3>
+<p>For å demonstrere hvordan forventningsverdien virker i praksis, kan vi utføre en simulering av flere terningkast i R. Dette vil hjelpe oss å visualisere hvordan gjennomsnittet av utfallene nærmer seg forventningsverdien etter hvert som antall kast øker.</p>
+<p>Vi vil bruke R til å simulere utfallet av å kaste en terning mange ganger. Deretter vil vi beregne gjennomsnittet av utfallene og plotte dette for å se hvordan det konvergerer mot forventningsverdien på 3.5. Vi setter en seed slik at vi får likt resultat. Vi kaster treningen 2000 gang. Så regner vi ut gjennomsnittet etter hvert kast.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Lager en datafram</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>terning <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Nummerere kasten fra 1 til 2000</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">kast =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>, </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># kaster 2000 terninger</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">terning =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">2000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>terning <span class="ot">&lt;-</span> terning <span class="sc">%&gt;%</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summerer opp terning kastene</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">terning_sum =</span> <span class="fu">cumsum</span>(terning)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># deler på antall kast for å få gjennomsnittet</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gjennomsnitt =</span> terning_sum <span class="sc">/</span> kast)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotter resultatet</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(terning, <span class="fu">aes</span>(<span class="at">x =</span> kast, <span class="at">y =</span> gjennomsnitt )) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="fl">3.5</span>),</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span><span class="dv">1</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vi ser at gjennomsnittet tilnærmer seg det vi forventer av å kaste mange terninger.</p>
+</section>
+<section id="oppsummering" class="level3">
+<h3 class="anchored" data-anchor-id="oppsummering">Oppsummering</h3>
+<p>Forventningsverdi er et kraftig verktøy i statistikk som gir et mål på det “sentrale” utfallet av et stokastisk forsøk. Ved å forstå og beregne forventningsverdier kan enkeltindivider og organisasjoner bedre håndtere og navigere i risikoer og usikkerheter i beslutningsprosesser.</p>
+</section>
+</section>
+<section id="grunnleggende-sannsynlighetslover" class="level2">
+<h2 class="anchored" data-anchor-id="grunnleggende-sannsynlighetslover">Grunnleggende Sannsynlighetslover</h2>
+<p>I sannsynlighetsteori er det to fundamentale regler som ofte anvendes for å beregne sannsynligheter: addisjonsregelen og multiplikasjonsregelen. Disse reglene er kritiske for å forstå hvordan sannsynligheter fungerer i praksis, og vil hjelpe oss å bedre forstå distribusjonene vi vil utforske senere i dette kapitlet.</p>
+<section id="addisjonsregelen" class="level3">
+<h3 class="anchored" data-anchor-id="addisjonsregelen">Addisjonsregelen</h3>
+<p>Addisjonsregelen sier at sannsynligheten for at minst én av to hendelser inntreffer, er summen av sannsynlighetene for hver hendelse, minus sannsynligheten for at begge hendelsene inntreffer samtidig.</p>
+</section>
+<section id="multiplikasjonsregelen" class="level3">
+<h3 class="anchored" data-anchor-id="multiplikasjonsregelen">Multiplikasjonsregelen</h3>
+<p>Multiplikasjonsregelen sier at sannsynligheten for at to uavhengige hendelser begge inntreffer, er produktet av sannsynligheten for hver enkelt hendelse.</p>
+</section>
+</section>
+</section>
+<section id="fordelinger-i-sannsynlighetsteori" class="level1">
+<h1>Fordelinger i Sannsynlighetsteori</h1>
+<p>Her vil dekke grunnleggende og avanserte sannsynlighetsfordelinger, deres egenskaper, og hvordan de kan simuleres og visualiseres i R. Sannsynlighetsfordelinger er essensielle i statistikk for å modellere og forstå variabiliteten i ulike typer data. Vi vil utforske både diskrete og kontinuerlige fordelinger.</p>
+<section id="binomisk-fordeling" class="level2">
+<h2 class="anchored" data-anchor-id="binomisk-fordeling">Binomisk Fordeling</h2>
+<section id="teori" class="level3">
+<h3 class="anchored" data-anchor-id="teori">Teori</h3>
+<p>Binomisk fordeling brukes for å modellere antall suksesser i en serie av uavhengige forsøk, der hvert forsøk har to mulige utfall - suksess eller fiasko, med samme sannsynlighet for suksess i hvert forsøk.</p>
+</section>
+<section id="r-simulering" class="level3">
+<h3 class="anchored" data-anchor-id="r-simulering">R Simulering</h3>
+<p>Vi teller opp antall sykkess, når vi kaster 1 mynt 1000 ganger.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antall forsøk og sannsynlighet for suksess</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulere en binomisk fordeling</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Vi kaster 10 mynter 1000 gang, men sannsynlighet 50/50</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>sim_binom <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">mynt =</span> <span class="fu">rbinom</span>(<span class="dv">1000</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p))</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisere fordelingen</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_binom, <span class="fu">aes</span>(mynt))<span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vi teller opp antall sykkess, når vi kaster 3 mynt 1000 ganger.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antall forsøk og sannsynlighet for suksess</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulere en binomisk fordeling</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Vi kaster 10 mynter 1000 gang, men sannsynlighet 50/50</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>sim_binom <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">mynt =</span> <span class="fu">rbinom</span>(<span class="dv">1000</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisere fordelingen</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_binom, <span class="fu">aes</span>(mynt))<span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Hva skjer? Vell utfallsrommet er: 𝑆={𝐾𝐾𝐾,𝐾𝐾𝑀,𝐾𝑀𝐾,𝑀𝐾𝐾,𝐾𝑀𝑀,𝑀𝐾𝑀,𝑀𝑀𝐾,𝑀𝑀𝑀} Hvor mange måter eller kombinasjoner kan vi trekke 0 mynt, det er kun 1 av 8, hva med 1 mynt? Det 3 av 8 osv.</p>
+<p>Vi teller opp antall sykkess, når vi kaster 10 mynt 1000 ganger.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Antall forsøk og sannsynlighet for suksess</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulere en binomisk fordeling</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Vi kaster 10 mynter 1000 gang, men sannsynlighet 50/50</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>sim_binom <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">mynt =</span> <span class="fu">rbinom</span>(<span class="dv">1000</span>, <span class="at">size =</span> n, <span class="at">prob =</span> p))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisere fordelingen</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_binom, <span class="fu">aes</span>(mynt))<span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vi kan også bruke funksjoner fra mosaic pakken til å gi oss helte nøyaktige bergenger. Men da må vi oppgi om vi skal ha punkt sannsynligheter eller kumulativ sansynlighet. La oss ta for oss disse to tilfellen. I kallen en stokastisk prosess <em>X</em> å kaste 10 mynter og telle antall mynt vi får. Altså mynt er en suksess. Hva er sannsynliheten for å få nøykaktig 4 mynt? og hva er sannsynliheten for å få 6 mynt eller mindre?</p>
+<p>Hva er sannsynlighente for 4 mynt? <span class="math inline">\(P(X=4)=?\)</span> Altså punktsannsynligheten</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># koden for å finne punkt sannsynliheten  4 er antall sukesser vi ser etter</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">4</span> , </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Antall mynter vi kaster er 10</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">10</span>, </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Sannsynligheten for sukkess er 50/50 eller 0.5</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.205078125</code></pre>
+</div>
+</div>
+<p>Hva er sannsynligheten for 6 eller mindre mynt? <span class="math inline">\(P(X=6)=?\)</span> Altså kumullativ sannsynlighet.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># koden for å finne kumulativ sannsynliheten 6 er antall sukesser vi ser etter, eller mindre</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xpbinom</span>(<span class="dv">6</span> , </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Antall mynter vi kaster er 10</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">10</span>, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Sannsynligheten for sukkess er 50/50 eller 0.5</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">prob =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.828125</code></pre>
+</div>
+</div>
+<section id="oppgave-1" class="level4">
+<h4 class="anchored" data-anchor-id="oppgave-1">Oppgave</h4>
+<p>La oss nå si at det er historisk 10% av studentene som ikke består eksamen i Sok-2009, og dette er tilfelding, av de 23 som tar Sok-2009 hva er sjanse for at deter 5 eller mindre som ikke består? <span class="math inline">\(P(X=&lt;5)=?\)</span></p>
+</section>
+</section>
+</section>
+<section id="normalfordeling" class="level2">
+<h2 class="anchored" data-anchor-id="normalfordeling">Normalfordeling</h2>
+<section id="teori-1" class="level3">
+<h3 class="anchored" data-anchor-id="teori-1">Teori</h3>
+<p>Normalfordelingen er en av de mest kjente fordelingene i statistikk og er grunnlaget for mange statistiske tester. Den er symmetrisk rundt sitt middelverdi og beskriver mange naturlige fenomener, som målefeil og biologiske målinger.</p>
+<p>Vi har sett at når vi sampler data, hvis vi trekker nok observasjoner så blir vårt gjennomsnitt fordelt normalt rundt det sanne gjennomsnittet. Normal fordeling er noe vi bruker MYE i statisikk.</p>
+</section>
+<section id="r-simulering-1" class="level3">
+<h3 class="anchored" data-anchor-id="r-simulering-1">R Simulering</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parametere for normalfordeling</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># gir oss et gjennomsntitt til en fordeling</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># gir oss standaravviket til en fordeling </span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulere en normalfordeling</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>sim_norm <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisere fordelingen</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sim_norm, <span class="at">breaks =</span> <span class="dv">30</span>, <span class="at">main =</span> <span class="st">"Histogram of Normal Distribution"</span>, <span class="at">xlab =</span> <span class="st">"Values"</span>, <span class="at">col =</span> <span class="st">"green"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dette blir litt vell abstrakt, la oss heller tenke oss et mer konkret eksempel. La oss se på distribusjon av høyder i NHANES survey på de over 20 år. Og berenger gjennomsnitt og standardavvik på høyde.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">20</span> ) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Height)) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">20</span> ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Gjen_hoy =</span> <span class="fu">mean</span>(Height, <span class="at">na.rm =</span> <span class="cn">TRUE</span> ), <span class="at">Sd_hoy =</span> <span class="fu">sd</span>(Height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 2
+  Gjen_hoy Sd_hoy
+     &lt;dbl&gt;  &lt;dbl&gt;
+1     169.   10.1</code></pre>
+</div>
+</div>
+<p>Hvis vi nå antar at denne fordleingen er normalfordelg (den er ikke langt unna), med gjennomsnitt på 168.79 og standardavvik på 10.09. Hvis vi trekker en tilfeldig person fra denne gruppen, hva er sannsynnligheten at denne personen er under 168.79? Eller <span class="math inline">\(P(X&lt;168.79)=?\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bruker mosaic pakken</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">168.79</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="fl">10.09</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># finner sannynligheten at av en person er under 168.79</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xpnorm</span>(<span class="fl">168.79</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn forventingsverdi</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>       mu,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn standardavvik</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>       sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5</code></pre>
+</div>
+</div>
+<p>Vi får 50%. Altså det er 50% sjanse at denne personer er lavere.</p>
+<p>Hva er skjanse for at vi trekker en person som er innenfor et standardavvik av gjennomsnittet? <span class="math inline">\(P(158.7&lt;X&lt;178.88)=?\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bruker mosaic pakken</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fl">168.79</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="fl">10.09</span> </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># finner sannynligheten at av en person er under 168.79</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xpnorm</span>(<span class="fu">c</span>(<span class="fl">158.7</span>, <span class="fl">178.88</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn forventingsverdi</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>       mu,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn standardavvik</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>       sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1586552539 0.8413447461</code></pre>
+</div>
+</div>
+<section id="oppgave-2" class="level4">
+<h4 class="anchored" data-anchor-id="oppgave-2">Oppgave</h4>
+<p>For fordelingen over finn sannsynliheten for:</p>
+<p>En tilfeldig personer er under 160 En tifelding person er over 180 En tilfeldig person er mellom 160 og 180</p>
+</section>
+</section>
+<section id="gjenerelt-om-normal-fordellingen" class="level3">
+<h3 class="anchored" data-anchor-id="gjenerelt-om-normal-fordellingen">Gjenerelt om normal fordellingen</h3>
+<p>Med normalfordeling har det vi ofte kaller 68, 95, 99 regelen. Denne sier at når vi ser på fordelingen så er 68% av fordelingen innen for et standardavvik, 95% av fordelingen er innen for to standardavvik og 99% av fordelingen er innen for tre standaradavvik</p>
+<section id="normal-fordeling-68" class="level4">
+<h4 class="anchored" data-anchor-id="normal-fordeling-68">Normal fordeling 68%</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bruker mosaic pakken</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="dv">1</span> </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># finner sannynligheten at av en person er under 168.79</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xpnorm</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn forventingsverdi</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>       mu,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn standardavvik</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>       sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1586552539 0.8413447461</code></pre>
+</div>
+</div>
+</section>
+<section id="normal-fordeling-95" class="level4">
+<h4 class="anchored" data-anchor-id="normal-fordeling-95">Normal fordeling 95%</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bruker mosaic pakken</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="dv">1</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># finner sannynligheten at av en person er under 168.79</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xpnorm</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn forventingsverdi</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>       mu,</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn standardavvik</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>       sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02275013195 0.97724986805</code></pre>
+</div>
+</div>
+</section>
+<section id="normal-fordeling-99" class="level4">
+<h4 class="anchored" data-anchor-id="normal-fordeling-99">Normal fordeling 99%</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bruker mosaic pakken</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="dv">1</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># finner sannynligheten at av en person er under 168.79</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">xpnorm</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn forventingsverdi</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>       mu,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter inn standardavvik</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>       sd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.001349898032 0.998650101968</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="poissonfordeling" class="level2">
+<h2 class="anchored" data-anchor-id="poissonfordeling">Poissonfordeling</h2>
+<section id="teori-2" class="level3">
+<h3 class="anchored" data-anchor-id="teori-2">Teori</h3>
+<p>Poissonfordelingen er nyttig for å modellere antall ganger en hendelse skjer i en fast tids- eller romenhet under forutsetningen om at disse hendelsene skjer med en konstant rate og uavhengig av hverandre.</p>
+</section>
+<section id="r-simulering-2" class="level3">
+<h3 class="anchored" data-anchor-id="r-simulering-2">R Simulering</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rate parameter for Poissonfordeling</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulere en Poissonfordeling</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>sim_poisson <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">1000</span>, lambda)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisere fordelingen</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sim_poisson, <span class="at">breaks =</span> <span class="fu">max</span>(sim_poisson) <span class="sc">-</span> <span class="fu">min</span>(sim_poisson) <span class="sc">+</span> <span class="dv">1</span>, <span class="at">main =</span> <span class="st">"Histogram of Poisson Distribution"</span>, <span class="at">xlab =</span> <span class="st">"Number of Events"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="uniform-fordeling" class="level2">
+<h2 class="anchored" data-anchor-id="uniform-fordeling">Uniform Fordeling</h2>
+<section id="teori-3" class="level3">
+<h3 class="anchored" data-anchor-id="teori-3">Teori</h3>
+<p>Uniform fordeling betyr at alle utfall i et intervall er like sannsynlige. Dette er nyttig for å modellere fenomener hvor det ikke er noen naturlig preferanse for noen verdier over andre innenfor et spesifikt område.</p>
+</section>
+<section id="r-simulering-3" class="level3">
+<h3 class="anchored" data-anchor-id="r-simulering-3">R Simulering</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Grenser for uniform fordeling</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>min_val <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>max_val <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulere en uniform fordeling</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>sim_uniform <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>, <span class="at">min =</span> min_val, <span class="at">max =</span> max_val)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisere fordelingen</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sim_uniform, <span class="at">breaks =</span> <span class="dv">30</span>, <span class="at">main =</span> <span class="st">"Histogram of Uniform Distribution"</span>, <span class="at">xlab =</span> <span class="st">"Values"</span>, <span class="at">col =</span> <span class="st">"orange"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F5_Sannsynlighet_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="oppsummering-1" class="level2">
+<h2 class="anchored" data-anchor-id="oppsummering-1">Oppsummering</h2>
+<p>Dette kapittelet har introdusert noen av de mest brukte sannsynlighetsfordelingene i statistikk. Ved å forstå disse fordelingene og kunne simulere dem i R, er du bedre rustet til å analysere reelle data og forstå underliggende mønstre. Disse fordelingene danner grunnlaget for statistisk inferens og er avgjørende for presis dataanalyse.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
