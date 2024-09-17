@@ -1,0 +1,709 @@
+---
+title: "Forelesning 5: Sannsynlighet"
+subtitle: "Sok-2009 h24"
+author: "Eirik Eriksen Heen & ChatGPT"
+date: "`r format(Sys.Date(), '%d. %b %Y')`"
+format: html
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+  freeze: auto
+  code-overflow: wrap # Pakker kode som er for lang for linjen
+---
+
+```{r start, include = FALSE}
+##### Start up #####
+rm(list = ls()) # Empties all data
+
+options(scipen=10) # writes 10 scipens before scientific script
+options(digits=10) # writes up to 10 digits
+
+
+# loading packages
+library(tidyverse)
+library(gt)
+library(mosaic)
+library(NHANES)
+
+# Kode for a kunne bruke norske bokstaver
+Sys.setlocale(locale="no_NO")
+
+```
+
+I dette kapitlet skal vi dykke dypere inn i sannsynlighetsregning, et fundamentalt aspekt av statistikk som hjelper oss å forstå, analysere og kvantifisere usikkerhet i ulike fenomener. Sannsynlighetsteori er ikke bare teoretisk viktig, den har praktisk anvendelse i alt fra finans og økonomi til ingeniørfag og vitenskapelige undersøkelser. Vi vil utforske både teoretiske konsepter og praktiske simuleringer, noe som vil gi en solid forståelse av hvordan og hvorfor vi anvender sannsynlighetsmodeller og formler.
+
+# Stokastiske Forsøk
+
+Et stokastisk forsøk er et eksperiment der utfallet ikke kan forutsies med sikkerhet på forhånd, selv om alle mulige utfall er kjent. Denne typen forsøk er grunnleggende i sannsynlighetsteori og danner grunnlaget for statistisk inferens og beslutningsteori.
+
+## Egenskaper ved Stokastiske Forsøk
+
+De viktigste egenskapene til stokastiske forsøk inkluderer:
+
+-   **Usikkerhet**: Utfallet av forsøket er usikkert og kan ikke bestemmes på forhånd.
+
+-   **Mengde av Utfall**: Alle mulige utfall av forsøket er kjent før eksperimentet utføres.
+
+-   **Repetisjon**: Forsøket kan gjentas under identiske forhold, og utfallene kan være forskjellige ved hver gjentakelse.
+
+Å kaste en terning eller en mynt er et godt eksempel. Vi vet før vi kaster en mynt at (gitt at terningen er rettferdig) at er 50/50 å få en mynt eller kron.
+
+## Eksempler på Stokastiske Forsøk
+
+For å illustrere konseptet, her er noen klassiske eksempler på stokastiske forsøk:
+
+1.  **Terningkast**:
+
+    -   **Forsøk**: Kaste en seksidig terning.
+
+    -   **Mulige Utfall**: Tallene 1, 2, 3, 4, 5, og 6.
+
+    -   **Usikkerhet**: Hvilket tall som vises er usikkert til terningen har landet.
+
+2.  **Korttrekking**:
+
+    -   **Forsøk**: Trekke et kort fra en standard kortstokk på 52 kort.
+
+    -   **Mulige Utfall**: Ethvert av de 52 kortene.
+
+    -   **Usikkerhet**: Hvilket kort som trekkes er ikke kjent før kortet vises.
+
+3.  **Myntkast**:
+
+    -   **Forsøk**: Kaste en mynt.
+
+    -   **Mulige Utfall**: Kron eller mynt.
+
+    -   **Usikkerhet**: Om mynten viser kron eller mynt er ikke kjent før den har landet.
+
+4.  Måling av Ventetid for en Handelsordre
+
+    -   **Forsøk:** Mål tiden det tar fra en handelsordre blir plassert til den blir utført i aksjemarkedet.
+
+    -   **Usikkerhet:** Selv om handelsordren er plassert umiddelbart, er det mange faktorer som påvirker nøyaktig når ordren blir utført. Disse inkluderer ordretype, markedslikviditet, volatilitet, og handelsvolum fra andre markedsaktører.
+
+    -   **Utfall:** Tiden det tar for at en ordre blir utført er et kontinuerlig tall, og kan variere betydelig avhengig av markedets tilstand. For eksempel, kan en ordre bli utført i alt fra noen få millisekunder til flere minutter.
+
+Legg merke til at tre førset har enkle tellelige utfall, mens det siste har ikke dette.
+
+Et stokasist forsølk denoteres ofte med *X*
+
+## Kontinuerlig og diskret
+
+I sannsynlighetsteori skilles det mellom diskrete og kontinuerlige stokastiske forsøk, som hver har unike egenskaper og krever forskjellige matematiske tilnærminger. **Diskrete forsøk** resulterer i utfall som kan telles og er ofte representert ved hele tall, som antall ganger en terning viser seks. Disse utfallene kan håndteres med punktsannsynligheter hvor sannsynligheten for ethvert spesifikt utfall kan beregnes direkte.
+
+**Kontinuerlige forsøk**, derimot, produserer utfall som er del av et kontinuum, som tiden det tar for en kjemisk reaksjon å fullføre eller prisen på en aksje på et gitt tidspunkt. I disse tilfellene blir punktsannsynligheten for ethvert spesifikt utfall null, fordi det er uendelig mange mulige utfall. Derfor bruker man sannsynlighetstetthetsfunksjoner (PDF) for å beskrive sannsynlighetsfordelingene i kontinuerlige forsøk. Dette skillet er viktig fordi det påvirker hvordan sannsynligheter beregnes og tolkes i forskjellige situasjoner, og det understreker behovet for ulike analytiske teknikker tilpasset naturen av dataene man jobber med.
+
+## Betydningen av Stokastiske Forsøk
+
+Stokastiske forsøk er sentrale i mange felter innen vitenskap og ingeniørfag hvor beslutninger må tas under usikkerhet. De gir et rammeverk for å analysere sannsynlighet og for å utvikle matematiske modeller som kan forutsi sannsynligheten for forskjellige utfall basert på eksisterende data.
+
+Gjennom å forstå og modellere stokastiske forsøk, kan forskere og beslutningstakere bedre navigere i usikkerhet og gjøre mer informerte valg, noe som er essensielt i alt fra finans og økonomi til vitenskapelig forskning og teknologisk utvikling.
+
+Her kan vi også bruke set.seed() som tidligere, og da får vi samme uavhengi av hvem som kjører koden.
+
+## Grunnleggende Konsepter
+
+Sannsynlighetsregning begynner med noen grunnleggende konsepter:
+
+1.  **Sannsynlighetsrom**: Et sannsynlighetsrom er den samlede mengden av alle mulige utfall for et eksperiment. For eksempel, ved kast av en terning, er sannsynlighetsrommet {1, 2, 3, 4, 5, 6}.
+
+    1.  Vi skriver sansynlighetsrom som *S*
+
+        1.  Sannsynlighetsrommet for en terining: $S={1,2,3,4,5,6}$.
+
+        2.  Sannsynlighetsrommet for et kort fra en kort stokk: $S={K2, K3, K4,..., H12, H13, H14}$.
+
+        3.  Sannsynlighetsrommet for en MYNT: $S={Kron, Mynt}$.
+
+2.  **Hendelser**: En hendelse er en hvilken som helst delmengde av sannsynlighetsrommet. For eksempel, å få et partall ved kast av terning er en hendelse som kan skrives som {2, 4, 6}.
+
+    1.  Vi skriver ofte hendelsesrom som *A* eller *B* men vi kan bruker andre
+
+        1.  For en terning å få:
+
+            1.  Et par tall $A={2,4,6}$.
+
+            2.  Et oddetall $B={1,3,5}$.
+
+            3.  Med et ut som å få 3'er på en terning $C={3}$.
+
+        2.  For en mynt
+
+            1.  Få en mynt $A={Mynt}$.
+
+3.  **Sannsynlighet**: Sannsynligheten for en hendelse $A$ er et mål på hvor sannsynlig det er at $A$ skjer, og beregnes som:
+
+$$P(A) = \frac{\text{Antall gunstige utfall}}{\text{Totalt antall utfall}}=\frac{\text{g}}{\text{m}}$$
+
+For eksempel, sannsynligheten for å få en 3-er ved kast av en terning er: $$P(3)= \frac{1}{6}=0.166666.$$
+
+Hvor er dette korrekt? Vell det er kun ett uftall som gir oss en 3'eer mens vi kan får 6 forskjellige utfall på en terning.
+
+En viktig sannsynlighets regeler er at sannsynligheten av alle utfall er 1, eller 100%
+
+$P(S)=1$
+
+Hva er sannsynligheten for å få en en'er på en terning. Det er 6 totale ufall og kun et gunstig vi er interesert i.
+
+```{r}
+1/6
+```
+
+## Statistik notasjon
+
+Når vi skal gjøre dette mer gjenerelt og i trå med statistik notasjon skriver vi ofte følgene.
+
+*X* er en stokasisk prossess av en 6'er terning.
+
+Hva er sannsynligheten av å få 3 på terningen?
+
+$P(X=3)=\frac{1}{6}=0.166666.$
+
+Hva står her P er sannsynligheten for at X tar verdien 3. Hva med at vi får 3 eller mindre på terningen?
+
+$P(X≤3)=\frac{3}{6}=0.5.$
+
+Vi kaller $P(X=3)$ en punkt sannsynlighet siden den kalkuerer et punkt. Mens $P(X≤3)$ kalles en kumulativ sannsynlighet.
+
+### Punkt Sannsynlighet
+
+Punktsannsynlighet refererer til sannsynligheten for at en stokastisk variabel $X$ antar en spesifikk verdi. I en diskret sannsynlighetsfordeling, hvor utfallene er klart definerte og tellelige, kan hver utfall tildeles en spesifikk sannsynlighet. For eksempel, i en terningkast, er punktsannsynligheten for å få en femmer $P(X=5)= \frac{1}{6}$. I kontinuerlige fordelinger er punktsannsynligheten for enhver spesifikk verdi teknisk sett null, siden det er uendelig mange mulige utfall.
+
+Hva er sannsynligheten av å kaste en ikke rettferdig mynt. La oss si at det er kun 0.3 sjanser for suksess (altså mynt). Hvis vi kaster 10 mynter, hva er sannsynligheten å få 4 mynter? $P(X=4)$
+
+```{r}
+# Antall forsøk og sannsynlighet for suksess
+n <- 10
+p <- 0.3
+
+# Mulige utfall
+x_values <- 0:n
+
+# Sannsynligheter for hvert utfall
+probabilities <- dbinom(x_values, size=n, prob=p)
+
+# Plotte sannsynlighetsfordelingen
+plot(x_values, probabilities, type="h", lwd=10, col="blue", main="Probability Mass Function of a Binomial Distribution", xlab="Number of Successes", ylab="Probability")
+
+# Farge den fjerde kolonnen rød (index 4 fordi R indexer starter med 1)
+lines(x_values[5], probabilities[5], type="h", lwd=10, col="red")
+
+```
+
+For tenk deg at jeg ser på høyden av den norske befolkningen hva er sannsynligheten at jeg finner en person som er nøyakting 153.9345 cm høy? $P(X=153.9345)=0$. Den sannsynligheten er null. Men å finne noen mellom 153 til 154 er mulig.
+
+### Kumulativ Sannsynlighet
+
+Kumulativ sannsynlighet, derimot, er sannsynligheten for at en stokastisk variabel $X$ vil ha en verdi mindre enn eller lik en gitt verdi. Denne sannsynligheten uttrykkes gjennom kumulative fordelingsfunksjoner (CDF), som gir sannsynligheten $P(X≤x)$ for enhver verdi $x$. For en diskret variabel, summes sannsynlighetene for alle utfall opp til og inkludert xxx. For kontinuerlige variabler, beregnes den kumulative sannsynligheten som arealet under sannsynlighetstetthetsfunksjonen (PDF) fra det laveste punktet i fordelingen opp til $x$.
+
+Hva er sannsynligheten av å kaste en ikke rettferdig mynt. La oss si at det er kun 0.3 sjanser for suksess (altså mynt). Hvis vi kaster 10 mynter, hva er sannsynligheten å få 4 mynter eller mindre? $P(X≤4)$
+
+```{r}
+# Antall forsøk og sannsynlighet for suksess
+n <- 10
+p <- 0.3
+
+# Mulige utfall
+x_values <- 0:n
+
+# Sannsynligheter for hvert utfall
+probabilities <- dbinom(x_values, size=n, prob=p)
+
+# Opprette en fargevektor hvor de første fem kolonnene (0 til 4) er røde, resten blå
+colors <- rep("blue", length(x_values))
+colors[1:5] <- "red"  # Farge indekser 1 til 5 røde (0 til 4 i vanlig 0-basert indeksering)
+
+# Plotte sannsynlighetsfordelingen
+plot(x_values, probabilities, type="h", lwd=10, col=colors, main="Probability Mass Function of a Binomial Distribution", xlab="Number of Successes", ylab="Probability")
+
+```
+
+#### Betydningen av Disse Konseptene
+
+Forståelsen av punkt og kumulativ sannsynlighet har direkte praktisk betydning:
+
+-   **Diskret Analyse:** I praktiske situasjoner hvor utfallene er diskrete og avgrensede, som terningkast eller kortspill, er det ofte nødvendig å kjenne både punkt- og kumulative sannsynligheter for å lage strategier eller forutsigelser.
+
+    -   I økonomi er det ofte binomisk eller ordinal nivå som er diskret.
+
+-   **Kontinuerlig Analyse:** I situasjoner med kontinuerlige målinger, som tid, lengde, eller temperatur, er kumulative sannsynligheter viktige for å forstå sannsynlighetsfordelingen og for å beregne sannsynligheter for intervaller av utfall.
+
+    -   I økonomi er dette en vanlig type kategori.
+
+Å skille mellom disse typer sannsynligheter bidrar til mer presis statistisk analyse og bedre beslutningstaking, ved at man klarer å forstå og beregne sannsynligheter for komplekse fenomener i en rekke ulike fagfelt.
+
+## Oppgave:
+
+Hva er sannsynligheten på en 6'er ternign for å får:
+
+-   Et partall
+
+    -   A = {2,4,6}
+
+    -   P(X=A)=?
+
+-   strørre enn 4
+
+    -   P(X\>4)=?
+
+-   sannsynligheten av 1 eller 2 på terningen
+
+    -   P(X=\<2)=
+
+```{r}
+
+
+
+```
+
+## Simmulering av utfall
+
+La oss raskt ta for oss simmulering av utfall. Hvis vi nå ber r om å rulle 10 000 gang en terning hva er sannsynligheten for å få en 3'er?
+
+```{r}
+# setter en seed
+set.seed(42)
+
+# antall kast
+n = 10000
+
+# replikerer 10 000 ganger en terning
+terning <- tibble(kast = replicate(n,
+                     # trekker fra en menge med 1 til 6
+                     sample(1:6,1, replace=TRUE)
+                     )
+)
+
+# tester så hvor mange som er lik 3
+terning %>%
+  summarise(Antall_3ere = sum(kast ==3), Gjennomsnitt_3er = mean(kast ==3) )
+
+ggplot(terning , aes(x=kast)) +
+  geom_bar()
+
+```
+
+Så deler vi på antall kast:
+
+```{r}
+sum(terning == 3)/n
+```
+
+Og vi finner nesten nøyaktig den korrekt sannsyneligheten... det er nesten litt for nært.
+
+Her er det kun fantasien som setter genser. Hva med hvis vi kaster to terninger og registeret kun høyeste verdi. Hva er sannynligheten da for å få 3?
+
+```{r}
+# setter en seed
+set.seed(42)
+
+# antall kast
+n = 10000
+
+# replikerer 10 000 ganger en terning
+terning <- tibble(kast = replicate(n,
+                                   # renger maksen av to kast
+                                   max(
+                                      # trekker fra en menge med 1 til 6
+                                    sample(1:6,2, replace=TRUE)
+                                   )
+                    
+                     )
+)
+
+# tester så hvor mange som er lik 3
+terning %>%
+  summarise(Antall_3ere = sum(kast ==3), Gjennomsnitt_3er = mean(kast ==3) )
+
+ggplot(terning , aes(x=kast)) +
+  geom_bar()
+
+```
+
+**Oppgave:**
+
+Simmuler sannsynligen, rull 10'000 og finn ut hva er sannsynligheten på en 6'er ternign for å får:
+
+-   Et partall
+
+-   strørre enn 4
+
+-   sannsynligheten av 1 eller 5 på terningen
+
+Simmuler sannsynligen, rull 10'000 og finn ut hva er sannsynligheten på to 6'er ternign for å får:
+
+-   Summen av de to tærningene er 10?
+
+-   Summen er mindre eller lik 6
+
+-   Tegn også fordelingen, altså resultat av summen av disse terningene.
+
+## Forventningsverdi
+
+Forventningsverdi, ofte referert til som den forventede verdien eller det matematiske håpet, er et sentralt begrep i sannsynlighetsteori og statistikk. Det representerer det gjennomsnittlige utfallet man kan forvente hvis et eksperiment med tilfeldige utfall gjentas mange ganger. Forventningsverdien er et vektet gjennomsnitt av alle mulige utfall, hvor vektingen reflekterer sannsynligheten for hvert utfall.
+
+### Formel
+
+Forventningsverdien til en diskret stokastisk variabel (X) med mulige verdier (x_1, x_2, ..., x_n) og sannsynligheter (p_1, p_2, ..., p_n) er gitt ved formelen: $E(X) = x_1 \cdot p_1 + x_2 \cdot p_2 + ... + x_n \cdot p_n $
+
+### Eksempler på Beregning
+
+1.  **Diskret Eksempel - Terningkast**:
+    -   Anta at (X) er resultatet av et terningkast. Hver side av terningen har lik sannsynlighet ( $\frac{1}{6}$ ).
+    -   Forventningsverdien av (X) blir da: $E(X) = 1 \cdot \frac{1}{6} + 2 \cdot \frac{1}{6} + 3 \cdot \frac{1}{6} + 4 \cdot \frac{1}{6} + 5 \cdot \frac{1}{6} + 6 \cdot \frac{1}{6} = 3.5 $
+2.  **Kontinuerlig Eksempel - Normalfordeling**:
+    -   Anta at (X) er en normalfordelt variabel med gjennomsnitt ( \mu ) og standardavvik ( \sigma ).
+    -   For en normalfordelt variabel er forventningsverdien ( E(X) = \mu ).
+
+### Anvendelser
+
+Forventningsverdi er en fundamental idé i mange felt som økonomi, ingeniørvitenskap, forsikring, og mer. Det hjelper beslutningstakere med å evaluere risiko, formulere strategier og gjøre kostnadsvurderinger basert på sannsynlige utfall.
+
+### Simmulering
+
+For å demonstrere hvordan forventningsverdien virker i praksis, kan vi utføre en simulering av flere terningkast i R. Dette vil hjelpe oss å visualisere hvordan gjennomsnittet av utfallene nærmer seg forventningsverdien etter hvert som antall kast øker.
+
+Vi vil bruke R til å simulere utfallet av å kaste en terning mange ganger. Deretter vil vi beregne gjennomsnittet av utfallene og plotte dette for å se hvordan det konvergerer mot forventningsverdien på 3.5. Vi setter en seed slik at vi får likt resultat. Vi kaster treningen 2000 gang. Så regner vi ut gjennomsnittet etter hvert kast.
+
+```{r}
+set.seed(123)
+
+#Lager en datafram
+terning <- data.frame(
+  #Nummerere kasten fra 1 til 2000
+  kast = 1:2000, 
+  # kaster 2000 terninger
+  terning = sample(1:6, 2000, replace = TRUE))
+
+terning <- terning %>%
+  # Summerer opp terning kastene
+  mutate(terning_sum = cumsum(terning)) %>%
+  # deler på antall kast for å få gjennomsnittet
+  mutate(gjennomsnitt = terning_sum / kast)
+  
+# Plotter resultatet
+ggplot(terning, aes(x = kast, y = gjennomsnitt )) +
+  geom_line() +
+  geom_hline(
+    aes(yintercept = 3.5),
+    color = "red", linetype = "dashed", size =1  )
+
+```
+
+Vi ser at gjennomsnittet tilnærmer seg det vi forventer av å kaste mange terninger.
+
+### Oppsummering
+
+Forventningsverdi er et kraftig verktøy i statistikk som gir et mål på det "sentrale" utfallet av et stokastisk forsøk. Ved å forstå og beregne forventningsverdier kan enkeltindivider og organisasjoner bedre håndtere og navigere i risikoer og usikkerheter i beslutningsprosesser.
+
+## Grunnleggende Sannsynlighetslover
+
+I sannsynlighetsteori er det to fundamentale regler som ofte anvendes for å beregne sannsynligheter: addisjonsregelen og multiplikasjonsregelen. Disse reglene er kritiske for å forstå hvordan sannsynligheter fungerer i praksis, og vil hjelpe oss å bedre forstå distribusjonene vi vil utforske senere i dette kapitlet.
+
+### Addisjonsregelen
+
+Addisjonsregelen sier at sannsynligheten for at minst én av to hendelser inntreffer, er summen av sannsynlighetene for hver hendelse, minus sannsynligheten for at begge hendelsene inntreffer samtidig.
+
+### Multiplikasjonsregelen
+
+Multiplikasjonsregelen sier at sannsynligheten for at to uavhengige hendelser begge inntreffer, er produktet av sannsynligheten for hver enkelt hendelse.
+
+# Fordelinger i Sannsynlighetsteori
+
+Her vil dekke grunnleggende og avanserte sannsynlighetsfordelinger, deres egenskaper, og hvordan de kan simuleres og visualiseres i R. Sannsynlighetsfordelinger er essensielle i statistikk for å modellere og forstå variabiliteten i ulike typer data. Vi vil utforske både diskrete og kontinuerlige fordelinger.
+
+## Binomisk Fordeling
+
+### Teori
+
+Binomisk fordeling brukes for å modellere antall suksesser i en serie av uavhengige forsøk, der hvert forsøk har to mulige utfall - suksess eller fiasko, med samme sannsynlighet for suksess i hvert forsøk.
+
+### R Simulering
+
+Vi teller opp antall sykkess, når vi kaster 1 mynt 1000 ganger.
+
+```{r}
+# Antall forsøk og sannsynlighet for suksess
+n <- 1
+p <- 0.5
+
+# Simulere en binomisk fordeling
+set.seed(123)
+# Vi kaster 10 mynter 1000 gang, men sannsynlighet 50/50
+sim_binom <- tibble(mynt = rbinom(1000, size = n, prob = p))
+
+# Visualisere fordelingen
+ggplot(sim_binom, aes(mynt))+
+  geom_bar()
+
+```
+
+Vi teller opp antall sykkess, når vi kaster 3 mynt 1000 ganger.
+
+```{r}
+# Antall forsøk og sannsynlighet for suksess
+n <- 3
+p <- 0.5
+
+# Simulere en binomisk fordeling
+set.seed(123)
+# Vi kaster 10 mynter 1000 gang, men sannsynlighet 50/50
+sim_binom <- tibble(mynt = rbinom(1000, size = n, prob = p))
+
+# Visualisere fordelingen
+ggplot(sim_binom, aes(mynt))+
+  geom_bar()
+
+```
+
+Hva skjer? Vell utfallsrommet er: 𝑆={𝐾𝐾𝐾,𝐾𝐾𝑀,𝐾𝑀𝐾,𝑀𝐾𝐾,𝐾𝑀𝑀,𝑀𝐾𝑀,𝑀𝑀𝐾,𝑀𝑀𝑀} Hvor mange måter eller kombinasjoner kan vi trekke 0 mynt, det er kun 1 av 8, hva med 1 mynt? Det 3 av 8 osv.
+
+Vi teller opp antall sykkess, når vi kaster 10 mynt 1000 ganger.
+
+```{r}
+# Antall forsøk og sannsynlighet for suksess
+n <- 10
+p <- 0.5
+
+# Simulere en binomisk fordeling
+set.seed(123)
+# Vi kaster 10 mynter 1000 gang, men sannsynlighet 50/50
+sim_binom <- tibble(mynt = rbinom(1000, size = n, prob = p))
+
+# Visualisere fordelingen
+ggplot(sim_binom, aes(mynt))+
+  geom_bar()
+
+```
+
+Vi kan også bruke funksjoner fra mosaic pakken til å gi oss helte nøyaktige bergenger. Men da må vi oppgi om vi skal ha punkt sannsynligheter eller kumulativ sansynlighet. La oss ta for oss disse to tilfellen. I kallen en stokastisk prosess *X* å kaste 10 mynter og telle antall mynt vi får. Altså mynt er en suksess. Hva er sannsynliheten for å få nøykaktig 4 mynt? og hva er sannsynliheten for å få 6 mynt eller mindre?
+
+Hva er sannsynlighente for 4 mynt? $P(X=4)=?$ Altså punktsannsynligheten
+
+```{r}
+
+# koden for å finne punkt sannsynliheten  4 er antall sukesser vi ser etter
+dbinom(4 , 
+       # Antall mynter vi kaster er 10
+       size = 10, 
+       # Sannsynligheten for sukkess er 50/50 eller 0.5
+       prob = 0.5)
+
+
+```
+
+Hva er sannsynligheten for 6 eller mindre mynt? $P(X=6)=?$ Altså kumullativ sannsynlighet. 
+
+```{r}
+# koden for å finne kumulativ sannsynliheten 6 er antall sukesser vi ser etter, eller mindre
+xpbinom(6 , 
+       # Antall mynter vi kaster er 10
+       size = 10, 
+       # Sannsynligheten for sukkess er 50/50 eller 0.5
+       prob = 0.5)
+```
+
+
+#### Oppgave 
+
+La oss nå si at det er historisk 10% av studentene som ikke består eksamen i Sok-2009, og dette er tilfelding, av de 23 som tar Sok-2009 hva er sjanse for at deter 5 eller mindre som ikke består? $P(X=<5)=?$
+
+```{r}
+
+
+```
+
+
+
+## Normalfordeling
+
+### Teori
+
+Normalfordelingen er en av de mest kjente fordelingene i statistikk og er grunnlaget for mange statistiske tester. Den er symmetrisk rundt sitt middelverdi og beskriver mange naturlige fenomener, som målefeil og biologiske målinger.
+
+Vi har sett at når vi sampler data, hvis vi trekker nok observasjoner så blir vårt gjennomsnitt fordelt normalt rundt det sanne gjennomsnittet. Normal fordeling er noe vi bruker MYE i statisikk. 
+
+
+
+### R Simulering
+
+```{r}
+# Parametere for normalfordeling
+# gir oss et gjennomsntitt til en fordeling
+mu <- 0
+# gir oss standaravviket til en fordeling 
+sigma <- 1
+
+# Simulere en normalfordeling
+set.seed(123)
+sim_norm <- rnorm(10000, mean = mu, sd = sigma)
+
+# Visualisere fordelingen
+hist(sim_norm, breaks = 30, main = "Histogram of Normal Distribution", xlab = "Values", col = "green")
+```
+
+Dette blir litt vell abstrakt, la oss heller tenke oss et mer konkret eksempel. La oss se på distribusjon av høyder i NHANES survey på de over 20 år. Og berenger gjennomsnitt og standardavvik på høyde.
+
+```{r}
+
+NHANES %>%
+  filter(Age >= 20 ) %>%
+  ggplot(aes(x=Height)) +
+  geom_histogram()
+
+NHANES %>%
+  filter(Age >= 20 ) %>%
+  summarise(Gjen_hoy = mean(Height, na.rm = TRUE ), Sd_hoy = sd(Height, na.rm = TRUE))
+
+```
+
+
+Hvis vi nå antar at denne fordleingen er normalfordelg (den er ikke langt unna), med gjennomsnitt på 168.79 og standardavvik på 10.09. Hvis vi trekker en tilfeldig person fra denne gruppen, hva er sannsynnligheten at denne personen er under 168.79? Eller $P(X<168.79)=?$
+
+```{r}
+# Bruker mosaic pakken
+mu = 168.79
+sd = 10.09 
+
+# finner sannynligheten at av en person er under 168.79
+xpnorm(168.79,
+       # setter inn forventingsverdi
+       mu,
+       # setter inn standardavvik
+       sd)
+
+```
+
+Vi får 50%. Altså det er 50% sjanse at denne personer er lavere. 
+
+Hva er skjanse for at vi trekker en person som er innenfor et standardavvik av gjennomsnittet? $P(158.7<X<178.88)=?$
+
+```{r}
+
+# Bruker mosaic pakken
+mu = 168.79
+sd = 10.09 
+
+# finner sannynligheten at av en person er under 168.79
+xpnorm(c(158.7, 178.88),
+       # setter inn forventingsverdi
+       mu,
+       # setter inn standardavvik
+       sd)
+
+```
+
+#### Oppgave
+
+For fordelingen over finn sannsynliheten for:
+
+En tilfeldig personer er under 160
+En tifelding person er over 180
+En tilfeldig person er mellom 160 og 180
+
+```{r}
+
+
+```
+
+
+### Gjenerelt om normal fordellingen
+
+Med normalfordeling har det vi ofte kaller 68, 95, 99 regelen. Denne sier at når vi ser på fordelingen så er 68% av fordelingen innen for et standardavvik, 95% av fordelingen er innen for to standardavvik og 99% av fordelingen er innen for tre standaradavvik
+
+
+#### Normal fordeling 68%
+```{r}
+# Bruker mosaic pakken
+mu = 0
+sd = 1 
+
+# finner sannynligheten at av pluss minus et standardavvik
+xpnorm(c(-1, 1),
+       # setter inn forventingsverdi
+       mu,
+       # setter inn standardavvik
+       sd)
+```
+
+#### Normal fordeling 95%
+```{r}
+# Bruker mosaic pakken
+mu = 0
+sd = 1 
+
+# finner sannynligheten at av pluss minus to standardavvik
+xpnorm(c(-2, 2),
+       # setter inn forventingsverdi
+       mu,
+       # setter inn standardavvik
+       sd)
+```
+
+
+#### Normal fordeling 99%
+```{r}
+# Bruker mosaic pakken
+mu = 0
+sd = 1 
+
+# finner sannynligheten at av pluss minus tre standardavvik
+xpnorm(c(-3, 3),
+       # setter inn forventingsverdi
+       mu,
+       # setter inn standardavvik
+       sd)
+```
+
+
+## Poissonfordeling
+
+### Teori
+
+Poissonfordelingen er nyttig for å modellere antall ganger en hendelse skjer i en fast tids- eller romenhet under forutsetningen om at disse hendelsene skjer med en konstant rate og uavhengig av hverandre.
+
+### R Simulering
+
+```{r}
+# Rate parameter for Poissonfordeling
+lambda <- 3
+
+# Simulere en Poissonfordeling
+set.seed(123)
+sim_poisson <- rpois(1000, lambda)
+
+# Visualisere fordelingen
+hist(sim_poisson, breaks = max(sim_poisson) - min(sim_poisson) + 1, main = "Histogram of Poisson Distribution", xlab = "Number of Events", col = "red")
+```
+
+
+
+
+## Uniform Fordeling
+
+### Teori
+
+Uniform fordeling betyr at alle utfall i et intervall er like sannsynlige. Dette er nyttig for å modellere fenomener hvor det ikke er noen naturlig preferanse for noen verdier over andre innenfor et spesifikt område.
+
+### R Simulering
+
+```{r}
+# Grenser for uniform fordeling
+min_val <- 0
+max_val <- 1
+
+# Simulere en uniform fordeling
+set.seed(123)
+sim_uniform <- runif(1000, min = min_val, max = max_val)
+
+# Visualisere fordelingen
+hist(sim_uniform, breaks = 30, main = "Histogram of Uniform Distribution", xlab = "Values", col = "orange")
+```
+
+## Oppsummering
+
+Dette kapittelet har introdusert noen av de mest brukte sannsynlighetsfordelingene i statistikk. Ved å forstå disse fordelingene og kunne simulere dem i R, er du bedre rustet til å analysere reelle data og forstå underliggende mønstre. Disse fordelingene danner grunnlaget for statistisk inferens og er avgjørende for presis dataanalyse.
