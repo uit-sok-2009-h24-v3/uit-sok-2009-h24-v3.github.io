@@ -12,7 +12,7 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 37 | 11.09 10:15-12:00 | 02.216, Økonomen| Forelesninger | Grunnleggende Sampling og Introduksjon til Usikkerhet | [HTML](forelesning/SOK2009_2024_F4_Simulering.html) *hent koden på canvas*|
 | Uke 37 | 12.09  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  [Oppgave](forelesning/SOK2009_2024_S1.qmd) [Fasit](forelesning/SOK2009_2024_S1_fasit.qmd) |
 | Uke 38 | 17.09  12:15-14:00  | 02.119, DT-LAB | Forelesninger | Grunnleggende Sannsynlighetsregning | [Forelesning](forelesning/SOK2009_2024_F5_Sannsynlighet.html)  |
-| Uke 38 | 19.09  10:15-12:00  | 02.216, Økonomen | Forelesning | Hypotesetesting |  |
+| Uke 38 | 19.09  10:15-12:00  | 02.216, Økonomen | Forelesning | Hypotesetesting | [Forelesning](forelesning/SOK2009_2024_F6_Hypothesis_testing.html)  |
 | Uke 38 | 20.09  14:00 | || **Mappe 1 utlevert** |
 | Uke 39 | 25.09  10:15-12:00  | 02.216, Økonomen | Forelesninger | Regresjon |  |
 | Uke 39 | 27.09  14:00 | || **Mappe 1 frist** |
