@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eirik Eriksen Heen &amp; ChatGPT">
+<meta name="dcterms.date" content="2024-09-19">
+
+<title>Forelesning 6: Hypothesis testing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="SOK2009_2024_F6_Hypothesis_testing_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SOK2009_2024_F6_Hypothesis_testing_files/libs/quarto-html/quarto.js"></script>
+<script src="SOK2009_2024_F6_Hypothesis_testing_files/libs/quarto-html/popper.min.js"></script>
+<script src="SOK2009_2024_F6_Hypothesis_testing_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SOK2009_2024_F6_Hypothesis_testing_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SOK2009_2024_F6_Hypothesis_testing_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SOK2009_2024_F6_Hypothesis_testing_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SOK2009_2024_F6_Hypothesis_testing_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SOK2009_2024_F6_Hypothesis_testing_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SOK2009_2024_F6_Hypothesis_testing_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Forelesning 6: Hypothesis testing</h1>
+<p class="subtitle lead">Sok-2009 h24</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Eirik Eriksen Heen &amp; ChatGPT </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 19, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduksjon-til-hypotesetesting" class="level1">
+<h1>Introduksjon til hypotesetesting</h1>
+<p>Hypotesetesting er en fundamental komponent i statistisk analyse, som spiller en avgjørende rolle i forskning innen samfunnsøkonomi og datavitenskap. Denne metoden brukes for å gjøre inferenser om populasjoner basert på prøvedata, og hjelper forskere og analytikere med å ta informerte beslutninger om gyldigheten av deres hypoteser.</p>
+<section id="hva-er-hypotesetesting" class="level2">
+<h2 class="anchored" data-anchor-id="hva-er-hypotesetesting">Hva er hypotesetesting?</h2>
+<p>Hypotesetesting er prosessen med å bruke statistiske tester for å avgjøre om det er tilstrekkelig bevis i et datasett til å “forkaste” en nullhypotese. Nullhypotesen, ofte notert som ( <span class="math inline">\(H_0\)</span> ), representerer en generell påstand eller en standardposisjon at det ikke er noen forskjell eller effekt. For eksempel, i samfunnsøkonomi kan en nullhypotese være at det ikke er noen forskjell i inntektsnivå mellom to økonomiske grupper.</p>
+<ul>
+<li>Nullhypotese ( <span class="math inline">\(H_0\)</span> ): “Alt som vanlig ingen endring”</li>
+<li>Alternativ hypotesen (<span class="math inline">\(H_1\)</span>): Detter er den hypotesen vi ønsker å teste, og den krever bevis</li>
+</ul>
+</section>
+<section id="viktigheten-av-hypotesetesting" class="level2">
+<h2 class="anchored" data-anchor-id="viktigheten-av-hypotesetesting">Viktigheten av hypotesetesting</h2>
+<p>Hypotesetesting tillater oss å teste antakelser og teorier ved å analysere empiriske data. Dette er særlig viktig i felt som samfunnsøkonomi og datavitenskap, hvor avgjørelser ofte må baseres på komplekse datasett og analyser. Ved å anvende hypotesetester kan forskere:</p>
+<ul>
+<li>Bestemme om funnene i et datasett kan generaliseres til en større populasjon.</li>
+<li>Kontrollere for tilfeldige variasjoner i data.</li>
+<li>Gi støtte til forskning og teorier med empirisk bevis.</li>
+</ul>
+</section>
+<section id="eksempler-på-hypoteser" class="level2">
+<h2 class="anchored" data-anchor-id="eksempler-på-hypoteser">Eksempler på hypoteser</h2>
+<ol type="1">
+<li><strong>Samfunnsøkonomi:</strong> En forsker kan være interessert i å teste om økonomisk politikk har påvirket arbeidsledigheten i ulike demografier.
+<ul>
+<li>Nullhypotese ( <span class="math inline">\(H_0\)</span> ): Politikken hadde ingen effekt på arbeidsledigheten.</li>
+<li>Alternativ hypotese ( <span class="math inline">\(H_1\)</span> ): Politikken reduserte arbeidsledigheten.</li>
+</ul></li>
+<li><strong>Datavitenskap:</strong> En dataanalytiker kan teste effekten av en ny algoritme på forbedring av brukerengasjement på en nettplattform.
+<ul>
+<li>Nullhypotese (<span class="math inline">\(H_0\)</span>): Algoritmen hadde ingen effekt på brukerengasjement.</li>
+<li>Alternativ hypotese (<span class="math inline">\(H_1\)</span>): Algoritmen forbedret brukerengasjementet.</li>
+</ul></li>
+</ol>
+<section id="statistisk-inferens" class="level3">
+<h3 class="anchored" data-anchor-id="statistisk-inferens">Statistisk Inferens</h3>
+<p>Statistisk inferens er prosessen med å trekke konklusjoner om en populasjons karakteristikker basert på en prøve tatt fra populasjonen. Den omfatter estimasjon av parametere (som gjennomsnitt eller proporsjoner) og testing av statistiske hypoteser. Inferens hjelper forskere å forstå større trender fra et begrenset datasett og anvende disse funnene til en bredere kontekst.</p>
+<p><img src="images/Inferense.png" class="img-fluid"></p>
+<p>Vi skal nå bruke sannynlighetst regning til å si noe om populasjonen.</p>
+</section>
+</section>
+<section id="oppsummering" class="level2">
+<h2 class="anchored" data-anchor-id="oppsummering">Oppsummering</h2>
+<p>Å forstå og anvende hypotesetesting er essensielt for å tolke data korrekt og ta velinformerte beslutninger i samfunnsøkonomi og datavitenskap. I de kommende seksjonene vil vi utforske ulike typer hypotesetester og hvordan disse kan implementeres i R, sammen med praktiske eksempler og øvelser for å styrke din forståelse og ferdigheter.</p>
+</section>
+</section>
+<section id="tanke-eksempel" class="level1">
+<h1>Tanke eksempel</h1>
+<p>I denne case-studien skal vi se nærmere på en hypotetisk situasjon med David og hans familie for å illustrere hvordan hypotesetesting kan brukes i praksis for å ta stilling til en påstand om juks.</p>
+<p>Tenk deg:</p>
+<ul>
+<li><p>4 søsken</p></li>
+<li><p>4 lapper, men vert sitt navn i en urne</p></li>
+</ul>
+<p><img src="images/sosken.png" class="img-fluid"></p>
+<p>David og hans tre søsken har en familietradisjon hvor de trekker lapper for å bestemme hvem som skal ta oppvasken hver dag. Navnet som trekkes må ta oppvasken den dagen. David, som er den eldste, har ansvar for å trekke lappene. Mistanken oppstår når det ser ut som om David sjeldnere tar oppvasken sammenlignet med hans søsken.</p>
+<p>Sannsynlighet for at Daniel trekker seg selv er en av fire. Eller <span class="math inline">\(P(Daniel)=\frac{1}{4}\)</span>.</p>
+<p>Sannsynlighet for at Daniel ikke trekker seg selv er 3 av 4. Eller <span class="math inline">\(P(Ikke Daniel)=\frac{3}{4}\)</span>.</p>
+<p>Hva er sannsynlighet for at Daniel ikke må ta oppvaseken - 3 dager på rad? <span class="math inline">\(P(D-ikke-3-dager)= \frac{3}{4} \cdot \frac{3}{4} \cdot \frac{3}{4} =0.42\)</span></p>
+<p>Etter 3 dager er den NOEN som ikke har tatt oppvasken så at det er 42% sannsynlighet for at Danile ikke har tatt oppvasken ikke virker veldig unsannsynlig.</p>
+<p>Men hva hvis Daniel ikke har tatt Daniel ikke tatt oppvasen på 12 dager?</p>
+<p><span class="math inline">\(P(D-ikke-12-dager)= (\frac{3}{4})^{12} =0.03\)</span></p>
+<p>Nå er det bare 3% sannsynlig for dette utfallet. Har Daniel jukset for unngå å ta oppvasken? Hvor sikker burde vi være for å kunne påstå at dette ikke bare er tilfeldighet?</p>
+<p>Dette er en Binominal fordeling siden vi kun ser på Daniel, er det suksess hvis han tar oppvasken og en ikke suksess hvor han ikke tar den.</p>
+<p>La oss se på tre dager. Vi sier at <span class="math inline">\(X\)</span> en binomisk fordeling med 3 utrekk med 25% sannsynlighet for suksess. Så hva er <span class="math inline">\(P(X=0)=?\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># koden for å finne punkt sannsynliheten  4 er antall sukesser vi ser etter</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xpbinom</span>(<span class="dv">0</span> , </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Antall mynter vi kaster er 10</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Sannsynligheten for sukkess er 50/50 eller 0.5</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">prob =</span> <span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.421875</code></pre>
+</div>
+</div>
+<p>La oss se på tre dager. Vi sier at <span class="math inline">\(X\)</span> en binomisk fordeling med 12 utrekk med 25% sannsynlighet for suksess. Så hva er <span class="math inline">\(P(X=0)=?\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># koden for å finne punkt sannsynliheten  4 er antall sukesser vi ser etter</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xpbinom</span>(<span class="dv">0</span> , </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Antall mynter vi kaster er 10</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="dv">12</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Sannsynligheten for sukkess er 50/50 eller 0.5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">prob =</span> <span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03167635202</code></pre>
+</div>
+</div>
+<p>Søsken starter å blir misteksom å bestemer seg for å finne ut om Daniel har jukset eller ikke. Det foreslår et lite eksperiment! De starter med å sette opp sine hypoteser.</p>
+<section id="hypoteser" class="level3">
+<h3 class="anchored" data-anchor-id="hypoteser">Hypoteser</h3>
+<ul>
+<li><strong>Nullhypotese</strong> (<span class="math inline">\(H_0\)</span>): David jukser ikke, og sannsynligheten for at han trekker sitt eget navn er like stor som for hans søsken (<span class="math inline">\(p = 0.25\)</span>).
+<ul>
+<li><span class="math inline">\(H_0: p_D \geq 0.25\)</span></li>
+</ul></li>
+<li><strong>Alternativ hypotese</strong> (<span class="math inline">\(H_1\)</span>): David jukser, og sannsynligheten for at han trekker sitt eget navn er mindre enn (<span class="math inline">\(p = 0.25\)</span>).
+<ul>
+<li><span class="math inline">\(H_1: p_D &lt; 0.25\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="datainnsamling" class="level3">
+<h3 class="anchored" data-anchor-id="datainnsamling">Datainnsamling</h3>
+<p>Over en periode på 100 dager tar familien notater om hvem som tar oppvasken. Det viser seg at David kun tok oppvasken 22 ganger. Vi forventet (teoretisk) at Daniel skulle blir trukket 25 ganger, men vi forventer også at det skal være litt variasjon i dataen. Men hvor sannsynelig er det at noen bare blir trukket ut 22 av 100 ganger når det skal være 25% skjanse for å bli trukket ut?</p>
+</section>
+<section id="statistisk-test" class="level3">
+<h3 class="anchored" data-anchor-id="statistisk-test">Statistisk Test</h3>
+<p>For å vurdere denne situasjonen, kan vi anvende en binomisk test for å bestemme sannsynligheten for at David ville trekke sitt eget navn 22 eller <em>færre ganger</em> ut av 100, gitt at sannsynligheten for å trekke sitt eget navn hver gang er 0.25.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Binomisk test i R</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">xpbinom</span>(<span class="dv">22</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>         <span class="co"># trekker 100 gang</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">size=</span><span class="dv">100</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>         <span class="co"># sannsynlighet for sukess (eller at Daniel må ta oppvasekn)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">prob=</span><span class="fl">0.25</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         <span class="co"># Vi teste større eller lik</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7136298856</code></pre>
+</div>
+</div>
+<p>De finner <span class="math inline">\(P(X≤22)=0.286\)</span>, Ikke en usansynlig hendelse. Hvis vi kjører dette eksperimentet «uendelig» mange ganger så forventer vi at 27% av eksperimentene vil Daniel ta oppvasken 22 eller mindre antall ganger. Kan ikke sende han til hard straffarbeid ved å rense takrenne.</p>
+<p>Men det er mulig Daniel jukser, men bare litt….</p>
+</section>
+<section id="datainnsamling-alternativ-histoire" class="level3">
+<h3 class="anchored" data-anchor-id="datainnsamling-alternativ-histoire">Datainnsamling, alternativ histoire</h3>
+<p>Igjen over 100 dager, men nå tok Daniel oppvasken kun 14 av 100 dager!!!</p>
+</section>
+<section id="statistisk-test-1" class="level3">
+<h3 class="anchored" data-anchor-id="statistisk-test-1">Statistisk Test</h3>
+<p>For å vurdere denne situasjonen, kan vi anvende en binomisk test for å bestemme sannsynligheten for at David ville trekke sitt eget navn 14 eller <em>færre ganger</em> ut av 100, gitt at sannsynligheten for å trekke sitt eget navn hver gang er 0.25.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Binomisk test i R</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">xpbinom</span>(<span class="dv">14</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         <span class="co"># trekker 100 gang</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">size=</span><span class="dv">100</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         <span class="co"># sannsynlighet for sukess (eller at Daniel må ta oppvasekn)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">prob=</span><span class="fl">0.25</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="co"># Vi teste større eller lik</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9945792383</code></pre>
+</div>
+</div>
+<p>De finner <span class="math inline">\(P(X≤14)=0.005\)</span>, at det er en veldig liten sannsynlighet for at at det er trukket rettferdig. Her forkaster vi nullhypotesen av at Daniel ikke har jukset og aksepterer alternativs hyppotesn og sier at Daniel har jukset.</p>
+<p>Men hva hvis Daniel ikke har jukset, da har vi gjort en feil. Denne feile er kun 0.5% sannynlig, men noen vinner lotto (nesten) hver uke.</p>
+</section>
+</section>
+<section id="type-i-og-type-ii-feil" class="level1">
+<h1>Type I og Type II Feil</h1>
+<p>I sammenheng med vår case-studie om David og familien hans, er det viktig å forstå konseptene av Type I og Type II feil, da disse feiltypene har direkte implikasjoner på tolkningen av hypotesetestens resultater.</p>
+<p>Det er viktig å vite at vi kan aldri vite om David er skyldig eller ikke (vi antar at han ikke tilstår). Vi kan “dømme” eller frikjenne han for å ha jukset. Vi har dermed fire mulige situasjoner.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 29%">
+<col style="width: 29%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>David er uskyldig</td>
+<td>David er skyldig</td>
+</tr>
+<tr class="even">
+<td>Vi frikjenner David</td>
+<td><p>Korrekt beslutning</p>
+<p>Sann negativ</p></td>
+<td><p>Falskt negativ</p>
+<p>Type 2 feil</p></td>
+</tr>
+<tr class="odd">
+<td>Vi dømmer David</td>
+<td><p>Falskt positiv</p>
+<p>Type 1 feil</p></td>
+<td><p>Korrekt beslutning</p>
+<p>Sann positiv</p></td>
+</tr>
+</tbody>
+</table>
+<section id="type-i-feil-falskt-positiv" class="level3">
+<h3 class="anchored" data-anchor-id="type-i-feil-falskt-positiv">Type I Feil (Falskt Positiv)</h3>
+<p>En Type I feil oppstår når nullhypotesen ( <span class="math inline">\(H_0\)</span> ) blir forkastet selv om den faktisk er sann. I vårt tilfelle ville dette bety at vi konkluderer med at David jukser (forkaster ( <span class="math inline">\(H_0\)</span> ), når han faktisk ikke jukser. Sannsynligheten for å gjøre en Type I feil kalles alfa ( <span class="math inline">\(\alpha\)</span> ), og er ofte satt til 5%. Dette betyr at vi aksepterer en 5% risiko for feilaktig å anklage David for juks.</p>
+<p>Ofte tenker vi på en Type I feil som at en uskyldig blir dømmen. Derfor kreves det oftes mye bevis for å forkaste null hypotesen.</p>
+</section>
+<section id="type-ii-feil-falskt-negativ" class="level3">
+<h3 class="anchored" data-anchor-id="type-ii-feil-falskt-negativ">Type II Feil (Falskt Negativ)</h3>
+<p>En Type II feil skjer når vi ikke klarer å forkaste nullhypotesen ( <span class="math inline">\(H_0\)</span> ) selv om den alternative hypotesen ( <span class="math inline">\(H_1\)</span> ) (at David jukser) er sann. Dette ville i praksis bety at selv om David faktisk jukser, konkluderer vår test med at han ikke jukser. Sannsynligheten for å gjøre en Type II feil kalles beta ( <span class="math inline">\(\beta\)</span> ), og påvirkes av testens styrke.</p>
+<p>Ofte tenker vi på en Type II feil som at en skyldig blir sluppet fri. Det heter at det er bedre at ti skyldige går fri enn at én uskyldig blir dømt.</p>
+<p>Vi kan beregen en type I feil, mens en Type II er ofte umulig å beregne.</p>
+</section>
+<section id="balansering-av-feilene" class="level3">
+<h3 class="anchored" data-anchor-id="balansering-av-feilene">Balansering av Feilene</h3>
+<p>Det er ofte et kompromiss mellom risikoen for Type I og Type II feil. Øker vi testens styrke for å redusere ( <span class="math inline">\(\beta\)</span> ) (og dermed redusere risikoen for en Type II feil), kan det føre til en økning i ( <span class="math inline">\(\alpha\)</span> ) (og dermed en økt risiko for en Type I feil). Det er derfor viktig å velge et balansepunkt som er passende for konteksten av problemstillingen.</p>
+</section>
+<section id="implikasjoner-for-david" class="level3">
+<h3 class="anchored" data-anchor-id="implikasjoner-for-david">Implikasjoner for David</h3>
+<p>Hvis vi konkluderer med at David jukser basert på våre tester, og han faktisk ikke gjør det, kan det ha negative konsekvenser for hans omdømme og forholdet i familien. Omvendt, hvis vi konkluderer med at han ikke jukser, men han faktisk gjør det, kunne dette urettferdig fordele husholdningsoppgaver blant de andre søsknene.</p>
+</section>
+<section id="oppsummering-1" class="level3">
+<h3 class="anchored" data-anchor-id="oppsummering-1">Oppsummering</h3>
+<p>Forståelsen av Type I og Type II feil er kritisk for korrekt tolkning av statistiske resultater og deres konsekvenser i virkelige scenarioer som dette. Beslutningstakere må vurdere både risikoen for og konsekvensene av disse feilene når de tolker resultater fra hypotesetester.</p>
+</section>
+</section>
+<section id="beregning-av-testobservatorer-og-p-verdi" class="level1">
+<h1>Beregning av Testobservatorer og p-verdi</h1>
+<p>For å evaluere hypoteser statistisk, benytter vi ulike typer tester basert på dataens natur og analysebehov. I David-eksempelet anvendte vi binomisk fordeling for å bestemme sannsynligheten for at han utfører oppvasken et bestemt antall ganger. Vi vil nå se nærmere på hvordan vi beregner testobservatorer for å utføre disse testene.</p>
+<section id="z-verdi-og-t-verdi" class="level2">
+<h2 class="anchored" data-anchor-id="z-verdi-og-t-verdi">z-verdi og t-verdi</h2>
+<p>Z-verdi er nyttig når vi har store prøvestørrelser og kjente populasjonsvarianser. Dette gjør det mulig å normalisere våre resultat og sammenligne dem mot en standard normalfordeling. Så vi må normalisere dataen på en eller annen måte. Dette gjør vi med å regne ut en test observator.</p>
+<p>t-verdi er det sammen som en z-verdi men vi kjenner ikke til det sanne standaravvike eller fordeling. Siden vi ofte ikke kjenner den sanne stadnardavvike eller fordelingen så bruker vi t verdi.</p>
+<section id="beregning-av-t-verdi" class="level4">
+<h4 class="anchored" data-anchor-id="beregning-av-t-verdi">Beregning av t-verdi</h4>
+<p>t-verdien beregnes ved å ta differansen mellom prøvegjennomsnittet og nullhypotesens gjennomsnitt, delt på standardavviket av prøven, justert for prøvestørrelsen:</p>
+<p><span class="math display">\[
+t=\frac{\text{oversvert gjennomsnitt} - \text{null hypotese} }{\text{standard feil}}=\frac{\text{oversvert gjennomsnitt} - \text{null hypotese} }{\frac{\text{standard avvik}}{\sqrt{n} } }
+\]</span> La oss ta et raskt eksempel. I datasettet for priser på boliger, kan vi si at gjennomsnitts prisen på hus i området er over 535’000 dollar? Hva er det egentlig prisen?</p>
+<ul>
+<li><p><span class="math inline">\(H_0: p \geq 535'000\)</span></p></li>
+<li><p><span class="math inline">\(H_1: p_D &lt; 535'000\)</span></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># finner gjennomsnittspris</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gjenn_pris <span class="ot">&lt;-</span> house_prices <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gjenn_pris =</span> <span class="fu">mean</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(gjenn_pris)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>gjenn_pris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 540088.1418</code></pre>
+</div>
+</div>
+<p>La oss regne ut hvor mange standardfeil fra gjennomsnittet 535’000 er fra gjennomsnittet</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># finner stnadardavvik</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sd_pris <span class="ot">&lt;-</span> house_prices <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sd_pris =</span> <span class="fu">sd</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(sd_pris)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># finner altallet i pris</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>antall <span class="ot">&lt;-</span> house_prices <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">antall =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(price) )) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(antall)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Beregning av Z-verdi i </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>t_value <span class="ot">&lt;-</span> ( gjenn_pris<span class="sc">-</span> <span class="dv">535000</span>) <span class="sc">/</span> (sd_pris <span class="sc">/</span> <span class="fu">sqrt</span>(antall))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>t_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.037511985</code></pre>
+</div>
+</div>
+<p>t verdien forteller oss, hvor mange standard feil er vi unna null hypotesen. Men denne testen gir oss ikke så mye informasjon. Hva er sannsynligheten for at prisen er over 535’000?</p>
+<p><img src="images/empirical-rule-normal-distribution-graph.png" class="img-fluid" width="778"></p>
+</section>
+<section id="beregene-p-verdi" class="level3">
+<h3 class="anchored" data-anchor-id="beregene-p-verdi">Beregene p-verdi</h3>
+<p>Når si skal beregne en p-verdi skal vi anta at null hypotesen er korrekt. Så vi antar at gjennomsnittet vi har i null hypotese er korrekt og dataen er sentrert rundt den. Vi stiller så spørsmålet, gitt at null hypotesen er korrekt, hva er sannsynligheten til å få det gjennomsnittet vi observerte.</p>
+<p><img src="images/Screenshot%202024-09-19%20090717.png" class="img-fluid"></p>
+<p>Gitt at nullhypotesen er korrekt og gjennomsnittet faktisk er 535’000 hva er sannsynligheten av å få en pris på 540’088 på over 21’613.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># regner ut sannsynlighetn for å finne 540'088</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xpnorm</span>(gjenn_pris, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>       <span class="co"># antar at prisen er 535000</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">mean=</span><span class="dv">535000</span>, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>       <span class="co"># setter standardavvike lik standardfeilen til gjennomsnittet </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">sd =</span> sd_pris<span class="sc">/</span><span class="fu">sqrt</span>(antall) </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>       ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9792006189</code></pre>
+</div>
+</div>
+<p>Det vi finner er sannsynligheten for å finne en gjennomsnitts pris på 540’088 eller høyereunder forutsetningen at den sanne gjennomsnittsprisen er 535’000. Her fant vi at sannsynligheten er 0.0208.</p>
+<p>Det vi har funnet her er en p-verdi. Dette tallet er en viktig del av beslutningsprosessen for å bestemme om man skal forkaste nullhypotesen. En lav p-verdi, som er mindre enn et valgt signifikansnivå (vanligvis 0.05 eller 5%), antyder at den observerte forskjellen er statistisk signifikant, og at nullhypotesen kanskje bør forkastes.</p>
+</section>
+<section id="r-pakke" class="level3">
+<h3 class="anchored" data-anchor-id="r-pakke">R pakke</h3>
+<p>R er et statistikk program så den har selfølge innebygget pakke til å gjøre alt dette for oss. Dette vi foretar oss nå heter en t-test</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(house_prices<span class="sc">$</span>price, <span class="co"># Data</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">mu=</span><span class="dv">535000</span>,                  <span class="co"># Null hypotese</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">alternativ=</span> <span class="st">"greater"</span> ) <span class="co"># alternativst hypotese: "two.sided", "less", "greater"</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>Test<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02080545849</code></pre>
+</div>
+</div>
+<p>Vi kan også skrive ut alt om testen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vi kan plotte resultatene om vi ønsker </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  house_prices$price
+t = 2.037512, df = 21612, p-value = 0.02080546
+alternative hypothesis: true mean is greater than 535000
+95 percent confidence interval:
+ 535980.3833         Inf
+sample estimates:
+  mean of x 
+540088.1418 </code></pre>
+</div>
+</div>
+<p>Vi kan også plotte dette resultatet.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vi kan plotte resultatene om vi ønsker </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">NTplot</span>(Test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vi forkaster null hypotesen <span class="math inline">\(H_0\)</span> av at gjennosnittsprisen er 535’000 eller lavere og sier at det må være høyere enn dette.</p>
+</section>
+<section id="hale-test" class="level3">
+<h3 class="anchored" data-anchor-id="hale-test">Hale test?</h3>
+<p>Når vi skal utføre en hyppotese test må vi også bedømme hvordan side av distribusjone vi er intereserte. Er vi kun inntresert om vårt fun er større enn hypotesen, kun mindre eller at den bare er forskjellig? Stort sette er vi interesert om vår hyppotese er forskellig far null. Men som over var vi kun interesert i om prisen faktisk var høyere.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 18%">
+<col style="width: 19%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Hale</th>
+<th>Null hypotese <span class="math inline">\(H_0\)</span></th>
+<th>Alternativ hypotese <span class="math inline">\(H_1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alternativet er forskjellig fra null</td>
+<td>To hale test</td>
+<td><span class="math inline">\(\mu_0 = \mu_1\)</span></td>
+<td><span class="math inline">\(\mu_0 \neq \mu_1\)</span></td>
+</tr>
+<tr class="even">
+<td>Alternative er større enn null</td>
+<td>Høyre hale test</td>
+<td><span class="math inline">\(\mu_0 \geq \mu_1\)</span></td>
+<td><span class="math inline">\(\mu_0 &lt; \mu_1\)</span></td>
+</tr>
+<tr class="odd">
+<td>Alternative er mindre enn null</td>
+<td>Venstre hale test</td>
+<td><span class="math inline">\(\mu_0 \leq \mu_1\)</span></td>
+<td><span class="math inline">\(\mu_0 &gt; \mu_1\)</span></td>
+</tr>
+</tbody>
+</table>
+<section id="diskusjons-oppgaver" class="level4">
+<h4 class="anchored" data-anchor-id="diskusjons-oppgaver">Diskusjons oppgaver</h4>
+<ol type="1">
+<li>Jeg ønsker å vite om studentene in Sok-2009 har fått bedre karakterer i år enn i fjord? Sett opp null hypotesene og bedøm om dette er en to hale, høre hale eller venstre hale test.</li>
+<li>Når det kommer til type I og type II feil.
+<ol type="1">
+<li>Hva er verst når det kommer til testeing etter syktdommer?</li>
+<li>Hva er verst når det kommer til “testing” om noen skyldig for noe kriminelt?</li>
+<li>Hva er verst når det kommer til å finne terrorister?</li>
+</ol></li>
+</ol>
+</section>
+<section id="oppgave" class="level4">
+<h4 class="anchored" data-anchor-id="oppgave">Oppgave</h4>
+<p>Når vi gjennomførte en t-test for gjennomsnitlig hus pris var større enn 535’000. Hva skjer med p-verdien til vår test, om vi nå sier er gjennomsnittsprisen er forskjellig fra 535’000? Bytt, alternativ= “greater” til alternativ= “two.sided” og finn ut.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="typer-hypotesetester" class="level1">
+<h1>Typer hypotesetester</h1>
+<p>Når vi utfører hypotesetester, er det flere forskjellige statistiske tester vi kan anvende avhengig av datatypen og formålet med analysen. I dette kapittelet vil vi utforske de mest vanlige typene av hypotesetester brukt i samfunnsøkonomi og datavitenskap.</p>
+<p>Når vi skal bedømme hviken test vi skal bruke så er de viktigste kriteriene om vi tester en gruppe mot et gitt nivå, en gruppe mot en annen gruppe eller flere grupper samtidig. Det er også viktig å vite hvordan type data vi har, vi skal hovedsakelig se på forholdstall (Kontinuerlig tall) og nominal nivå (kategorier).</p>
+<section id="t-tester" class="level2">
+<h2 class="anchored" data-anchor-id="t-tester">T-tester</h2>
+<p>T-tester er blant de mest brukte statistiske testene for å sammenligne gjennomsnittene av to grupper. Det finnes flere varianter av t-tester, avhengig av dataenes natur og designet av studien.</p>
+<section id="enkel-sample-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="enkel-sample-t-test">Enkel sample t-test</h3>
+<p>Brukes når du vil sammenligne gjennomsnittet av en enkelt gruppe mot en kjent standard eller forventet verdi.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eksempel på en enkel sample t-test</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(house_prices<span class="sc">$</span>price, <span class="co"># Data</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">mu=</span><span class="dv">535000</span>,                  <span class="co"># Null hypotese</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">alternativ=</span> <span class="st">"greater"</span> ) <span class="co"># alternativst hypotese: "two.sided", "less", "greater"</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  house_prices$price
+t = 2.037512, df = 21612, p-value = 0.02080546
+alternative hypothesis: true mean is greater than 535000
+95 percent confidence interval:
+ 535980.3833         Inf
+sample estimates:
+  mean of x 
+540088.1418 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">NTplot</span>(Test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="t-test-mellom-to-grupper" class="level3">
+<h3 class="anchored" data-anchor-id="t-test-mellom-to-grupper">t-test mellom to grupper</h3>
+<p>Ofte ønsker vi å vite om det er forskjell mellom grupper. Da er nullhypotesen at det ikke er noe forskjell mellom gruppene. Alternativs hyppotesen kan være at de er forskjellig, større eller mindre.</p>
+<p>T-test mellom to grupper bruker vi når vi har en nummerisk variabel og en kategoris variabler med to kategorier.</p>
+<p>La oss nå se om det forskjell i pris på boliger som er nært vannet eller ikke. Vi setter opp hyppotesene.</p>
+<ul>
+<li><p>$H_0: _w = _i $</p></li>
+<li><p>$H_1: _w _i $</p></li>
+</ul>
+<p>Vi sammenliker prise i de to gruppene.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>house_prices <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(waterfront) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">bolig_pris =</span> <span class="fu">round</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(price),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">digits=</span> <span class="dv">0</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    ) ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="ilxtgelvqz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ilxtgelvqz table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ilxtgelvqz thead, #ilxtgelvqz tbody, #ilxtgelvqz tfoot, #ilxtgelvqz tr, #ilxtgelvqz td, #ilxtgelvqz th {
+  border-style: none;
+}
+
+#ilxtgelvqz p {
+  margin: 0;
+  padding: 0;
+}
+
+#ilxtgelvqz .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ilxtgelvqz .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ilxtgelvqz .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ilxtgelvqz .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ilxtgelvqz .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ilxtgelvqz .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ilxtgelvqz .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ilxtgelvqz .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ilxtgelvqz .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ilxtgelvqz .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ilxtgelvqz .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ilxtgelvqz .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ilxtgelvqz .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ilxtgelvqz .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ilxtgelvqz .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ilxtgelvqz .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ilxtgelvqz .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ilxtgelvqz .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ilxtgelvqz .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ilxtgelvqz .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ilxtgelvqz .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ilxtgelvqz .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ilxtgelvqz .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ilxtgelvqz .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ilxtgelvqz .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ilxtgelvqz .gt_left {
+  text-align: left;
+}
+
+#ilxtgelvqz .gt_center {
+  text-align: center;
+}
+
+#ilxtgelvqz .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ilxtgelvqz .gt_font_normal {
+  font-weight: normal;
+}
+
+#ilxtgelvqz .gt_font_bold {
+  font-weight: bold;
+}
+
+#ilxtgelvqz .gt_font_italic {
+  font-style: italic;
+}
+
+#ilxtgelvqz .gt_super {
+  font-size: 65%;
+}
+
+#ilxtgelvqz .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ilxtgelvqz .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ilxtgelvqz .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ilxtgelvqz .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ilxtgelvqz .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ilxtgelvqz .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ilxtgelvqz .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#ilxtgelvqz .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ilxtgelvqz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="waterfront" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">waterfront</th>
+<th id="bolig_pris" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">bolig_pris</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="waterfront">FALSE</td>
+<td class="gt_row gt_right" headers="bolig_pris">531564</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="waterfront">TRUE</td>
+<td class="gt_row gt_right" headers="bolig_pris">1661876</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(house_prices, <span class="fu">aes</span>(<span class="at">x=</span>waterfront, <span class="at">y=</span>price))<span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Sammenlikner pris for bolit med vannet og ikke"</span>)<span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Med vannet"</span>)<span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Pris"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Prise er over 3 gang så høy… så vi burde finne noe forsjell.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(price <span class="sc">~</span> waterfront,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> house_prices, </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">alternativ=</span> <span class="st">"two.sided"</span> ) <span class="co"># alternativst hypotese: "two.sided", "less", "greater"</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>Test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  price by waterfront
+t = -12.875877, df = 162.22896, p-value &lt; 2.2204e-16
+alternative hypothesis: true difference in means between group FALSE and group TRUE is not equal to 0
+95 percent confidence interval:
+ -1303661.5566  -956963.2928
+sample estimates:
+mean in group FALSE  mean in group TRUE 
+        531563.5998        1661876.0245 </code></pre>
+</div>
+</div>
+<p>Her er p-verdien så lav at r ikke gir men det er mindre enn 0.00000000000000002. Så da kan vi forkaste null hypotesen om at gjennomsnitsprise er lik for boliger med vannet og innlands, og bruke alternativs hyppotesen og si at prisen er forskjellig. I dette tilfellet er prisen for en boilg med vannet høyere enn innlands.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">NTplot</span>(Test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="parret-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="parret-t-test">Parret t-test</h3>
+<p>Brukes for å sammenligne to relaterte grupper, som før-og-etter målinger på samme subjekter.</p>
+<p>Det er en fordel å parre data gitt at det er mulig. Dette kan for eksemeple, som under. Har det vert endring i antall personer som stemte på demokratene på county nivå. Siden vi har countiene før og etter, trenger ikke hive dem inn i en uorganisert gruppe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">"https://github.com/uit-sok-2009-h22/uit-sok-2009-h22.github.io/blob/main/filer/dem_county_pres_joined.Rdata?raw=true"</span>))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> dem_presidental <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diff =</span> dem_cand_votes_12<span class="sc">-</span>dem_cand_votes_08)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(temp<span class="sc">$</span>diff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(dem_presidental<span class="sc">$</span>dem_cand_votes_08,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>       dem_presidental<span class="sc">$</span>dem_cand_votes_12 , </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  dem_presidental$dem_cand_votes_08 and dem_presidental$dem_cand_votes_12
+t = 5.7229408, df = 499, p-value = 0.00000001808104
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+  869.7391047 1779.1088953
+sample estimates:
+mean difference 
+       1324.424 </code></pre>
+</div>
+</div>
+</section>
+<section id="anova-analysis-of-variance" class="level3">
+<h3 class="anchored" data-anchor-id="anova-analysis-of-variance">ANOVA (Analysis of Variance)</h3>
+<p>ANOVA tester forskjeller i gjennomsnitt over mer enn to grupper. Dette er spesielt nyttig når du analyserer data med flere kategorier. Hvis det er kun to kategorier så blir den like en t-test med to grupper. Condition er en variabel som har mange grupper og sier noe om huset hvordan stand huset er i.</p>
+<p>Anova analsyer bruker når vi har en nummerisk variabel og en kategoris variabler med mer enn to kategorier.</p>
+<p>Igjen la oss lage et boxplot og se om det ser ut til å være forskjeller.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>house_prices <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(condition) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">bolig_pris =</span> <span class="fu">round</span>(</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(price),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">digits=</span> <span class="dv">0</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    ) ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="mxexgpdoxv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mxexgpdoxv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mxexgpdoxv thead, #mxexgpdoxv tbody, #mxexgpdoxv tfoot, #mxexgpdoxv tr, #mxexgpdoxv td, #mxexgpdoxv th {
+  border-style: none;
+}
+
+#mxexgpdoxv p {
+  margin: 0;
+  padding: 0;
+}
+
+#mxexgpdoxv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mxexgpdoxv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mxexgpdoxv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mxexgpdoxv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mxexgpdoxv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mxexgpdoxv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mxexgpdoxv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mxexgpdoxv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mxexgpdoxv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mxexgpdoxv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mxexgpdoxv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mxexgpdoxv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mxexgpdoxv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mxexgpdoxv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mxexgpdoxv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mxexgpdoxv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mxexgpdoxv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mxexgpdoxv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mxexgpdoxv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mxexgpdoxv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mxexgpdoxv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mxexgpdoxv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mxexgpdoxv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mxexgpdoxv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mxexgpdoxv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mxexgpdoxv .gt_left {
+  text-align: left;
+}
+
+#mxexgpdoxv .gt_center {
+  text-align: center;
+}
+
+#mxexgpdoxv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mxexgpdoxv .gt_font_normal {
+  font-weight: normal;
+}
+
+#mxexgpdoxv .gt_font_bold {
+  font-weight: bold;
+}
+
+#mxexgpdoxv .gt_font_italic {
+  font-style: italic;
+}
+
+#mxexgpdoxv .gt_super {
+  font-size: 65%;
+}
+
+#mxexgpdoxv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mxexgpdoxv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mxexgpdoxv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mxexgpdoxv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mxexgpdoxv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mxexgpdoxv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mxexgpdoxv .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mxexgpdoxv .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mxexgpdoxv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="condition" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">condition</th>
+<th id="bolig_pris" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">bolig_pris</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_center" headers="condition">1</td>
+<td class="gt_row gt_right" headers="bolig_pris">334432</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="condition">2</td>
+<td class="gt_row gt_right" headers="bolig_pris">327287</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="condition">3</td>
+<td class="gt_row gt_right" headers="bolig_pris">542013</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="condition">4</td>
+<td class="gt_row gt_right" headers="bolig_pris">521200</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_center" headers="condition">5</td>
+<td class="gt_row gt_right" headers="bolig_pris">612418</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(house_prices, <span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">y=</span>price))<span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Sammenlikner pris for bolit med vannet og ikke"</span>)<span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Med vannet"</span>)<span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Pris"</span>)<span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Vi setter opp hypotesene vår</p>
+<ul>
+<li><p>$H_0: _1 = _2 = _3 = _4 = _5 $</p></li>
+<li><p>$H_1: _1 _2 _3 _4 _5 $</p></li>
+</ul>
+<p>Fra denne testen er det hovedsakelig p-verdien vi er ute etter. Og v</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eksempel på ANOVA</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>anova_resultat <span class="ot">&lt;-</span> <span class="fu">aov</span>(house_prices<span class="sc">$</span>price <span class="sc">~</span> house_prices<span class="sc">$</span>condition )</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_resultat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          Df           Sum Sq       Mean Sq  F value     Pr(&gt;F)
+house_prices$condition     4   20034649192449 5008662298112 37.41154 &lt; 2.22e-16
+Residuals              21608 2892882112728850  133880142203                    
+                          
+house_prices$condition ***
+Residuals                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="chi-kvadrattest" class="level3">
+<h3 class="anchored" data-anchor-id="chi-kvadrattest">Chi-kvadrattest</h3>
+<p>Chi-kvadrattesten brukes for å undersøke om det er en signifikant forskjell i frekvensfordelingen av kategoriske variabler mellom grupper.</p>
+<p>Chi-kvadrattesten bruker vi når vi har en eller to kategoriske variabel.</p>
+<p>Disse testen brukes på kryss tabeller. Er det noe sammen heng mellom de to varirablene. Eller den ene.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>tabell <span class="ot">&lt;-</span> <span class="fu">table</span>(house_prices<span class="sc">$</span>condition, house_prices<span class="sc">$</span>waterfront)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>tabell </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+    FALSE  TRUE
+  1    29     1
+  2   171     1
+  3 13940    91
+  4  5629    50
+  5  1681    20</code></pre>
+</div>
+</div>
+<p>Det er litt vanskelig å se om det burde være en forsjell eller ikke. La oss prøve en bar chart!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Kaller objektet NHANES</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>house_prices <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Vi lager et ggplot, når vi bruker pipes trenger vi ikke spesifisere datasettet vi bruker</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">fill=</span>waterfront)) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># legger til bars</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Lager en tittle til plottet</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Antall persjoner i forsjellige sivilstatus grupper i NHANES datasettet"</span>) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Legger til navn på x-aksen</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Sivil status"</span>) <span class="sc">+</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Legger til navn på y-aksen</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frekvens"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="SOK2009_2024_F6_Hypothesis_testing_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lager en tabell hvor kollonne summer seg til 1</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prop.table</span>(tabell,<span class="dv">2</span> ),</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+    FALSE TRUE
+  1  0.00 0.01
+  2  0.01 0.01
+  3  0.65 0.56
+  4  0.26 0.31
+  5  0.08 0.12</code></pre>
+</div>
+</div>
+<p>Det ser relativ likt ut.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eksempel på Chi-kvadrattest</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(tabell)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  tabell
+X-squared = 10.07473, df = 4, p-value = 0.03918751</code></pre>
+</div>
+</div>
+<p>Vi kan også finne hvordan fordelingen av husen burde ha sett ut om det ikke var noe forskjell mellom gruppene.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>expected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+             FALSE           TRUE
+  1    29.77374728   0.2262527183
+  2   170.70281775   1.2971822514
+  3 13925.18160366 105.8183963355
+  4  5636.17036043  42.8296395688
+  5  1688.17147087  12.8285291260</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(test<span class="sc">$</span>expected,<span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+             FALSE           TRUE
+  1 0.001388053486 0.001388053486
+  2 0.007958173322 0.007958173322
+  3 0.649192615555 0.649192615555
+  4 0.262758524962 0.262758524962
+  5 0.078702632675 0.078702632675</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="hvilken-test-skal-jeg-bruke" class="level1">
+<h1>Hvilken test skal jeg bruke?</h1>
+<ol type="1">
+<li><p>Er det ingen kategorisk variabler og en eller to kategoriske</p>
+<ol type="1">
+<li>Chi-kvadrat test</li>
+</ol></li>
+<li><p>Er det en nummerisk variabel</p>
+<ol type="1">
+<li>Enkel sample t-test</li>
+</ol></li>
+<li><p>Er det en nummersik og en kategorisk?</p>
+<ol type="1">
+<li><p>Har den kategoriske variablen kun to kategoriere?</p>
+<ol type="1">
+<li><p>Er gruppene uavhengig?</p>
+<ol type="1">
+<li>t-test mellom to grupper</li>
+</ol></li>
+<li><p>Er gruppen avhengig</p>
+<ol type="1">
+<li>Parret t-test</li>
+</ol></li>
+</ol></li>
+<li><p>Har den kategoriske variaben flere enn to kattegorierer?</p>
+<ol type="1">
+<li>Anova test</li>
+</ol></li>
+</ol></li>
+<li><p>Har du flere en to variabler du ønsker å se på?</p>
+<ol type="1">
+<li>Regresjon</li>
+</ol></li>
+</ol>
+<section id="oppgaver" class="level4">
+<h4 class="anchored" data-anchor-id="oppgaver">Oppgaver</h4>
+<p>I datasettet om hus priser. Er det noe forskjell mellom, condition på husene og antall soverom? Lag en krysstabell og gjøre en Chi-kvadrat test</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#View(house_prices)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I datasettet om hus priser. Er det noe forskjell i pris på hus av condition 3 og condition 5?</p>
+<p>I datasettet om hus priser. Kan vi si at gjennomsnittsprisen er forskjellig fra 537’000?</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
