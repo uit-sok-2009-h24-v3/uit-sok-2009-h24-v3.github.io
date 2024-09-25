@@ -14,7 +14,7 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 38 | 17.09  12:15-14:00  | 02.119, DT-LAB | Forelesninger | Grunnleggende Sannsynlighetsregning | [Forelesning](forelesning/SOK2009_2024_F5_Sannsynlighet.html)  |
 | Uke 38 | 19.09  10:15-12:00  | 02.216, Økonomen | Forelesning | Hypotesetesting | [Forelesning](forelesning/SOK2009_2024_F6_Hypothesis_testing.html)  |
 | Uke 38 | 20.09  14:00 | || **Mappe 1 utlevert** |
-| Uke 39 | 25.09  10:15-12:00  | 02.216, Økonomen | Forelesninger | Regresjon |  |
+| Uke 39 | 25.09  10:15-12:00  | 02.216, Økonomen | Forelesninger | Regresjon | [Forelesning](forelesning/SOK2009_2024_F07_Regresjon.pdf) |
 | Uke 39 | 27.09  14:00 | || **Mappe 1 frist** |
 | Uke 40 | 02.10  10:15-12:00  | 02.216, Økonomen | Forelesninger | Regresjon og interferens |  |
 | Uke 41 | 09.10  10:15-12:00  | 02.216, Økonomen | Forelesninger | Multippel regresjon |  |
