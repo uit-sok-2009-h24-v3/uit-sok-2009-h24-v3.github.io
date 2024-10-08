@@ -16,7 +16,7 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 38 | 20.09  14:00 | || **Mappe 1 utlevert** |
 | Uke 39 | 25.09  10:15-12:00  | 02.216, Økonomen | Forelesninger | Regresjon | [Forelesning](forelesning/SOK2009_2024_F07_Regresjon.pdf) |
 | Uke 39 | 27.09  14:00 | || **Mappe 1 frist** |
-| Uke 41 | 08.10  10:15-12:00  | 02.119, DT-lab | Forelesninger | Regresjon og interferens |  |
+| Uke 41 | 08.10  10:15-12:00  | 02.119, DT-lab | Forelesninger | Regresjon og interferens | [Forelesning](forelesning/SOK2009_2024_F08_Inferens.pdf) |
 | Uke 41 | 09.10  10:15-12:00  | 02.216, Økonomen | Forelesninger | Multippel regresjon |  |
 | Uke 41 | 11.10  10:15-12:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 42 | 15.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Vidregående interfrerens |  |
