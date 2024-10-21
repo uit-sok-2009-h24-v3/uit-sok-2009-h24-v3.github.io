@@ -1,0 +1,741 @@
+---
+title: "Forelesning 10: Regresjons Inferens"
+subtitle: "Sok-2009 h24"
+author: "Eirik Eriksen Heen & ChatGPT"
+date: "`r Sys.Date()`"
+date-format: DD. MMM YYYY
+format: pdf
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+  freeze: auto
+  code-overflow: wrap # Pakker kode som er for lang for linjen
+---
+
+```{r}
+##### Start up #####
+rm(list = ls()) # Tommer listen
+
+options(scipen=10) # skriver ut 10 siffer (foran komma)
+options(digits=10) # skriver ut 3 desimaler (etter komma...)
+
+# Kode for a kunne bruke norske bokstaver
+Sys.setlocale(locale="no_NO")
+
+# laste brukte pakker
+library(tidyverse)
+library(NHANES)
+library(gt)
+library(moderndive)
+library(broom)
+library(HH)
+library(infer)
+library(mosaic)
+```
+
+I denne forelesningen skal vi utforske sammenhengen mellom statistisk inferens og lineære modeller. Vi bygger videre på det grunnleggende vi har lært tidligere om begge emner og fokuserer på hvordan ulike utvalg kan produsere forskjellige lineære modeller. Målet vårt er å forstå den underliggende populasjonsmodellen og hvordan vi kan gjøre inferenser basert på de estimerte modellene.
+
+# Rask repetisjon av lineære modeller
+
+Lineære modeller utgjør et fundamentalt verktøy i både statistikk og datavitenskap. De gjør oss i stand til å modellere sammenhenger mellom en responsvariabel (den variabelen vi ønsker å forutsi eller forklare) og en eller flere forklaringsvariabler (de variablene vi bruker til å gjøre forutsigelser).
+
+La oss se på den enkle lineære regresjonsmodellen, som beskriver forholdet mellom en responsvariabel $y$ og en forklaringsvariabel $x$:
+
+$$ 
+y = \beta_0 + \beta_1 x + \epsilon
+$$
+
+hvor: - $y$ *Responsvariabelen* – dette er variabelen vi ønsker å forutsi. For eksempel kan dette være prisen på en bolig.
+
+-   $x$ *Forklaringsvariabelen* – dette er variabelen som antas å påvirke $y$. I eksempelet med boligpriser kan dette være arealet av boligen.
+
+-   $\beta_0$ *Konstantleddet (intercept)* – dette er verdien av $y$ når $x$ er lik null. Det representerer startpunktet i modellen.
+
+-   $\beta_1$ *Koeffisienten for* $x$ (hellingen) – dette måler hvor mye $y$ forventes å endre seg når $x$ endres med én enhet. En positiv verdi indikerer at $y$ øker når $x$ øker, mens en negativ verdi indikerer at $y$ synker når $x$ øker.
+
+-   $\epsilon$ *Feilleddet* – dette representerer den delen av $y$ som ikke forklares av modellen, og kan ses på som tilfeldige variasjoner eller støy.
+
+Denne modellen gir oss en måte å kvantifisere og teste hypoteser om forholdet mellom variabler. Vi kan bruke statistiske metoder for å estimere verdiene til $\beta_0$ og $\beta_1$, og deretter bruke modellen til å forutsi verdier av $y$ for nye observasjoner av $x$.
+
+# Hvor sikker er vi på stignigstallet (eller alle koefisietnene)
+
+Når vi vurderer regresjonsanalysen, er det viktig å spørre: Hvor sikker er vi på stigningstallet vårt? La oss undersøke sammenhengen mellom pris og boligareal for å illustrere dette.
+
+Først visualiserer vi sammenhengen:
+
+```{r}
+saratoga_houses %>%
+  ggplot(aes(x = living_area, y = price)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  labs(title = "Sammenheng mellom boligareal og pris",
+       x = "Boligareal (kvm)",
+       y = "Pris ($)")
+```
+
+Vi kan se at det er en klar sammenheng mellom størrelsen på boligen og prisen. Jo større boligen er, desto høyere er prisen.
+
+For å få en mer presis forståelse av denne sammenhengen, gjennomfører vi en regresjonsanalyse:
+
+```{r}
+# Gjennomfører en regresjon mellom huspris og størrelse
+lm(price ~ living_area, data = saratoga_houses) %>%
+  tidy()
+```
+
+Her ser vi at standardfeilen for living_area er 2.334, mens t-verdien er 37.82, og estimatet for stigningstallet er 88.3. Dette betyr at stigningstallet (88.3) er 37.82 standardfeil unna null, noe som indikerer at det er en sterk statistisk signifikans.
+
+Det er også verdt å merke seg at t-verdien er forholdet mellom estimatet og standardfeilen, som kan uttrykkes slik:
+
+$$
+\text{t-verdi}= \frac{estimat}{standardfeil} = \frac{88.3}{2.334} \approx 37.82
+$$
+
+Dette gir oss en bedre forståelse av hvor sikkert vi kan være på at stigningstallet er forskjellig fra null. En høy t-verdi tyder på at vi har sterk evidens for at det er en reell sammenheng mellom boligareal og pris.
+
+## Replikasjon av datasettet
+
+For å bedre forstå variasjonen i prisene og boligarealet, replikerer vi datasettet 500 ganger. Dette gjøres ved å trekke 500 boliger fra dataene med tilbakelegg, som gir oss en indikasjon på den naturlige variasjonen i dataene.
+
+*notat:* ønsket å trekke alle boligene i datasettet, men denne koden ble veldig treg, så jeg måtte begresne meg til 500.
+
+```{r}
+# Replikerer datasettet 500 ganger ved å trekke 500 boliger med tilbakelegg
+set.seed(1337)
+many_samples <- saratoga_houses %>%
+  rep_sample_n(size = 500, reps = 500, replace = TRUE)
+
+ggplot(many_samples, aes(x = living_area, y = price, group = replicate)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Replikasjon av datasettet: Boligareal vs. Pris",
+       x = "Boligareal (kvm)",
+       y = "Pris ($)")
+```
+
+Når vi ser på grafen, legger vi merke til at ingen av regresjonslinjene er i nærheten av å ha et stigningstall på null eller negativt. Dette indikerer en konsekvent positiv sammenheng mellom boligareal og pris, uavhengig av hvilken del av datasettet vi analyserer. Den gjentatte observasjonen av denne sammenhengen gir oss større trygghet i at det er en reell relasjon mellom variablene.
+
+For å visualisere stigningstallene fra hver av regresjonsanalysene, kan vi plott alle disse i et histogram:
+
+```{r}
+many_lms <- many_samples %>% 
+  group_by(replicate) %>% 
+  do(
+    lm(price ~ living_area, data = .) %>% 
+      tidy()
+  ) %>%
+  filter(term == "living_area")
+
+# Plotter alle stigningstallene 
+ggplot(many_lms, aes(x = estimate)) +
+  geom_histogram(bins = 30, fill = "lightblue", color = "black") +
+  labs(title = "Histogram av stigningstall for boligareal",
+       x = "Stigningstall",
+       y = "Antall")+
+
+  geom_vline(xintercept = quantile(many_lms$estimate, probs = 0.025), colour = "red") +
+  geom_vline(xintercept = quantile(many_lms$estimate, probs = 0.975), colour = "red") 
+
+```
+
+Histogrammet viser fordelingen av stigningstallene for hver av de 1 000 regresjonsanalysene. Dette gir oss en visuell fremstilling av variasjonen i estimater for sammenhengen mellom boligareal og pris. Hvis histogrammet har en tydelig høyde til høyre, tyder det på at de fleste stigningstallene er positive, noe som igjen støtter vår hypotese om en sterk sammenheng mellom disse variablene.
+
+Vi kan regne ut hvor
+
+```{r}
+# Beregner 2.5% og 97.5% kvantilen av stigningstallene
+kvantiler <- quantile(many_lms$estimate, probs = c(0.025, 0.975))
+print(kvantiler)
+
+```
+
+Videre kan vi lage en regresjonsmodell for å se hvordan boligareal påvirker pris, og deretter hente ut koeffisientene med konfidensintervall:
+
+```{r}
+# Lag regresjonsmodellen
+model <- lm(price ~ living_area, data = saratoga_houses)
+
+summary(model)
+# Hent koeffisientene med konfidensintervall
+confint(model, level=0.95)
+```
+
+Ved å analysere resultatene fra regresjonsmodellen, kan vi se at estimatet for stigningstallet er nær det vi forventet fra de replikerte dataene. Denne gangen bommet vi litt, men ikke mye, noe som tyder på at regresjonsanalysen gir en pålitelig indikasjon på sammenhengen mellom boligareal og pris.
+
+Hente ut alle resultaten:
+
+```{r}
+# Hent koeffisientene med konfidensintervall
+resultat <- tidy(model, conf.int = TRUE, conf.level = 0.95)
+print(resultat)
+```
+
+## Oppgave
+
+Repliker stignitstallen fra datasettet over. Men denne gang trekk 10 oversvarjoner 1000 gang og plott stigningstallen, deretter trekk 50 observasjoner 1000 ganger fra datasettet og plott stigninstallene, tilslutt trekk 100 oversvasjoner. I alle tilfellen gjør dette med tilbakelegg. Hva er sammenhenge mellom stignigstallene og antall trekkninger?
+
+```{r}
+# Replikerer datasettet 1000 ganger ved å trekke 10 boliger med tilbakelegg
+set.seed(1337)
+many_samples <- saratoga_houses %>%
+  rep_sample_n(size = 10, reps = 1000, replace = TRUE)
+
+ggplot(many_samples, aes(x = living_area, y = price, group = replicate)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Replikasjon av datasettet: Boligareal vs. Pris",
+       x = "Boligareal (kvm)",
+       y = "Pris ($)")
+```
+
+```{r}
+# Replikerer datasettet 1000 ganger ved å trekke 10 boliger med tilbakelegg
+set.seed(1337)
+many_samples <- saratoga_houses %>%
+  rep_sample_n(size = 50, reps = 1000, replace = TRUE)
+
+ggplot(many_samples, aes(x = living_area, y = price, group = replicate)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Replikasjon av datasettet: Boligareal vs. Pris",
+       x = "Boligareal (kvm)",
+       y = "Pris ($)")
+
+```
+
+```{r}
+# Replikerer datasettet 1000 ganger ved å trekke 10 boliger med tilbakelegg
+set.seed(1337)
+many_samples <- saratoga_houses %>%
+  rep_sample_n(size = 100, reps = 1000, replace = TRUE)
+
+ggplot(many_samples, aes(x = living_area, y = price, group = replicate)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Replikasjon av datasettet: Boligareal vs. Pris",
+       x = "Boligareal (kvm)",
+       y = "Pris ($)")
+
+```
+
+# Permutasjon og bootstrapping
+
+I dette kapittelet vil vi se nærmere på to kraftige metoder for statistisk inferens: permutasjon og bootstrapping. Disse metodene gir oss muligheter til å vurdere hypoteser og konfidensintervaller uten å måtte gjøre strenge antakelser om fordelingen av dataene.
+
+## Permutasjon
+
+Permutasjonstesting er en metode som brukes for å vurdere hvorvidt det finnes en signifikant sammenheng mellom to variabler. I permutasjon blander vi variablene i datasettet, noe som innebærer at vi tilfeldig omfordeler den ene variabelen (i vårt tilfelle areal) mens vi holder den andre variabelen (pris) uendret. Dette gjøres under antakelsen om at nullhypotesen er korrekt, som sier at det ikke er noen reell sammenheng mellom variablene. I denne settingen er fordelingen av teststatistikken (for eksempel stigningstallet) antatt å være tilfeldig fordelt rundt null.
+
+For å illustrere dette, la oss simulere 1000 stigningstall med et permutert datasett:
+
+```{r}
+# Simulerer 1000 stigningstall med et permutert datasett
+perm_slope <- saratoga_houses %>%
+  # Spesifiserer pris vs. areal
+  specify(price ~ living_area) %>%
+  # Setter nullhypotesen til at de faktisk er uavhengige
+  hypothesize(null = "independence") %>%
+  # Genererer 1000 permutasjonsreplikater
+  generate(reps = 1000, type = "permute") %>%
+  # Beregner stigningstall-statistikken
+  calculate(stat = "slope")
+
+# Plotter fordelingen av stigningstallene
+ggplot(perm_slope, aes(x = stat)) +
+  geom_histogram(bins = 30, fill = "lightblue", color = "black") +
+  labs(title = "Fordeling av permuterte stigningstall",
+       x = "Stigningstall",
+       y = "Antall")
+
+```
+
+Ved å analysere fordelingen av stigningstallene fra permutasjonene kan vi vurdere hvor ekstremt vårt observerte stigningstall er, noe som gir oss en indikasjon på p-verdien.
+
+## Bootstrapping
+
+Bootstrapping, derimot, er en metode som brukes for å estimere usikkerheten i et statistisk estimat ved å trekke prøver fra dataene med tilbakelegg. I motsetning til permutasjon, hvor vi blander variablene, tar bootstrapping vare på forholdet mellom variablene i datasettet. Når vi bruker bootstrapping, antar vi at den originale fordelingen av dataene er representativ for populasjonen, og vi estimerer konfidensintervallene rundt estimatet vårt ved å trekke prøver med tilbakelegg fra det originale datasettet.
+
+For å illustrere bootstrapping, la oss beregne konfidensintervallene for stigningstallet i regresjonsmodellen:
+
+```{r}
+# Setter seed for reproducerbarhet
+set.seed(1337)
+
+# Replikerer datasettet 500 ganger ved å trekke 500 boliger med tilbakelegg
+# 'rep_sample_n()' funksjonen brukes til å trekke prøver fra 'saratoga_houses' datasettet.
+# 'size' spesifiserer antall observasjoner i hver prøve (500).
+# 'reps' spesifiserer antall replikater (500) som skal genereres.
+# 'replace = TRUE' betyr at vi trekker med tilbakelegg, så samme observasjon kan bli trukket flere ganger.
+many_lms <- saratoga_houses %>%
+  rep_sample_n(size = 500, reps = 500, replace = TRUE) %>% 
+  # Grupperer dataene etter replikatnummer
+  group_by(replicate) %>% 
+  do(
+    # Utfører regresjonsanalysen for hver gruppe
+    lm(price ~ living_area, data = .) %>% 
+      tidy()  # Konverterer resultatene til et ryddig format
+  ) %>%
+  # Filtrerer for å kun beholde stigningstallet for 'living_area'
+  filter(term == "living_area") 
+
+# Beregner 2.5% og 97.5% kvantilen av stigningstallene for å få 95% konfidensintervall
+conf_interval <- quantile(many_lms$estimate, probs = c(0.025, 0.975))
+
+# Skriver ut konfidensintervallene
+print(conf_interval)
+```
+
+Ved å bruke bootstrapping kan vi beregne konfidensintervallene for stigningstallet, som gir oss en bedre forståelse av usikkerheten knyttet til estimatet vårt.
+
+## Oppsummering
+
+Permutasjon og bootstrapping er begge kraftige verktøy for statistisk inferens, men de brukes på forskjellige måter. I permutasjonstesting antar vi at nullhypotesen er korrekt og at fordelingen er tilfeldig fordelt rundt null. I bootstrapping bevarer vi forholdet mellom variablene og antar at den opprinnelige fordelingen av dataene er representativ for populasjonen. Begge metodene gir verdifulle innsikter i dataene våre og kan være nyttige i forskjellige sammenhenger.
+
+# Hva Kjennetegner en God Modell?
+
+En god lineær regresjonsmodell bør oppfylle visse forutsetninger for at analysene skal være gyldige og pålitelige. Den generelle formen for en lineær modell kan skrives som:
+
+$$ 
+y = \beta_0 + \beta_1 x + \epsilon
+$$
+
+Hvor: - $y$ *Responsvariabelen*
+
+-   $x$ *Forklaringsvariabelen*
+
+-   $\beta_0$ *Konstantleddet (intercept)*
+
+-   $\beta_1$ *Koeffisienten for* $x$ (hellingen)
+
+-   $\epsilon$ *Feilleddet* – dette representerer den delen av $y$ som ikke forklares av modellen, og kan ses på som tilfeldige variasjoner eller støy.
+
+Feilleddet antas å følge en normalfordeling:
+
+$$
+\epsilon ∼ N(0,\sigma_{\epsilon})
+$$ For at modellen skal være god, må følgende forutsetninger være oppfylt:
+
+### 1. Uavhengige Observasjoner
+
+Observasjonene i datasettet bør være uavhengige av hverandre. Dette betyr at verdien av $Y$ for én observasjon ikke skal påvirke verdien av $Y$ for en annen observasjon. Hvis observasjonene er avhengige, kan dette føre til skjevheter i estimatene og forvrengte konfidensintervaller.
+
+### 2. Normalfordelte Residualer
+
+Feilleddene $(\epsilon)$ skal være normalfordelt rundt regresjonslinjen. Dette innebærer at for hver verdi av den uavhengige variabelen $X$ er residualene (forskjellen mellom de observerte verdiene og de predikerte verdiene) normalfordelte. Normalitet er viktig for å kunne bruke t-testen til å evaluere signifikansen av koeffisientene.
+
+### 3. Lik Variabilitet (Homoskedastisitet)
+
+Variabiliteten av residualene skal være konstant for alle verdier av den uavhengige variabelen. Dette betyr at spredningen av residualene (feilene) skal være lik, uavhengig av verdien av $X$. Hvis variabiliteten ikke er konstant (heteroskedastisitet), kan dette føre til unøyaktige estimater av standardfeilene, som igjen påvirker p-verdiene og konfidensintervallene.
+
+### Konsekvenser av Brudd på Forutsetningene
+
+Dersom noen av disse forutsetningene ikke holdes, kan vi ikke stole på p-verdiene eller konfidensintervallene som genereres av modellen. Dette kan føre til feilaktige konklusjoner om sammenhengen mellom variablene. Det er derfor viktig å teste disse forutsetningene før vi trekker konklusjoner fra regresjonsanalysen.
+
+### Oppsummering
+
+En god lineær regresjonsmodell krever uavhengige observasjoner, normalfordelte residualer og lik variabilitet rundt regresjonslinjen. Å sørge for at disse betingelsene er oppfylt gir oss større tillit til analysene våre og resultatene vi trekker fra modellen.
+
+## Fordeling av Feilleddene i Boligdataen
+
+For å vurdere fordelingen av feilleddene i datasettet for Saratoga-husene, kan vi bruke en lineær regresjonsmodell for å analysere sammenhengen mellom pris og boligareal. Vi ser nærmere på residualene, som er forskjellen mellom de observerte prisene og de predikerte prisene fra modellen.
+
+```{r}
+# Lager en lineær regresjonsmodell for pris basert på boligareal
+Out <- lm(price ~ living_area, data = saratoga_houses)
+
+# Bruker augment-funksjonen for å hente ut residualer
+augment_data <- augment(Out)
+
+# Plotter de predikerte verdiene mot residualene
+ggplot(augment_data, aes(x = .fitted, y = .resid)) +
+  geom_point() +  # Plottet av punktene
+  geom_hline(yintercept = 0, col = "magenta") +  # Legger til en horisontal linje ved y=0
+  labs(title = "Residualer vs. Predikerte Verdier",
+       x = "Predikerte Verdier",
+       y = "Residualer") +
+  theme_minimal()
+
+```
+
+I plottet ovenfor viser vi residualene mot de predikerte verdiene. Den magenta linjen representerer nullnivået for residualene.
+
+Vi kan observere at residualene er rimelig fordelt rundt null, noe som tyder på at modellen generelt har en god passform. Imidlertid er det verdt å merke seg at vi har et par uteliggere som ligger betydelig over denne linjen. Disse uteliggerne kan indikere at det er noen boliger i datasettet som ikke følger den generelle trenden og kan påvirke modellens nøyaktighet.
+
+### Konklusjon
+
+En rimelig fordeling av residualene rundt null er en indikasjon på at regresjonsmodellen er passende for dataene. Likevel er det viktig å være oppmerksom på uteliggere, da de kan påvirke både estimater og konfidensintervaller. Videre analyser kan være nødvendige for å forstå hvorfor disse uteliggerne eksisterer, og om de skal inkluderes i den endelige modellen.
+
+# Med ikke lineære sammenhenger
+
+La oss se på boligmarkedet i Taiwan (ikke Kina!). Vi vil undersøke prisene per kvadratmeter i forhold til avstanden fra metroen.
+
+Først visualiserer vi dataene:
+
+```{r}
+# Laster inn datasettet
+load(url("https://github.com/uit-sok-2009-h22/uit-sok-2009-h22.github.io/blob/main/filer/taiwan_real_estate.Rdata?raw=true"))
+
+# Plotter avstand til MRT vs. pris per kvadratmeter
+taiwan_real_estate %>%
+  ggplot(aes(x = dist_to_mrt_m, y = price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Pris per kvadratmeter vs. Avstand fra MRT",
+       x = "Avstand fra MRT (meter)",
+       y = "Pris (TWD/m²)")
+
+```
+
+I plottet ser vi at det ikke er en lineær sammenheng mellom avstanden fra metroen og prisene. Selv om dataene viser en viss trend, er forholdet mer komplisert. La oss likevel utføre en lineær regresjon:
+
+```{r}
+# Lager en lineær regresjonsmodell
+Out <- lm(price_twd_msq ~ dist_to_mrt_m, data = taiwan_real_estate)
+
+# Viser sammendraget av modellen
+summary(Out)
+```
+
+Vi ser at vi får svært signifikante estimater, men hvordan ser fordelingen av feilleddene ut?
+
+```{r}
+# Bruker augment-funksjonen for å hente ut residualer
+augment_data <- augment(Out)
+
+# Plotter de predikerte verdiene mot residualene
+ggplot(augment_data, aes(x = .fitted, y = .resid)) +
+  geom_point() +  # Plottet av punktene
+  geom_hline(yintercept = 0, col = "magenta") +  # Legger til en horisontal linje ved y=0
+  labs(title = "Residualer vs. Predikerte Verdier",
+       x = "Predikerte Verdier",
+       y = "Residualer") +
+  theme_minimal()
+```
+
+I dette plottet ser vi at residualene ikke ser ut til å være jevnt fordelt rundt null. Det er en indikasjon på at lineær modellen ikke passer dataene godt. For å forbedre modellen kan vi transformere dataene.
+
+La oss log-transformere avstanden fra metroen:
+
+```{r}
+# Plotter log-transformert avstand mot pris per kvadratmeter
+taiwan_real_estate %>%
+  ggplot(aes(x = log(dist_to_mrt_m), y = price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Log-transformert Avstand fra MRT vs. Pris per kvadratmeter",
+       x = "Log(Avstand fra MRT)",
+       y = "Pris (TWD/m²)")
+```
+
+Etter transformasjonen ser dataene ut til å passe mye bedre til en lineær modell. La oss gjennomføre en ny regresjon med den transformerte variabelen:
+
+```{r}
+# Lager en ny lineær regresjonsmodell med log-transformert pris
+Out2 <- lm(price_twd_msq ~ log(dist_to_mrt_m), data = taiwan_real_estate)
+
+# Viser sammendraget av den nye modellen
+summary(Out2)
+```
+
+Her ser vi at $R^2$ også har økt, noe som indikerer en bedre modelltilpasning.
+
+```{r}
+# Bruker augment-funksjonen for å hente ut residualer fra den nye modellen
+augment_data <- augment(Out2)
+
+# Plotter de predikerte verdiene mot residualene
+ggplot(augment_data, aes(x = .fitted, y = .resid)) +
+  geom_point() +  # Plottet av punktene
+  geom_hline(yintercept = 0, col = "magenta") +  # Legger til en horisontal linje ved y=0
+  labs(title = "Residualer vs. Predikerte Verdier etter Transformasjon",
+       x = "Predikerte Verdier",
+       y = "Residualer") +
+  theme_minimal()
+
+```
+
+Nå ser fordelingen av residualene mye bedre ut.
+
+### Hvorfor Skjer Dette?
+
+Primært er det avtakende pris for boliger som ligger lengre unna metroen. Dette forholdet er negativt, men konvekst. Det betyr at jo lenger unna du kommer metroen, desto mindre tap i pris får du per ekstra meter. Dette er en viktig innsikt når vi modellerer forholdet mellom avstand fra kollektivtransport og boligpriser, og det understreker nødvendigheten av å vurdere ikke-lineære sammenhenger i dataene.
+
+# Introduksjon til Data Transformasjoner
+
+I regresjonsanalyse er det viktig å sikre at modellen vi bygger er passende for dataene vi jobber med. I mange tilfeller er den opprinnelige formen av variablene ikke ideell for å avdekke relasjonene mellom dem. Dette kan skyldes flere faktorer:
+
+1.  **Ikke-lineære Forhold:** Ofte viser data en ikke-lineær sammenheng mellom den avhengige og uavhengige variabelen. Dette kan gjøre det vanskelig å bruke en enkel lineær regresjonsmodell. Transformasjoner kan hjelpe med å linearisere forholdet, noe som gjør det lettere å tilpasse en lineær modell.
+
+2.  **Ulik Varians (Heteroskedastisitet):** I en lineær regresjonsmodell forventes det at variansen av residualene er konstant over hele området av den uavhengige variabelen. Hvis variansen endrer seg (heteroskedastisitet), kan transformasjoner stabilisere variansen og forbedre modellens pålitelighet.
+
+3.  **Normalfordeling av Residualer:** Mange statistiske metoder, inkludert regresjonsanalyse, antar at residualene er normalfordelte. Transformasjoner kan bidra til å oppnå denne normalfordelingen, noe som igjen gir mer nøyaktige p-verdier og konfidensintervaller.
+
+4.  **Skala og Enhet:** I noen tilfeller kan variablene ha svært forskjellige skalaer (for eksempel når en variabel er i millioner og en annen i små enheter). Log-transformasjoner eller standardisering kan hjelpe til med å bringe variablene på en mer sammenlignbar skala.
+
+## Transformasjonsmetoder
+
+Noen vanlige transformasjonsmetoder inkluderer:
+
+-   **Log-transformasjon:** Brukes for å håndtere eksponentiell vekst og stabilisere variansen.
+
+-   **Kvadratrot-transformasjon:** Brukes for å redusere skjevhet i dataene.
+
+-   **Invers transformasjon:** Kan brukes for å håndtere uendelige eller ekstreme verdier.
+
+Transformasjoner gir oss muligheten til å forbedre modellens tilpasning, oppfylle forutsetningene for regresjonsanalyse og oppnå mer meningsfulle og pålitelige resultater.
+
+## Log tranforsmasjon
+
+Stort sett bruker vi log transformasjon dette gjør det enklere å tolke dataen.
+
+### 1. Lin-Lin (Lineær til Lineær)
+
+**Modell:**
+
+$Y = \beta_0 + \beta_1 X + \epsilon$
+
+**Beskrivelse:**\
+I en lin-lin-modell er både den avhengige variabelen $Y$ og den uavhengige variabelen $X$ i sin opprinnelige form. Dette betyr at vi modellerer den direkte lineære sammenhengen mellom $X$ og $Y$.
+
+**Bruk:**\
+Brukes når det forventes en lineær sammenheng mellom variablene, og begge variabler er i en kontinuerlig og naturlig form.
+
+#### Eksempel
+
+Vi ser på
+
+```{r}
+# Plotter log-transformert avstand mot pris per kvadratmeter
+taiwan_real_estate %>%
+  ggplot(aes(x = dist_to_mrt_m, y = price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Avstand fra MRT vs. Pris per kvadratmeter",
+       x = "Avstand fra MRT",
+       y = "Pris (TWD/m²)")
+
+# Lager en ny lineær regresjonsmodell med log-transformert pris
+lin_lin_model <- lm(price_twd_msq ~ dist_to_mrt_m, data = taiwan_real_estate)
+summary(lin_lin_model)
+```
+
+*Forklaring av Koeffisientene* Etter å ha kjørt regresjonsanalysen, får vi en oppsummering av modellen, inkludert estimatene for koeffisientene:
+
+$\beta_0$ (Konstantleddet):
+
+Dette er verdien av den avhengige variabelen $Y$(pris per kvadratmeter) når $X$ (avstand fra MRT) er null. I konteksten av denne modellen kan $\beta_0$ representere den forventede prisen per kvadratmeter for boliger som ligger på metroens plassering. Det er viktig å merke seg at hvis $X=0$ ikke er en praktisk eller realistisk verdi i datasettet, kan tolkningen av $X=0$ være mindre meningsfull.
+
+$\beta_1$ (Stigningstallet):
+
+Dette representerer endringen i den avhengige variabelen $Y$ for hver enhetsendring i $X$.$\beta_1=-0.002$ er negativ, indikerer det at en økning i avstanden fra metroen (mer meter) er assosiert med en nedgang i prisene per kvadratmeter. Dette betyr at for hver ekstra meter avstand fra metroen, forventes prisen per kvadratmeter å reduseres med 0.002 TWD.
+
+Lin-lin-modellen gir oss en enkel og intuitiv måte å undersøke forholdet mellom to kontinuerlige variabler. Det er viktig å tolke koeffisientene i konteksten av datasettet og de spesifikke variablene som studeres. For å være sikker på at modellen er passende, bør vi også vurdere de underliggende forutsetningene som uavhengige observasjoner, normalfordelte residualer, og homoskedastisitet.
+
+### 2. Log-Lin (Logaritmisk til Lineær)
+
+**Modell:**
+
+$Y = \beta_0 + \beta_1 \log(X) + \epsilon$
+
+**Beskrivelse:** I en log-lin-modell er den uavhengige variabelen $X$ log-transformert, mens den avhengige variabelen $Y$ er i sin opprinnelige form. Dette betyr at vi antar at endringer i $X$ har en konstant prosentvis effekt på $Y$.
+
+**Bruk:** Brukes når den avhengige variabelen er kontinuerlig, og vi tror at forholdet mellom $X$ og $Y$ er ikke-lineært, spesielt i tilfeller med eksponentiell vekst eller når $X$ har et stort spenn.
+
+#### Eksempel
+
+La oss se på boligmarkedet i Taiwan igjen, men nå bruker vi log-transformasjonen av avstanden fra metroen for å undersøke hvordan dette påvirker prisene per kvadratmeter:
+
+```{r}
+# Plotter log-transformert avstand fra MRT mot pris per kvadratmeter
+taiwan_real_estate %>%
+  ggplot(aes(x = log(dist_to_mrt_m), y = price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Log-transformert Avstand fra MRT vs. Pris per kvadratmeter",
+       x = "Log(Avstand fra MRT)",
+       y = "Pris (TWD/m²)")
+
+# Lager en ny log-lin regresjonsmodell
+log_lin_model <- lm(price_twd_msq ~ log(dist_to_mrt_m), data = taiwan_real_estate)
+
+# Viser oppsummering av modellen
+summary(log_lin_model)
+```
+
+Forklaring av Koeffisientene Etter å ha kjørt regresjonsanalysen, får vi en oppsummering av modellen, inkludert estimatene for koeffisientene:
+
+$\beta_0$ (Konstantleddet):
+
+Dette er verdien av den avhengige variabelen $Y$(pris per kvadratmeter) når $X$ (avstand fra MRT) er null. I konteksten av denne modellen kan $\beta_0$ representere den forventede prisen per kvadratmeter for boliger som ligger på metroens plassering. Det er viktig å merke seg at hvis $X=0$ ikke er en praktisk eller realistisk verdi i datasettet, kan tolkningen av $X=0$ være mindre meningsfull.
+
+$\beta_1$ (Stigningstallet for log-transformert variabel): Dette representerer en enhets endring i den avhengige variabelen $Y$ for en 1% endring i $X$.
+
+Koeffisienten $−2.70$ indikerer at en 1% økning i avstanden fra metroen vil være assosiert med en nedgang i prisen per kvadratmeter med omtrent 2.70 TWD. Dette betyr at boliger som ligger lengre unna metroen har lavere priser, og effekten av avstand er relativt stor.
+
+Konklusjon Log-lin-modellen gir oss innsikt i hvordan prosentvise endringer i avstanden fra metroen påvirker prisene per kvadratmeter. Dette gir en annen dimensjon til analysen og kan være mer informativ i tilfeller der vi mistenker en eksponentiell sammenheng.
+
+Ved å bruke log-transformasjoner kan vi oppnå bedre modelltilpasning og mer nøyaktige prediksjoner, spesielt i sammenhenger der variablene varierer over et stort spenn.
+
+### 3. Lin-Log (Lineær til Logaritmisk)
+
+**Modell:**
+
+$\log(Y) = \beta_0 + \beta_1 X + \epsilon$
+
+**Beskrivelse:** I en lin-log-modell er den avhengige variabelen $Y$ log-transformert, mens den uavhengige variabelen $X$ er i sin opprinnelige form. Dette betyr at vi modellerer den relative endringen i $Y$ som en lineær funksjon av $X$.
+
+**Bruk:** Brukes når den uavhengige variabelen er kontinuerlig, men den avhengige variabelen vokser eksponentielt, for eksempel i tilfeller der prosentvis vekst er relevant.
+
+#### Eksempel
+
+La oss se på boligmarkedet i Taiwan igjen, men nå bruker vi log-transformasjonen av prisene per kvadratmeter, og undersøke hvordan avstanden fra metroen for å undersøke hvordan dette påvirker log-prisen:
+
+```{r}
+# Plotter log-transformert pris men linær avstand
+taiwan_real_estate %>%
+  ggplot(aes(x = log(dist_to_mrt_m), y = price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Avstand fra MRT vs. Log-transformert  Pris per kvadratmeter",
+       x = "Avstand fra MRT",
+       y = "log(Pris (TWD/m²))")
+
+# Lager en ny log-lin regresjonsmodell
+lin_log_model <- lm(log(price_twd_msq) ~ dist_to_mrt_m, data = taiwan_real_estate)
+
+# Viser oppsummering av modellen
+summary(lin_log_model)
+```
+
+$\beta_0$ (Konstantleddet):
+
+Dette er verdien av den avhengige variabelen $Y$(pris per kvadratmeter) når $X$ (avstand fra MRT) er null. I konteksten av denne modellen kan $\beta_0$ representere den forventede prisen per kvadratmeter for boliger som ligger på metroens plassering. Det er viktig å merke seg at hvis $X=0$ ikke er en praktisk eller realistisk verdi i datasettet, kan tolkningen av $X=0$ være mindre meningsfull.
+
+$\beta_1$ (Stigningstallet):
+
+Dette representerer en prosent med $\beta_1$ endring i den avhengige variabelen $Y$ for en enhets endring i $X$.
+
+Koeffisienten $−0.00023$ indikerer at for hver enhet økning i avstanden fra metroen (1 meter), forventes log-prisen per kvadratmeter å reduseres med omtrent 0.00023395. For å forstå hvordan dette påvirker den faktiske prisen, kan vi si at en økning i avstanden fra metroen med 1 meter resulterer i en omtrent 0.0234% reduksjon i prisen per kvadratmeter, siden vi må eksponentiere koeffisienten for å få den prosentvise
+
+### 4. Log-Log (Logaritmisk til Logaritmisk)
+
+**Modell:**
+
+$\log(Y) = \beta_0 + \beta_1 \log(X) + \epsilon$
+
+**Beskrivelse:** I en log-log-modell er både den avhengige variabelen $Y$ og den uavhengige variabelen $X$ log-transformert. Dette indikerer at vi modellerer den prosentvise endringen i $Y$ som en funksjon av den prosentvise endringen i $X$.
+
+**Bruk:** Brukes når vi mistenker at både $X$ og $Y$ vokser eksponentielt, eller når begge variabler har et stort spenn og vi ønsker å stabilisere variansen i dataene.
+
+#### Eksempel
+
+La oss se på boligmarkedet i Taiwan igjen, men nå bruker vi både $Y$ (pris per kvadratmeter) og $X$ (avstand fra metroen) i log-transformert form:
+
+```{r}
+# Plotter log-transformert avstand fra MRT mot log-transformert pris per kvadratmeter
+taiwan_real_estate %>%
+  ggplot(aes(x = log(dist_to_mrt_m), y = log(price_twd_msq))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Log-transformert Avstand fra MRT vs. Log-transformert Pris per kvadratmeter",
+       x = "Log(Avstand fra MRT)",
+       y = "Log(Pris (TWD/m²))")
+
+# Lager en ny log-log regresjonsmodell
+log_log_model <- lm(log(price_twd_msq) ~ log(dist_to_mrt_m), data = taiwan_real_estate)
+
+# Viser oppsummering av modellen
+summary(log_log_model)
+
+```
+
+Forklaring av Koeffisientene Etter å ha kjørt regresjonsanalysen, får vi en oppsummering av modellen, inkludert estimatene for koeffisientene:
+
+$\beta_0$ (Konstantleddet):
+
+Dette representerer den forventede log-transformerte prisen per kvadratmeter når den log-transformerte avstanden fra metroen er null. I praksis betyr dette at det gir oss en teoretisk verdi for log-prisen når avstanden til metroen er på sitt minimum, selv om dette ikke nødvendigvis er praktisk i konteksten av datasettet.
+
+$\beta_1$ (Stigningstallet for log-transformert variabel):
+
+Koeffisienten $\beta_1$ viser den prosentvise endringen i $Y$ for en 1% endring i $X$.
+
+For eksempel, her er $\beta_1 =-0.27$, betyr dette at en 1% økning i avstanden fra metroen vil resultere i en reduksjon i prisen per kvadratmeter på omtrent 0.27%. Dette indikerer at som avstanden fra metroen øker, reduseres verdien av boliger, og forholdet mellom avstand og pris er avtakende.
+
+Konklusjon
+
+Log-log-modellen gir oss innsikt i hvordan prosentvise endringer i avstanden fra metroen påvirker prisene per kvadratmeter. Dette gir en annen dimensjon til analysen og kan være mer informativ i tilfeller der vi mistenker en eksponentiell sammenheng. Bruken av log-transformasjoner kan bidra til bedre modelltilpasning og mer nøyaktige prediksjoner.
+
+### Oppsummering
+
+| Modell | Avhengig Variabel | Uavhengig Variabel | Beskrivelse |
+|----|----|----|----|
+| Lin-Lin | $Y$ | $X$ | Direkte lineær sammenheng. |
+| Log-Lin | $Y$ | $\log(X)$ | Lineær endring i $Y$ med konstant prosentvis endring i $X$. |
+| Lin-Log | $\log(Y)$ | $X$ | Prosentvis endring i $Y$ som respons på lineær endring i $X$. |
+| Log-Log | $\log(Y)$ | $\log(X)$ | Prosentvise endringer i både $Y$ og $X$. |
+
+# Oppgaver
+
+For NHANES datasettet. Hviken modell har mest forkaringkraft. lin-lin og log-log. Hvor forklarer sammenhenge. Hvilken modell har høyest $R^2$.
+
+```{r}
+NHANES %>%
+  ggplot(aes(x=Height,y=Weight))+
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+summary(
+  lm(Weight ~ Height, data= NHANES)
+)
+```
+
+```{r}
+NHANES %>%
+  ggplot(aes(x=log(Height),y=log(Weight) ))+
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+summary(
+  lm(log(Weight) ~ log(Height), data= NHANES)
+)
+
+```
+
+```{r}
+
+Out <- lm(log(Weight) ~ log(Height), data= NHANES)
+Out2 <- makeFun(Out)
+                
+Out2(150)
+Out2(151.5)
+
+```
+
+```{r}
+NHANES %>%
+  ggplot(aes(x=sqrt(Height),y= Weight ))+
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+summary(
+  lm(Weight ~ sqrt(Height), data= NHANES)
+)
+
+```
+
+```{r}
+Out <- lm(Weight ~ sqrt(Height), data= NHANES)
+
+Out2 <- makeFun(Out)
+
+Out2(c(100,101,180,181))
+```
