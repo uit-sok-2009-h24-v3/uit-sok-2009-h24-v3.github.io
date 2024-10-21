@@ -18,14 +18,12 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 39 | 27.09  14:00 | || **Mappe 1 frist** |
 | Uke 41 | 08.10  10:15-12:00  | 02.119, DT-lab | Forelesninger | Regresjon og interferens | [Forelesning](forelesning/SOK2009_2024_F08_Inferens.pdf) |
 | Uke 41 | 09.10  10:15-12:00  | 02.216, Økonomen | Forelesninger | Multippel regresjon | [Forelesning](forelesning/SOK2009_2024_F09_Multippel_Regresjon.pdf)  |
-| Uke 41 | 11.10  10:15-12:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 42 | 15.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Vidregående interfrerens |  |
-| Uke 42 | 17.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 42 | 18.10  14:00 | | | **Mappe 2 utlevert** | 
-| Uke 43 | 22.10  12:15-14:00  | 02.217, Innovatøren | Forelesninger | Modelering |  |
+| Uke 43 | 22.10  12:15-14:00  | 02.217, Innovatøren | Seminar |  |  |
 | Uke 43 | 24.10  12:15-14:00  | 02.119, DT-LAB | Seminar |  |  |
 | Uke 43 | 25.10  14:00 | | | **Mappe 2 frist** | 
-| Uke 44 | 30.10  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
+| Uke 44 | 30.10  10:15-12:00  | 02.119, DT-LAB | Forelesninger | Modelering |  |
 | Uke 45 | 06.11  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
 | Uke 45 | 08.11  14:00    ||| **Datacamp innlevering**
 |  | 04.12 14:00 |  | | **Mappe 3 frist** |
