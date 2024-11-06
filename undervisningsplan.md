@@ -23,7 +23,6 @@ Hvis tidspunkt eller rom ikke er korrekt i forhold til plan under så er det tim
 | Uke 43 | 22.10  12:15-14:00  | 02.217, Innovatøren | Seminar |  |  |
 | Uke 43 | 25.10  13:15-15:00  | 02.216, Økonomen | Seminar |  |  |
 | Uke 43 | 25.10  14:00 | | | **Mappe 2 frist** | 
-| Uke 44 | 30.10  10:15-12:00  | 02.119, DT-LAB | Forelesninger | Modelering |  |
-| Uke 45 | 06.11  10:15-12:00  | 02.119, DT-LAB | Forelesninger |  |  |
+| Uke 45 | 06.11  10:15-12:00  | 02.119, DT-LAB | Forelesninger | Modelering | [Forelesning](forelesning/SOK2009_2024_F11_Modelering.pdf) |
 | Uke 45 | 08.11  14:00    ||| **Datacamp innlevering**
 |  | 04.12 14:00 |  | | **Mappe 3 frist** |
