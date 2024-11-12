@@ -69,10 +69,11 @@ Viktige beskjeder og kunngjøringer legges ut i [Canvas](https://uit.instructure
 ## Innlevering og eksamen  
 
 ### Obligatoriske arbeidskrav
-Emnet har to arbeidskrav, en gruppe presentasjon og et individuelt arbeidskrav. Begge må være godkjent for å kunne avlegge eksamen.
+Emnet har et individuelt arbeidskrav. Arbeidskravet må være godkjent for å kunne avlegge eksamen.
 
 - Datacamp: Alle modulene er obligatorisk og må gjøres ferdig innen 08.11 klokken 14:00.
-- Muntelig presantasjon av prosjekt oppgave. Tidspunkt avklares senere.
+
+Tidligere muntig presentasjon blir enderte til en frivillg presantasjon av prosjekt oppgaven. Dere kan bestemme selv om dere ønsker å komme å presantere oppgaven for meg eller ikke. Dette gjøres enten fysiskt eller over teams/zoom. Påmellings sjema kommer straks. Siste muligeht for presantasjon 29. desember. 
 
 
 ### Eksamen
